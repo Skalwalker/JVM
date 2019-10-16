@@ -79,5 +79,3 @@ Utilize apenas o seguinte formato para comentário Doxygen:
  ```c
  // Text
  ```
- 
-
