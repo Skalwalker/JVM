@@ -64,6 +64,6 @@ CPInfo::CPInfo(uint8_t tag, FILE * fp) {
         this->invokeDynamicInfo.name_and_type_index = twoBytes.readBytes(fp);
 
     } else {
-        printf("não passei em nenhum\n");
+        printf("NDA\n");
     }
 }
