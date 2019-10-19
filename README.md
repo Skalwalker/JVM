@@ -1,8 +1,5 @@
 # JVM
 
-<<<<<<< HEAD
-Será que dá pra commitar?
-=======
 A Java Virtual Machine é a pedra angular da plataforma Java. É o componente de tecnologia responsável por sua independência de hardware e sistema operacional, o pequeno tamanho de seu código compilado e sua capacidade de proteger os usuários de programas maliciosos.
 
 A Java Virtual Machine é uma máquina de computação abstrata. Como uma máquina de computação real, ela possui um conjunto de instruções e lida com várias áreas da memória em tempo de execução. É razoavelmente comum implementar uma linguagem de programação usando uma máquina virtual.
@@ -82,4 +79,3 @@ Utilize apenas o seguinte formato para comentário Doxygen:
  ```c
  // Text
  ```
->>>>>>> a83c703cc81a0ca38476002b0fa4fc1136e8c91c
