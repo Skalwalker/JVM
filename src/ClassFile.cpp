@@ -68,10 +68,8 @@ void ClassFile::setInterfacesCount(FILE * fp) {
 
 void ClassFile::setInterfaces(FILE * fp) {
     int iCount = interfacesCount;
-    cout << interfacesCount << endl;
     for (int i = 0; i < iCount; i++) {
         uint16_t interface = ClassFileReader<uint16_t>().readBytes(fp);
-        cout << "INTEFFACE = " << interface << endl;
         interfaces.push_back(interface);
     }
 }
