@@ -6,7 +6,7 @@ using namespace std;
 int main() {
     FILE * fp;
 
-    fp = fopen("test_examples/HelloWorld.class", "rb");
+    fp = fopen("test_examples/InterfaceClass$ClassClass.class", "rb");
     if (fp != NULL) {
         ClassFile classFile(fp);
         Printer printer;

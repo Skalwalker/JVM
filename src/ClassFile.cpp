@@ -39,7 +39,7 @@ void ClassFile::setConstantPoolCount(FILE * fp) {
 
 void ClassFile::setConstantPool(FILE * fp) {
     int cpCount = constantPoolCount;
-    for (int cp = 0; cp <= cpCount; cp++) {
+    for (int cp = 0; cp < cpCount-1; cp++) {
         uint8_t tag = ClassFileReader<uint8_t>().readBytes(fp);
         CPInfo cpInfo(tag, fp);
         constantPool.push_back(cpInfo);
@@ -68,6 +68,7 @@ void ClassFile::setInterfacesCount(FILE * fp) {
 
 void ClassFile::setInterfaces(FILE * fp) {
     int iCount = interfacesCount;
+    cout << interfacesCount << endl;
     for (int i = 0; i < iCount; i++) {
         uint16_t interface = ClassFileReader<uint16_t>().readBytes(fp);
         cout << "INTEFFACE = " << interface << endl;
