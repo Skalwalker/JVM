@@ -6,7 +6,6 @@ CPInfo::CPInfo(uint8_t tag, FILE * fp) {
     ClassFileReader<uint16_t> twoBytes;
     ClassFileReader<uint32_t> fourBytes;
 
-    this->tag = tag;
     if (tag == CONSTANT_CLASS) {
         this->classInfo.name_index = twoBytes.readBytes(fp);
 
@@ -48,7 +47,7 @@ CPInfo::CPInfo(uint8_t tag, FILE * fp) {
         this->longInfo.high_bytes = fourBytes.readBytes(fp);
         this->longInfo.low_bytes = fourBytes.readBytes(fp);
 
-    } else if (tag == CONSTANT_LONG) {
+    } else if (tag == CONSTANT_DOUBLE) {
         this->doubleInfo.high_bytes = fourBytes.readBytes(fp);
         this->doubleInfo.low_bytes = fourBytes.readBytes(fp);
 

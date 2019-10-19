@@ -1,6 +1,6 @@
 #include "../include/ClassFileReader.hpp"
 
-template<>
+template <>
 uint16_t ClassFileReader<uint16_t>::littleEndianToBigEndian(uint16_t val) {
     return (val << 8) | (val >> 8);
 }

@@ -14,6 +14,7 @@ ClassFile::ClassFile(FILE * fp) {
     this->setThisClass(fp);
     this->setSuperClass(fp);
     this->setInterfacesCount(fp);
+    this->setInterfaces(fp);
 }
 
 void ClassFile::setMagicNumber(FILE * fp) {
@@ -38,7 +39,7 @@ void ClassFile::setConstantPoolCount(FILE * fp) {
 
 void ClassFile::setConstantPool(FILE * fp) {
     int cpCount = constantPoolCount;
-    for (int cp = 0; cp <= cpCount; cp++) {
+    for (int cp = 0; cp < cpCount-1; cp++) {
         uint8_t tag = ClassFileReader<uint8_t>().readBytes(fp);
         CPInfo cpInfo(tag, fp);
         constantPool.push_back(cpInfo);
@@ -63,6 +64,14 @@ void ClassFile::setSuperClass(FILE * fp) {
 void ClassFile::setInterfacesCount(FILE * fp) {
     ClassFileReader<typeof(interfacesCount)> itCount;
     interfacesCount = itCount.readBytes(fp);
+}
+
+void ClassFile::setInterfaces(FILE * fp) {
+    int iCount = interfacesCount;
+    for (int i = 0; i < iCount; i++) {
+        uint16_t interface = ClassFileReader<uint16_t>().readBytes(fp);
+        interfaces.push_back(interface);
+    }
 }
 
 uint32_t ClassFile::getMagicNumber() {
@@ -99,4 +108,8 @@ uint16_t ClassFile::getSuperClass() {
 
 uint16_t ClassFile::getInterfacesCount() {
     return interfacesCount;
+}
+
+vector<uint16_t> ClassFile::getInterfaces() {
+    return interfaces;
 }
