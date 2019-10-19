@@ -7,6 +7,8 @@
 #include "MethodInfo.hpp"
 #include "ClassFileReader.hpp"
 
+using namespace std;
+
 #define typeof __typeof__
 
 class ClassFile {
@@ -15,7 +17,7 @@ class ClassFile {
     uint16_t minorVersion;
     uint16_t majorVersion;
     uint16_t constantPoolCount;
-    // vector<CPinfo> constantPool;
+    vector<CPInfo> constantPool;
     uint16_t accessFlags;
     uint16_t thisClass;
     uint16_t superClass;
@@ -30,7 +32,7 @@ class ClassFile {
 
     void setMagicNumber(FILE * fp);
     void setMajorVersion(FILE * fp);
-    void setMinor(FILE * fp);
+    void setMinorVersion(FILE * fp);
     void setConstantPoolCount(FILE * fp);
     void setConstantPool(FILE * fp);
     void setAccessFlags(FILE * fp);
@@ -61,7 +63,7 @@ class ClassFile {
     uint16_t getMajorVersion();
     uint16_t getMinorVersion();
     uint16_t getConstantPoolCount();
-    // vector<CPInfo> getConstantPool();
+    vector<CPInfo> getConstantPool();
     uint16_t getAccessFlags();
     uint16_t getThisClass();
     uint16_t getSuperClass();

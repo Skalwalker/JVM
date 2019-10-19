@@ -5,7 +5,7 @@
 using namespace std;
 
 template<typename T>
-T lendianToBigendian(T val) {}
+T littleEndianToBigendian(T val) {}
 
 template <>
 uint16_t littleEndianToBigendian<uint16_t>(uint16_t val) {
@@ -19,11 +19,11 @@ uint32_t littleEndianToBigendian<uint32_t>(uint32_t val) {
 }
 
 template<typename T>
-static T readBytes(FILE * fp) {
+T readBytes(FILE * fp) {
     int bytes_for_read = sizeof(T);
     T p;
     fread(&p, bytes_for_read, 1, fp);
-    p = lendianToBigendian(p);
+    p = littleEndianToBigendian(p);
     return (p);
 }
 
