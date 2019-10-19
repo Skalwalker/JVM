@@ -1,7 +1,45 @@
 #include "../include/Printer.hpp"
 
-Printer::Printer() {
+Printer::Printer(ClassFile classFile) {
+    cls_file = classFile;
+    this->printGeneralInfo();
+}
 
+void Printer::printHeader(string sectionName) {
+  cout << "===================" << sectionName;
+  cout << "===================" << endl;
+}
+
+void Printer::printFooter(string sectionName) {
+  cout << "===================" << sectionName;
+  cout << "===================" << endl << endl;
+}
+
+void Printer::printGeneralInfo() {
+    this->printHeader("General Info");
+
+    cout << "- Magic Number: ";
+    cout << hex << "0x" << this->cls_file.getMagicNumber() << endl;
+
+    cout << "- Minor Version: ";
+    cout << dec << this->cls_file.getMinorVersion() << endl;
+
+    cout << "- Major Version: ";
+    cout << dec << this->cls_file.getMajorVersion() << endl;
+
+    cout << "- Constant Pool Count: " << endl;
+    cout << dec << this->cls_file.getConstantPoolCount() << endl;
+
+    cout << "- Access Flags: ";
+    cout << "- This Class: ";
+    cout << "- Super Class: ";
+
+    cout << "- Interfaces Count: ";
+    cout << "- Fields Count: ";
+    cout << "- Methods Count: ";
+    cout << "- Attributes Count: ";
+
+    this->printFooter("General Info");
 }
 
 void Printer::manualHelloWorld(ClassFile classFile) {

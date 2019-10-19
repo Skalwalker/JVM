@@ -1,6 +1,5 @@
-#include "../include/ClassFile.hpp"
 #include <iostream>
-
+#include "../include/ClassFile.hpp"
 using namespace std;
 
 // Constructor

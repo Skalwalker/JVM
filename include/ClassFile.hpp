@@ -1,3 +1,6 @@
+#ifndef __CLASSFILE_H__
+#define __CLASSFILE_H__
+
 #include <cstdint>
 #include <vector>
 #include <fstream>
@@ -76,3 +79,5 @@ class ClassFile {
     uint16_t getAttributesCount();
     // vector<AttributeInfo> getAttributes();
 };
+
+#endif
