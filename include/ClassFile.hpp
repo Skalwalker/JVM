@@ -22,7 +22,7 @@ class ClassFile {
     uint16_t thisClass;
     uint16_t superClass;
     uint16_t interfacesCount;
-    // vector<uint16_t> interfaces;
+    vector<uint16_t> interfaces;
     uint16_t fieldsCount;
     // vector<FieldInfo> fields;
     uint16_t methodsCount;
@@ -68,7 +68,7 @@ class ClassFile {
     uint16_t getThisClass();
     uint16_t getSuperClass();
     uint16_t getInterfacesCount();
-    // vector<InterfaceInfo> getInterfaces();
+    vector<uint16_t> getInterfaces();
     uint16_t getFieldsCount();
     // vector<FieldInfo> getFields();
     uint16_t getMethodsCount();

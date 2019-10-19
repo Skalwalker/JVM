@@ -14,6 +14,7 @@ ClassFile::ClassFile(FILE * fp) {
     this->setThisClass(fp);
     this->setSuperClass(fp);
     this->setInterfacesCount(fp);
+    this->setInterfaces(fp);
 }
 
 void ClassFile::setMagicNumber(FILE * fp) {
@@ -65,6 +66,15 @@ void ClassFile::setInterfacesCount(FILE * fp) {
     interfacesCount = itCount.readBytes(fp);
 }
 
+void ClassFile::setInterfaces(FILE * fp) {
+    int iCount = interfacesCount;
+    for (int i = 0; i < iCount; i++) {
+        uint16_t interface = ClassFileReader<uint16_t>().readBytes(fp);
+        cout << "INTEFFACE = " << interface << endl;
+        interfaces.push_back(interface);
+    }
+}
+
 uint32_t ClassFile::getMagicNumber() {
     return magicNumber;
 }
@@ -99,4 +109,8 @@ uint16_t ClassFile::getSuperClass() {
 
 uint16_t ClassFile::getInterfacesCount() {
     return interfacesCount;
+}
+
+vector<uint16_t> ClassFile::getInterfaces() {
+    return interfaces;
 }
