@@ -5,6 +5,8 @@ Printer::Printer(ClassFile classFile) : cls_file{ classFile }  {
     this->printGeneralInfo();
     this->printConstantPool();
     this->printInterfaces();
+    this->printFields();
+    this->printMethods();
 }
 
 void Printer::printHeader(string sectionName) {
@@ -14,6 +16,9 @@ void Printer::printHeader(string sectionName) {
 
 void Printer::printFooter(string sectionName) {
   cout << endl << "===================" << sectionName;
+  for(int i = 0; i < sectionName.length()+2;i++) {
+    cout << "=";
+  }
   cout << "===================" << endl << endl;
 }
 
@@ -96,10 +101,10 @@ void Printer::printGeneralInfo() {
     cout << " [" << this->flagDescription(flag) << "]" << endl;
 
     cout << "- This Class:             ";
-    uint16_t cp_index = this->cls_file.getThisClass()
+    uint16_t cp_index = this->cls_file.getThisClass();
     cout << cp_index << endl;
 
-    uint16_t cp_index = this->cls_file.getSuperClass()
+    cp_index = this->cls_file.getSuperClass();
     cout << "- Super Class:            ";
     cout << cp_index << endl;
 
@@ -115,7 +120,7 @@ void Printer::printGeneralInfo() {
     cout << "- Attributes Count:       ";
     cout << dec << this->cls_file.getAttributesCount() << endl;
 
-    this->printFooter("");
+    this->printFooter("General Info");
 }
 
 void Printer::printCPBody(CPInfo cp) {
@@ -195,7 +200,7 @@ void Printer::printConstantPool(){
         cout << "[" << dec << i+1 << "] Constant " << cp_vec[i].name << endl;
         this->printCPBody(cp_vec[i]);
       }
-      this->printFooter("");
+      this->printFooter(title);
 }
 
 void Printer::printInterfaces(){
@@ -216,5 +221,25 @@ void Printer::printInterfaces(){
     cout << "NENHUMA INTERFACE DISPONIVEL!" << endl;
   }
 
-  this->printFooter("");
+  this->printFooter(title);
+}
+
+void Printer::printFields() {
+  vector<FieldInfo> field_vec;
+  uint16_t field_count = this->cls_file.getFieldsCount();
+  string title = " Fields - [";
+  title += to_string(field_count);
+  title += "] Items";
+  this->printHeader(title);
+  this->printFooter(title);
+}
+
+void Printer::printMethods() {
+  vector<MethodInfo> method_vec;
+  uint16_t method_count = this->cls_file.getMethodsCount();
+  string title = " Methods - [";
+  title += to_string(method_count);
+  title += "] Items";
+  this->printHeader(title);
+  this->printFooter(title);
 }

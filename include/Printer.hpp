@@ -11,6 +11,8 @@ private:
     void printGeneralInfo();
     void printConstantPool();
     void printInterfaces();
+    void printFields();
+    void printMethods();
     string majorVersionValue(uint16_t version);
     string flagDescription(uint16_t flag);
     void printHeader(string sectionName);
