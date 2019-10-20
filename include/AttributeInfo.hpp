@@ -1,3 +1,5 @@
+#include <vector>
+
 typedef struct {
     uint16_t start_pc;
     uint16_t end_pc;
@@ -40,7 +42,7 @@ typedef struct {
 typedef struct {
     uint16_t name_index;
     uint16_t access_flags;
-} Parameter
+} Parameter;
 
 class ConstantValueAttribute {
 public:
@@ -52,9 +54,9 @@ public:
     uint16_t maxStack;
     uint16_t maxLocals;
     uint32_t codeLengths;
-    uint8_t code*;
+    uint8_t * code;
     uint16_t exceptionTableLength;
-    vector<Exception_table> exceptionTable;
+    Exception_table * exceptionTable;
     uint16_t attributesCount;
 };
 
@@ -65,7 +67,7 @@ public:
 };
 
 class InnerClassesAttribute {
-    vector<Classe> classes;
+    Classe * classes;
 };
 
 class EnclosingMethodAttribute {
@@ -86,24 +88,24 @@ class SignatureAttribute {
 
 class LineNumberTableAttribute {
     uint16_t lineNumberTableLength;
-    vector<Line_number_table> LineNumberTable;
+    Line_number_table * LineNumberTable;
 };
 
 class LocalVariableTableAttribute {
     uint16_t localVariableTableLength;
-    vector<Local_variable_table> localVariableTypeTable;
+    Local_variable_table * localVariableTypeTable;
 };
 
 class LocalVariableTypeTableAttribute {
     uint16_t localVariableTypeTableLength;
-    vector<Local_variable_type_table> localVariableTypeTable;
+    Local_variable_type_table * localVariableTypeTable;
 };
 
 class MethodParameters {
     uint16_t attributeNameIndex;
     uint32_t attributeLength;
     uint8_t parameters_count;
-    vector<Parameter> parameters;
+    Parameter * parameters;
 };
 
 class AttributeInfo {
@@ -123,6 +125,5 @@ class AttributeInfo {
         LocalVariableTypeTableAttribute localVariableTypeTable;
         MethodParameters methodParameters;
     };
-    uint8_t * info;
     AttributeInfo();
 };
