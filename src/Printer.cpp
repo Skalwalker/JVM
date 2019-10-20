@@ -41,13 +41,16 @@ void Printer::printGeneralInfo() {
     cout << this->cls_file.getSuperClass() << endl;
 
     cout << "- Interfaces Count:       ";
-    cout << this->cls_file.getInterfacesCount() << endl;
+    cout << dec << this->cls_file.getInterfacesCount() << endl;
 
     cout << "- Fields Count:           ";
-    cout << this->cls_file.getFieldsCount() << endl;
+    cout << dec << this->cls_file.getFieldsCount() << endl;
 
     cout << "- Methods Count:          ";
+    cout << dec << this->cls_file.getMethodsCount() << endl;
+
     cout << "- Attributes Count:       ";
+    cout << dec << this->cls_file.getAttributesCount() << endl;
 
     this->printFooter("");
 }

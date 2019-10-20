@@ -48,7 +48,7 @@ class ClassFile {
     void setMethodsCount(FILE * fp);
     void setMethods(FILE * fp);
     void setAttributesCount(FILE * fp);
-    void setAttributes(FILE * fp);
+    // void setAttributes(FILE * fp);
     public:
     ClassFile();
     ClassFile(FILE * fp);
