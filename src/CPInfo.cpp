@@ -78,10 +78,6 @@ CPInfo::CPInfo(uint8_t tag, FILE * fp) {
         this->invokeDynamicInfo.name_and_type_index = twoBytes.readBytes(fp);
 
     } else {
-        printf("NDA\n");
+        this->name = "Large Numeric Continued";
     }
-}
-
-uint8_t CPInfo::getTag(){
-  return this->tag;
 }

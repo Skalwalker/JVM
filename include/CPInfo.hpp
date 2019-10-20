@@ -109,5 +109,4 @@ public:
         CONSTANT_InvokeDynamic_info invokeDynamicInfo;
     };
     CPInfo(uint8_t tag, FILE * fp);
-    uint8_t getTag();
 };

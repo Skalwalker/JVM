@@ -19,7 +19,6 @@ int main(int argc, char* argv[]) {
     if (fp != NULL) {
         ClassFile classFile(fp);
         Printer printer(classFile);
-        // printer.manualHelloWorld(classFile);
     }
     return 0;
 }
