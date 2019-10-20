@@ -45,7 +45,7 @@ void Printer::printGeneralInfo() {
 
     cout << "- Fields Count:           ";
     cout << this->cls_file.getFieldsCount() << endl;
-    
+
     cout << "- Methods Count:          ";
     cout << "- Attributes Count:       ";
 

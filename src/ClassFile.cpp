@@ -15,6 +15,7 @@ ClassFile::ClassFile(FILE * fp) {
     this->setInterfacesCount(fp);
     this->setInterfaces(fp);
     this->setFieldsCount(fp);
+    this->setFields(fp);
 }
 
 void ClassFile::setMagicNumber(FILE * fp) {
@@ -84,6 +85,14 @@ void ClassFile::setFieldsCount(FILE * fp) {
     fieldsCount = f_count.readBytes(fp);
 }
 
+void ClassFile::setFields(FILE * fp) {
+  int fCount = fieldsCount;
+  for (int i = 0; i < fCount; i++) {
+      FieldInfo fieldInfo(fp);
+      fields.push_back(fieldInfo);
+  }
+}
+
 uint32_t ClassFile::getMagicNumber() {
     return magicNumber;
 }
@@ -126,4 +135,8 @@ vector<uint16_t> ClassFile::getInterfaces() {
 
 uint16_t ClassFile::getFieldsCount() {
     return fieldsCount;
+}
+
+vector<FieldInfo> ClassFile::getFields() {
+    return fields;
 }
