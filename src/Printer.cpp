@@ -17,6 +17,62 @@ void Printer::printFooter(string sectionName) {
   cout << "===================" << endl << endl;
 }
 
+string Printer::flagDescription(uint16_t flag) {
+  switch (flag) {
+    case ClassFile::ACC_PUBLIC:
+        return "public";
+    case ClassFile::ACC_FINAL:
+        return "final";
+    case ClassFile::ACC_SUPER:
+        return "super";
+    case ClassFile::ACC_INTERFACE:
+        return "interface";
+    case ClassFile::ACC_ABSTRACT:
+        return "abstract";
+    case ClassFile::ACC_SYNTHETIC:
+        return "synthetic";
+    case ClassFile::ACC_ANNOTATION:
+        return "annotation";
+    case ClassFile::ACC_ENUM:
+        return "enum";
+    default:
+        return "";
+  }
+}
+
+string Printer::majorVersionValue(uint16_t version) {
+  switch (version) {
+    case 46:
+      return "1.2";
+    case 47:
+      return "1.3";
+    case 48:
+      return "1.4";
+    case 49:
+      return "5";
+    case 50:
+      return "6";
+    case 51:
+      return "7";
+    case 52:
+      return "8";
+    case 53:
+      return "9";
+    case 54:
+      return "10";
+    case 55:
+      return "11";
+    case 56:
+      return "12";
+    case 57:
+      return "13";
+    case 58:
+      return "14";
+    default:
+      return "";
+    }
+}
+
 void Printer::printGeneralInfo() {
     this->printHeader("General Info");
 
@@ -26,19 +82,26 @@ void Printer::printGeneralInfo() {
     cout << "- Minor Version:          ";
     cout << dec << this->cls_file.getMinorVersion() << endl;
 
+    uint16_t value = this->cls_file.getMajorVersion();
     cout << "- Major Version:          ";
-    cout << dec << this->cls_file.getMajorVersion() << endl;
+    cout << dec << value;
+    cout << " [" << this->majorVersionValue(value) << "]" << endl;
 
     cout << "- Constant Pool Count:    ";
     cout << dec << this->cls_file.getConstantPoolCount() << endl;
 
+    uint16_t flag = this->cls_file.getAccessFlags();
     cout << "- Access Flags:           ";
-    cout << hex << this->cls_file.getAccessFlags() << endl;
-    cout << "- This Class:             ";
-    cout << this->cls_file.getThisClass() << endl;
+    cout << "0x" << setfill('0') << setw(4) << hex << flag;
+    cout << " [" << this->flagDescription(flag) << "]" << endl;
 
+    cout << "- This Class:             ";
+    uint16_t cp_index = this->cls_file.getThisClass()
+    cout << cp_index << endl;
+
+    uint16_t cp_index = this->cls_file.getSuperClass()
     cout << "- Super Class:            ";
-    cout << this->cls_file.getSuperClass() << endl;
+    cout << cp_index << endl;
 
     cout << "- Interfaces Count:       ";
     cout << dec << this->cls_file.getInterfacesCount() << endl;
