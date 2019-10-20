@@ -15,7 +15,7 @@ void Printer::printHeader(string sectionName) {
 }
 
 void Printer::printFooter(string sectionName) {
-  cout << endl << "===================" << sectionName;
+  cout << endl << "===================";
   for(int i = 0; i < sectionName.length()+2;i++) {
     cout << "=";
   }
@@ -218,7 +218,7 @@ void Printer::printInterfaces(){
   }
 
   if (i_vec.size() == 0) {
-    cout << "NENHUMA INTERFACE DISPONIVEL!" << endl;
+    cout << "| NENHUMA INTERFACE DISPONIVEL!" << endl;
   }
 
   this->printFooter(title);
@@ -231,6 +231,21 @@ void Printer::printFields() {
   title += to_string(field_count);
   title += "] Items";
   this->printHeader(title);
+
+  for(int i=0;i < field_vec.size();i++) {
+    cout << "[" << dec << i << "] Field " << endl;
+    cout << "| " << endl;
+    cout << "| Name: " << dec << field_vec[i].name_index << endl;
+    cout << "| Descriptor: " << dec << field_vec[i].descriptor_index << endl;
+    cout << "| Access Flags: " << dec << field_vec[i].access_flags << endl;
+    cout << "| Attributes Count: " << dec << field_vec[i].attributes_count << endl;
+    cout << "| " << endl << endl;
+  }
+
+  if (field_vec.size() == 0) {
+    cout << "| NENHUM FIELD DISPONIVEL!" << endl;
+  }
+
   this->printFooter(title);
 }
 
@@ -241,5 +256,21 @@ void Printer::printMethods() {
   title += to_string(method_count);
   title += "] Items";
   this->printHeader(title);
+
+  for(int i=0;i < method_count;i++) {
+    cout << "[" << dec << i << "] Method " << endl;
+    cout << "| " << endl;
+    cout << "| Name: " << dec << method_vec[i].name_index << endl;
+    cout << "| Descriptor: " << dec << method_vec[i].descriptor_index << endl;
+    cout << "| Access Flags: " << dec << method_vec[i].access_flags << endl;
+    cout << "| Attributes Count: " << dec << method_vec[i].attributes_count << endl;
+    cout << "| " << endl << endl;
+  }
+
+  if (method_vec.size() == 0) {
+    cout << "| NENHUM METHOD DISPONIVEL!" << endl;
+  }
+
   this->printFooter(title);
+
 }

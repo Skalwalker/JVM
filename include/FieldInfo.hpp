@@ -15,12 +15,10 @@
 
 
 class FieldInfo {
-  private:
+  public:
+    FieldInfo(FILE * fp);
     uint16_t access_flags;
     uint16_t name_index;
     uint16_t descriptor_index;
     uint16_t attributes_count;
-    // std::vector<AttributeInfo> attributes;
-  public:
-    FieldInfo(FILE * fp);
 };
