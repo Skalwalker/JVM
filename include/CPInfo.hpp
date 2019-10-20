@@ -88,6 +88,7 @@ typedef struct {
 class CPInfo {
 public:
     uint8_t tag;
+    std::string name;
     // Somente declarado para mostrar que é um vetor de bytes no DOC da jvm
     // uint8_t info[];
     // info tem tamanho variável. union se mostra uma boa escolha. Ladeira gosta
@@ -108,4 +109,5 @@ public:
         CONSTANT_InvokeDynamic_info invokeDynamicInfo;
     };
     CPInfo(uint8_t tag, FILE * fp);
+    uint8_t getTag();
 };

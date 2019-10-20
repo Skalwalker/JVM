@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     fp = fopen(file_name.c_str(), "rb");
     if (fp != NULL) {
         ClassFile classFile(fp);
-        Printer printer(&classFile);
+        Printer printer(classFile);
         // printer.manualHelloWorld(classFile);
     }
     return 0;

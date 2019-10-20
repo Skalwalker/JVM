@@ -8,11 +8,13 @@ class Printer {
 private:
     ClassFile cls_file;
     void printGeneralInfo();
+    void printConstantPool();
+    void printInterfaces();
     void printHeader(string sectionName);
     void printFooter(string sectionName);
+    void printCPBody(CPInfo cp);
 public:
-    Printer(ClassFile *classFile);
-    void manualHelloWorld(ClassFile classFile);
+    Printer(ClassFile classFile);
 };
 
 #endif
