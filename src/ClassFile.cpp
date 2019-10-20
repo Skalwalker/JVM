@@ -16,6 +16,8 @@ ClassFile::ClassFile(FILE * fp) {
     this->setInterfaces(fp);
     this->setFieldsCount(fp);
     this->setFields(fp);
+    this->setMethodsCount(fp);
+    this->setMethods(fp);
 }
 
 void ClassFile::setMagicNumber(FILE * fp) {
@@ -93,6 +95,19 @@ void ClassFile::setFields(FILE * fp) {
   }
 }
 
+void ClassFile::setMethodsCount(FILE * fp) {
+    ClassFileReader<typeof(methodsCount)> m_count;
+    methodsCount = m_count.readBytes(fp);
+}
+
+void ClassFile::setMethods(FILE * fp) {
+  int mCount = methodsCount;
+  for (int i = 0; i < mCount; i++) {
+      MethodInfo methodInfo(fp);
+      methods.push_back(methodInfo);
+  }
+}
+
 uint32_t ClassFile::getMagicNumber() {
     return magicNumber;
 }
@@ -139,4 +154,12 @@ uint16_t ClassFile::getFieldsCount() {
 
 vector<FieldInfo> ClassFile::getFields() {
     return fields;
+}
+
+uint16_t ClassFile::getMethodsCount() {
+    return methodsCount;
+}
+
+vector<MethodInfo> ClassFile::getMethods() {
+    return methods;
 }

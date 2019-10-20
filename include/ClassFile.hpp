@@ -29,7 +29,7 @@ class ClassFile {
     uint16_t fieldsCount;
     vector<FieldInfo> fields;
     uint16_t methodsCount;
-    // vector<MethodInfo> methods;
+    vector<MethodInfo> methods;
     uint16_t attributesCount;
     // vector<AttributeInfo> attributes;
 
@@ -75,7 +75,7 @@ class ClassFile {
     uint16_t getFieldsCount();
     vector<FieldInfo> getFields();
     uint16_t getMethodsCount();
-    // vector<MethodInfo> getMethods();
+    vector<MethodInfo> getMethods();
     uint16_t getAttributesCount();
     // vector<AttributeInfo> getAttributes();
 };
