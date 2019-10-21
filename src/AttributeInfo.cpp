@@ -5,6 +5,18 @@ ClassFileReader<uint16_t> twoBytes;
 ClassFileReader<uint32_t> fourBytes;
 
 
+void SourceFileAttribute::create(FILE * fp) {
+    sourceFileIndex = twoBytes.readBytes(fp);
+}
+
+void ExceptionsAttribute::create(FILE * fp) {
+    numberOfExceptions = twoBytes.readBytes(fp);
+    exception_index_table = (uint16_t *) calloc(numberOfExceptions, sizeof(uint16_t));
+    for (int excp = 0; excp < numberOfExceptions; excp++) {
+        exception_index_table[excp] = twoBytes.readBytes(fp);
+    }
+}
+
 void LineNumberTableAttribute::create(FILE * fp) {
     lineNumberTableLength = twoBytes.readBytes(fp);
     lineNumberTable = (Line_number_table *)
@@ -64,7 +76,6 @@ void CodeAttribute::create(vector<CPInfo> cp, FILE * fp) {
         AttributeInfo attrInfo(cp, fp);
         attributes[attr] = attrInfo;
     }
-    cout << "PASSEI AQUI ANTES DO SEG FAULT" << endl;
 }
 
 AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
@@ -79,8 +90,6 @@ AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
     if (attributeName == "Code") {
         cout << "Criando Attribute Code" << endl;
         code.create(cp, fp);
-        cout << "DEBUG: " << code.codeLength << endl;
-
 
     } else if (attributeName == "LineNumberTable") {
         cout << "Criando Attribute LineNumberTable" << endl;
@@ -94,5 +103,12 @@ AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
         cout << "Criando Attribute localVariableTypeTable" << endl;
         localVariableTypeTable.create(fp);
 
+    } else if (attributeName == "Exceptions") {
+        cout << "Criando Attribute Exceptions" << endl;
+        exceptions.create(fp);
+
+    } else if (attributeName == "SourceFile") {
+        cout << "Criando Attribute SourceFile" << endl;
+        sourceFile.create(fp);
     }
 }

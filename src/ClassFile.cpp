@@ -104,7 +104,7 @@ void ClassFile::setMethodsCount(FILE * fp) {
 void ClassFile::setMethods(FILE * fp) {
   int mCount = methodsCount;
   for (int i = 0; i < mCount; i++) {
-      vector<CPInfo>cp = getConstantPool();
+      vector<CPInfo> cp = getConstantPool();
       MethodInfo methodInfo(cp, fp);
       methods.push_back(methodInfo);
   }
@@ -113,6 +113,15 @@ void ClassFile::setMethods(FILE * fp) {
 void ClassFile::setAttributesCount(FILE * fp) {
     ClassFileReader<typeof(attributesCount)> a_count;
     attributesCount = a_count.readBytes(fp);
+}
+
+void ClassFile::setAttributes(FILE * fp) {
+    int attrCount = attributesCount;
+    for (int i = 0; i < attrCount; i++) {
+        vector<CPInfo> cp = getConstantPool();
+        AttributeInfo attrInfo(cp, fp);
+        attributes.push_back(attrInfo);
+    }
 }
 
 uint32_t ClassFile::getMagicNumber() {

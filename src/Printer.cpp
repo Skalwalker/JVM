@@ -276,6 +276,9 @@ void Printer::printMethods() {
     cout << "| Descriptor: " << dec << method_vec[i].descriptor_index << endl;
     cout << "| Access Flags: " << dec << method_vec[i].access_flags << endl;
     cout << "| Attributes Count: " << dec << method_vec[i].attributes_count << endl;
+    for (int j = 0; j < method_vec[i].attributes_count; j++) {
+        cout << "       Attribute Name: " << method_vec[i].attributes[j].attributeName << endl;
+    }
     cout << "| " << endl << endl;
   }
 

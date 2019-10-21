@@ -11,7 +11,7 @@ MethodInfo::MethodInfo(vector<CPInfo> cp, FILE * fp) {
   this->descriptor_index =  twoBytes.readBytes(fp);
   this->attributes_count =  twoBytes.readBytes(fp);
   this->setAttributes(cp, fp);
-  
+
   cout << "==============METHODS=================" << endl;
   cout << "Acess Flags: " << hex << access_flags << endl;
   cout << "Name Index: "  << dec << name_index << endl;
