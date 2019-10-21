@@ -58,6 +58,7 @@ typedef struct {
 class ConstantValueAttribute {
 public:
     uint16_t valueIndex;
+    void create(FILE * fp);
 };
 
 class CodeAttribute {
@@ -81,6 +82,7 @@ public:
 };
 
 class InnerClassesAttribute {
+    uint16_t numberOfClasses;
     Classe * classes;
 };
 
@@ -90,6 +92,8 @@ class EnclosingMethodAttribute {
 };
 
 class SyntheticAttribute {
+public:
+    void create(FILE * fp);
 };
 
 class SourceFileAttribute {
@@ -123,6 +127,9 @@ public:
     void create(FILE * fp);
 };
 
+class Deprecated {
+};
+
 class MethodParameters {
     uint16_t attributeNameIndex;
     uint32_t attributeLength;
@@ -148,6 +155,7 @@ public:
         LocalVariableTableAttribute localVariableTable;
         LocalVariableTypeTableAttribute localVariableTypeTable;
         MethodParameters methodParameters;
+        Deprecated deprecated;
     };
     AttributeInfo(vector<CPInfo> cp, FILE * fp);
     AttributeInfo();

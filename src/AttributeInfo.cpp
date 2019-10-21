@@ -4,6 +4,28 @@ ClassFileReader<uint8_t> oneByte;
 ClassFileReader<uint16_t> twoBytes;
 ClassFileReader<uint32_t> fourBytes;
 
+void InnerClassesAttribute::create(FILE * fp) {
+    numberOfClasses = twoBytes.readBytes(fp);
+    classes = (Classes *) calloc(numberOfClasses, sizeof(Classes));
+    for (int i = 0; i < numberOfClasses; i++) {
+        classes[i].inner_class_info_index = twoBytes.readBytes(fp)
+        classes[i].outer_class_info_index = twoBytes.readBytes(fp)
+        classes[i].inner_name_index = twoBytes.readBytes(fp)
+        classes[i].inner_class_access_flags = twoBytes.readBytes(fp)
+    }
+}
+
+void SyntheticAttribute::create(FILE * fp) {
+
+}
+
+void Deprecated::create(FILE * fp) {
+
+}
+
+void ConstantValueAttribute::create(FILE * fp) {
+    valueIndex = twoBytes.readBytes(fp);
+}
 
 void SourceFileAttribute::create(FILE * fp) {
     sourceFileIndex = twoBytes.readBytes(fp);
@@ -110,5 +132,17 @@ AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
     } else if (attributeName == "SourceFile") {
         cout << "Criando Attribute SourceFile" << endl;
         sourceFile.create(fp);
-    }
+
+    }  else if (attributeName == "Deprecated") {
+        cout << "Criando Attribute Deprecated" << endl;
+        Deprecated.create(fp);
+
+    } else if (attributeName == "InnerClasses") {
+        cout << "Criando Attribute InnerClasses" << endl;
+        innerClasses.create(fp);
+
+    } else if (attributeName == "Synthetic") {
+       cout << "Criando Attribute Synthetic" << endl;
+       synthetic.create(fp);
+   }
 }
