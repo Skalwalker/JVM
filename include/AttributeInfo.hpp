@@ -77,6 +77,7 @@ class ExceptionsAttribute {
 public:
     uint16_t numberOfExceptions;
     uint16_t * exception_index_table;
+    void create(FILE * fp);
 };
 
 class InnerClassesAttribute {
@@ -92,7 +93,9 @@ class SyntheticAttribute {
 };
 
 class SourceFileAttribute {
+public:
     uint16_t sourceFileIndex;
+    void create(FILE * fp);
 };
 
 class SignatureAttribute {

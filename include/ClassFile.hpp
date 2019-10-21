@@ -48,7 +48,7 @@ class ClassFile {
     void setMethodsCount(FILE * fp);
     void setMethods(FILE * fp);
     void setAttributesCount(FILE * fp);
-    // void setAttributes(FILE * fp);
+    void setAttributes(FILE * fp);
     public:
     ClassFile(FILE * fp);
     static const uint32_t MAGIC_NUMBER = 0xCAFEBABE;
