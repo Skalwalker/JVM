@@ -10,6 +10,7 @@ class ClassFileReader {
         T littleEndianToBigEndian(T val);
     public:
         T readBytes(FILE * fp);
+        static void advanceBytes(int size, FILE * fp);
 };
 
 template<class T>
