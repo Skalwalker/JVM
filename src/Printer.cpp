@@ -79,7 +79,7 @@ string Printer::majorVersionValue(uint16_t version) {
 }
 
 string Printer::printCPString(uint16_t cp_num) {
-  return "mock string";
+  return " mock string";
 }
 
 void Printer::printGeneralInfo() {
@@ -124,7 +124,7 @@ void Printer::printGeneralInfo() {
     cout << "- Attributes Count:       ";
     cout << dec << this->cls_file.getAttributesCount() << endl;
 
-    this->printFooter("General Info");
+    // this->printFooter("General Info");
 }
 
 void Printer::printCPBody(CPInfo cp) {
@@ -156,34 +156,60 @@ void Printer::printCPBody(CPInfo cp) {
     } else {
       cout << "| High Bytes: " << cp.doubleInfo.high_bytes << endl;
       cout << "| Low Bytes: " << cp.doubleInfo.low_bytes << endl;
-      cout << "| Double: " << endl;
+      cout << "| Double: num" << endl;
     }
   } else if (type == 7){
     //Class
     cp_id = cp.classInfo.name_index;
-    cout << "| Class Name: cp_info #" << cp_id;
+    cout << "| Class Name: cp_info #" << dec << cp_id;
     cout << printCPString(cp_id) << endl;
   } else if (type == 8){
     //String
     cp_id = cp.stringInfo.string_index;
-    cout << "| String: " << cp_id;
+    cout << "| String: " << dec << cp_id;
     cout << printCPString(cp_id) << endl;
   } else if ((type == 9)||(type == 10)||(type == 11)) {
-    // FieldRef, MethodRef, Interface
     if (type == 9) {
-      cout << "| Class Name: cp_info #" << cp.fieldRefInfo.class_index<< endl;
-      cout << "| Name and Type: cp_info #" << cp.fieldRefInfo.name_and_type_index<< endl;
+      //FieldRef
+      cp_id = cp.fieldRefInfo.class_index;
+      cout << "| Class Name: cp_info #" << dec << cp_id;
+      cout << printCPString(cp_id) << endl;
+
+      cp_id = cp.fieldRefInfo.name_and_type_index;
+      cout << "| Name and Type: cp_info #" << dec << cp_id;
+      cout << printCPString(cp_id) << endl;
+
     } else if (type == 10) {
-      cout << "| Class Name: cp_info #" << cp.methodRefInfo.class_index<< endl;
-      cout << "| Name and Type: cp_info #" << cp.methodRefInfo.name_and_type_index<< endl;
+      //MethodRef
+      cp_id = cp.methodRefInfo.class_index;
+      cout << "| Class Name: cp_info #" << dec << cp_id;
+      cout << printCPString(cp_id) << endl;
+
+      cp_id = cp.methodRefInfo.name_and_type_index;
+      cout << "| Name and Type: cp_info #" << dec << cp_id;
+      cout << printCPString(cp_id) << endl;
+
     } else {
-      cout << "| Class Name: " << cp.interfaceMethodRef.class_index<< endl;
-      cout << "| Name and Type: " << cp.interfaceMethodRef.name_and_type_index<< endl;
+      //Interface
+      cp_id = cp.interfaceMethodRef.class_index;
+      cout << "| Class Name: cp_info" << dec << cp_id;
+      cout << printCPString(cp_id) << endl;
+
+      cp_id = cp.interfaceMethodRef.name_and_type_index;
+      cout << "| Name and Type: cp_info" << dec << cp_id;
+      cout << printCPString(cp_id) << endl;
+
     }
   } else if (type == 12){
     //NameAndType
-    cout << "| Name: cp_info #" << cp.nameAndTypeInfo.name_index << endl;
-    cout << "| Descriptor: cp_info #" << cp.nameAndTypeInfo.descriptor_index << endl;
+    cp_id = cp.nameAndTypeInfo.name_index;
+    cout << "| Name: cp_info #" << dec << cp_id;
+    cout << printCPString(cp_id) << endl;
+
+    cp_id = cp.nameAndTypeInfo.descriptor_index;
+    cout << "| Descriptor: cp_info #" << dec << cp_id;
+    cout << printCPString(cp_id) << endl;
+
   } else if (type == 15){
     //Method Handle
     cout << "| Reference Kind: " << cp.methodHandleInfo.reference_kind << endl;
@@ -196,7 +222,7 @@ void Printer::printCPBody(CPInfo cp) {
     cout << "| Bootstrap Method Atr: " << cp.invokeDynamicInfo.bootstrap_method_attr_index << endl;
     cout << "| Name and Type: " << cp.invokeDynamicInfo.name_and_type_index << endl;
   }
-  cout << "| " << endl;
+  // cout << "| " << endl;
   cout << endl;
 }
 
@@ -211,7 +237,7 @@ void Printer::printConstantPool(){
         cout << "[" << dec << i+1 << "] Constant " << cp_vec[i].name << endl;
         this->printCPBody(cp_vec[i]);
       }
-      this->printFooter(title);
+      // this->printFooter(title);
 }
 
 void Printer::printInterfaces(){
@@ -224,15 +250,15 @@ void Printer::printInterfaces(){
   for(int i=0;i < i_vec.size();i++) {
     cout << "[" << dec << i << "] Interface " << i_vec[i] << endl;
     cout << "| " << endl;
-    cout << "| Interface: " << dec << i_vec[i] << endl;
-    cout << "| " << endl << endl;
+    cout << "| Interface: " << dec << i_vec[i] << endl << endl;
+    // cout << "| " << endl << endl;
   }
 
   if (i_vec.size() == 0) {
     cout << "| NENHUMA INTERFACE DISPONIVEL!" << endl;
   }
 
-  this->printFooter(title);
+  // this->printFooter(title);
 }
 
 void Printer::printFields() {
@@ -249,15 +275,15 @@ void Printer::printFields() {
     cout << "| Name: " << dec << field_vec[i].name_index << endl;
     cout << "| Descriptor: " << dec << field_vec[i].descriptor_index << endl;
     cout << "| Access Flags: " << dec << field_vec[i].access_flags << endl;
-    cout << "| Attributes Count: " << dec << field_vec[i].attributes_count << endl;
-    cout << "| " << endl << endl;
+    cout << "| Attributes Count: " << dec << field_vec[i].attributes_count << endl << endl;
+    // cout << "| " << endl << endl;
   }
 
   if (field_vec.size() == 0) {
     cout << "| NENHUM FIELD DISPONIVEL!" << endl;
   }
 
-  this->printFooter(title);
+  // this->printFooter(title);
 }
 
 void Printer::printMethods() {
@@ -275,14 +301,14 @@ void Printer::printMethods() {
     cout << "| Name: " << dec << method_vec[i].name_index << endl;
     cout << "| Descriptor: " << dec << method_vec[i].descriptor_index << endl;
     cout << "| Access Flags: " << dec << method_vec[i].access_flags << endl;
-    cout << "| Attributes Count: " << dec << method_vec[i].attributes_count << endl;
-    cout << "| " << endl << endl;
+    cout << "| Attributes Count: " << dec << method_vec[i].attributes_count << endl << endl;
+    // cout << "| " << endl << endl;
   }
 
   if (method_vec.size() == 0) {
     cout << "| NENHUM METHOD DISPONIVEL!" << endl;
   }
 
-  this->printFooter(title);
+  // this->printFooter(title);
 
 }
