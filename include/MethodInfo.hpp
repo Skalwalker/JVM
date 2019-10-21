@@ -1,7 +1,14 @@
+#ifndef __METHODINFO_H__
+#define __METHODINFO_H__
 #include <cstdint>
 #include <fstream>
 #include <iostream>
+#include <vector>
 #include "ClassFileReader.hpp"
+#include "AttributeInfo.hpp"
+#include "CPInfo.hpp"
+
+using namespace std;
 
 // #define ACC_PUBLIC 0x0001
 // #define ACC_PRIVATE 0x0002
@@ -18,9 +25,14 @@
 
 class MethodInfo {
   public:
-    MethodInfo(FILE * fp);
+    MethodInfo(vector<CPInfo> cp, FILE * fp);
     uint16_t access_flags;
     uint16_t name_index;
     uint16_t descriptor_index;
     uint16_t attributes_count;
+    vector<AttributeInfo> attributes;
+  public:
+    void setAttributes(vector<CPInfo> cp, FILE * fp);
 };
+
+#endif

@@ -1,3 +1,5 @@
+#ifndef __CPINFO_H__
+#define __CPINFO_H__
 #include <cstdint>
 #include <fstream>
 #include "ClassFileReader.hpp"
@@ -110,3 +112,5 @@ public:
     };
     CPInfo(uint8_t tag, FILE * fp);
 };
+
+#endif

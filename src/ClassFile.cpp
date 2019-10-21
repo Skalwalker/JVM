@@ -104,7 +104,8 @@ void ClassFile::setMethodsCount(FILE * fp) {
 void ClassFile::setMethods(FILE * fp) {
   int mCount = methodsCount;
   for (int i = 0; i < mCount; i++) {
-      MethodInfo methodInfo(fp);
+      vector<CPInfo>cp = getConstantPool();
+      MethodInfo methodInfo(cp, fp);
       methods.push_back(methodInfo);
   }
 }

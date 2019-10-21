@@ -1,3 +1,5 @@
+#ifndef __FIELDINFO_H__
+#define __FIELDINFO_H__
 #include <cstdint>
 #include <fstream>
 #include <iostream>
@@ -22,3 +24,5 @@ class FieldInfo {
     uint16_t descriptor_index;
     uint16_t attributes_count;
 };
+
+#endif
