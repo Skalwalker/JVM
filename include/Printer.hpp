@@ -17,6 +17,7 @@ private:
     string flagDescription(uint16_t flag);
     void printHeader(string sectionName);
     void printFooter(string sectionName);
+    string printCPString(uint16_t cp_num);
     void printCPBody(CPInfo cp);
 public:
     Printer(ClassFile classFile);

@@ -78,6 +78,10 @@ string Printer::majorVersionValue(uint16_t version) {
     }
 }
 
+string Printer::printCPString(uint16_t cp_num) {
+  return "mock string";
+}
+
 void Printer::printGeneralInfo() {
     this->printHeader("General Info");
 
@@ -102,11 +106,11 @@ void Printer::printGeneralInfo() {
 
     cout << "- This Class:             ";
     uint16_t cp_index = this->cls_file.getThisClass();
-    cout << cp_index << endl;
+    cout << "cp_info #" << cp_index << endl;
 
     cp_index = this->cls_file.getSuperClass();
     cout << "- Super Class:            ";
-    cout << cp_index << endl;
+    cout << "cp_info #" << cp_index << endl;
 
     cout << "- Interfaces Count:       ";
     cout << dec << this->cls_file.getInterfacesCount() << endl;
@@ -125,6 +129,7 @@ void Printer::printGeneralInfo() {
 
 void Printer::printCPBody(CPInfo cp) {
   uint8_t type = cp.tag;
+  uint16_t cp_id;
   cout << "| " << endl;
   if (type == 1){
     // UTF8
@@ -134,10 +139,12 @@ void Printer::printCPBody(CPInfo cp) {
   } else if ((type == 3)||(type == 4)) {
     // Float or Integer
       if (type == 3) {
-        cout << "| Bytes: " << cp.integerInfo.bytes << endl;
+        cout << "| Bytes: " << "0x";
+        cout << setfill('0') << setw(8) << hex << cp.integerInfo.bytes << endl;
         cout << "| Integer: " << dec << cp.integerInfo.bytes << endl;
       } else {
-        cout << "| Bytes: " << cp.floatInfo.bytes << endl;
+        cout << "| Bytes: " << "0x";
+        cout << setfill('0') << setw(8) << hex << cp.floatInfo.bytes << endl;
         cout << "| Float: " << dec << cp.floatInfo.bytes << endl;
       }
   } else if ((type == 5)||(type == 6)) {
@@ -153,26 +160,30 @@ void Printer::printCPBody(CPInfo cp) {
     }
   } else if (type == 7){
     //Class
-    cout << "| Class Name: " << cp.classInfo.name_index << endl;
+    cp_id = cp.classInfo.name_index;
+    cout << "| Class Name: cp_info #" << cp_id;
+    cout << printCPString(cp_id) << endl;
   } else if (type == 8){
     //String
-    cout << "| String: " << cp.stringInfo.string_index << endl;
+    cp_id = cp.stringInfo.string_index;
+    cout << "| String: " << cp_id;
+    cout << printCPString(cp_id) << endl;
   } else if ((type == 9)||(type == 10)||(type == 11)) {
     // FieldRef, MethodRef, Interface
     if (type == 9) {
-      cout << "| Class Name: " << cp.fieldRefInfo.class_index<< endl;
-      cout << "| Name and Type: " << cp.fieldRefInfo.name_and_type_index<< endl;
+      cout << "| Class Name: cp_info #" << cp.fieldRefInfo.class_index<< endl;
+      cout << "| Name and Type: cp_info #" << cp.fieldRefInfo.name_and_type_index<< endl;
     } else if (type == 10) {
-      cout << "| Class Name: " << cp.methodRefInfo.class_index<< endl;
-      cout << "| Name and Type: " << cp.methodRefInfo.name_and_type_index<< endl;
+      cout << "| Class Name: cp_info #" << cp.methodRefInfo.class_index<< endl;
+      cout << "| Name and Type: cp_info #" << cp.methodRefInfo.name_and_type_index<< endl;
     } else {
       cout << "| Class Name: " << cp.interfaceMethodRef.class_index<< endl;
       cout << "| Name and Type: " << cp.interfaceMethodRef.name_and_type_index<< endl;
     }
   } else if (type == 12){
     //NameAndType
-    cout << "| Name: " << cp.nameAndTypeInfo.name_index << endl;
-    cout << "| Descriptor: " << cp.nameAndTypeInfo.descriptor_index << endl;
+    cout << "| Name: cp_info #" << cp.nameAndTypeInfo.name_index << endl;
+    cout << "| Descriptor: cp_info #" << cp.nameAndTypeInfo.descriptor_index << endl;
   } else if (type == 15){
     //Method Handle
     cout << "| Reference Kind: " << cp.methodHandleInfo.reference_kind << endl;
