@@ -1,5 +1,4 @@
 #include <iostream>
-// #include "../include/ClassFile.hpp"
 #include "../include/Printer.hpp"
 using namespace std;
 
@@ -19,7 +18,6 @@ int main(int argc, char* argv[]) {
     if (fp != NULL) {
         ClassFile classFile(fp);
         Printer printer(classFile);
-        // printer.manualHelloWorld(classFile);
     }
     return 0;
 }

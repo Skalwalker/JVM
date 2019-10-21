@@ -14,6 +14,12 @@ ClassFile::ClassFile(FILE * fp) {
     this->setSuperClass(fp);
     this->setInterfacesCount(fp);
     this->setInterfaces(fp);
+    this->setFieldsCount(fp);
+    this->setFields(fp);
+    this->setMethodsCount(fp);
+    this->setMethods(fp);
+    this->setAttributesCount(fp);
+    this->setAttributes(fp);
 }
 
 void ClassFile::setMagicNumber(FILE * fp) {
@@ -42,6 +48,11 @@ void ClassFile::setConstantPool(FILE * fp) {
         uint8_t tag = ClassFileReader<uint8_t>().readBytes(fp);
         CPInfo cpInfo(tag, fp);
         constantPool.push_back(cpInfo);
+        if (tag == 5 || tag == 6){
+          CPInfo cpInfo(0, fp);
+          constantPool.push_back(cpInfo);
+          cp++;
+        }
     }
 }
 
@@ -70,6 +81,48 @@ void ClassFile::setInterfaces(FILE * fp) {
     for (int i = 0; i < iCount; i++) {
         uint16_t interface = ClassFileReader<uint16_t>().readBytes(fp);
         interfaces.push_back(interface);
+    }
+}
+
+void ClassFile::setFieldsCount(FILE * fp) {
+    ClassFileReader<typeof(fieldsCount)> f_count;
+    fieldsCount = f_count.readBytes(fp);
+}
+
+void ClassFile::setFields(FILE * fp) {
+  int fCount = fieldsCount;
+  for (int i = 0; i < fCount; i++) {
+      vector<CPInfo> cp = getConstantPool();
+      FieldInfo fieldInfo(cp, fp);
+      fields.push_back(fieldInfo);
+  }
+}
+
+void ClassFile::setMethodsCount(FILE * fp) {
+    ClassFileReader<typeof(methodsCount)> m_count;
+    methodsCount = m_count.readBytes(fp);
+}
+
+void ClassFile::setMethods(FILE * fp) {
+  int mCount = methodsCount;
+  for (int i = 0; i < mCount; i++) {
+      vector<CPInfo> cp = getConstantPool();
+      MethodInfo methodInfo(cp, fp);
+      methods.push_back(methodInfo);
+  }
+}
+
+void ClassFile::setAttributesCount(FILE * fp) {
+    ClassFileReader<typeof(attributesCount)> a_count;
+    attributesCount = a_count.readBytes(fp);
+}
+
+void ClassFile::setAttributes(FILE * fp) {
+    int attrCount = attributesCount;
+    for (int i = 0; i < attrCount; i++) {
+        vector<CPInfo> cp = getConstantPool();
+        AttributeInfo attrInfo(cp, fp);
+        attributes.push_back(attrInfo);
     }
 }
 
@@ -111,4 +164,28 @@ uint16_t ClassFile::getInterfacesCount() {
 
 vector<uint16_t> ClassFile::getInterfaces() {
     return interfaces;
+}
+
+uint16_t ClassFile::getFieldsCount() {
+    return fieldsCount;
+}
+
+vector<FieldInfo> ClassFile::getFields() {
+    return fields;
+}
+
+uint16_t ClassFile::getMethodsCount() {
+    return methodsCount;
+}
+
+vector<MethodInfo> ClassFile::getMethods() {
+    return methods;
+}
+
+uint16_t ClassFile::getAttributesCount(){
+    return attributesCount;
+}
+
+vector<AttributeInfo> ClassFile::getAttributes(){
+    return attributes;
 }

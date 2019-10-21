@@ -27,11 +27,11 @@ class ClassFile {
     uint16_t interfacesCount;
     vector<uint16_t> interfaces;
     uint16_t fieldsCount;
-    // vector<FieldInfo> fields;
+    vector<FieldInfo> fields;
     uint16_t methodsCount;
-    // vector<MethodInfo> methods;
+    vector<MethodInfo> methods;
     uint16_t attributesCount;
-    // vector<AttributeInfo> attributes;
+    vector<AttributeInfo> attributes;
 
     void setMagicNumber(FILE * fp);
     void setMajorVersion(FILE * fp);
@@ -50,7 +50,6 @@ class ClassFile {
     void setAttributesCount(FILE * fp);
     void setAttributes(FILE * fp);
     public:
-    ClassFile();
     ClassFile(FILE * fp);
     static const uint32_t MAGIC_NUMBER = 0xCAFEBABE;
     static const uint16_t ACC_PUBLIC = 0x0001;
@@ -73,11 +72,11 @@ class ClassFile {
     uint16_t getInterfacesCount();
     vector<uint16_t> getInterfaces();
     uint16_t getFieldsCount();
-    // vector<FieldInfo> getFields();
+    vector<FieldInfo> getFields();
     uint16_t getMethodsCount();
-    // vector<MethodInfo> getMethods();
+    vector<MethodInfo> getMethods();
     uint16_t getAttributesCount();
-    // vector<AttributeInfo> getAttributes();
+    vector<AttributeInfo> getAttributes();
 };
 
 #endif

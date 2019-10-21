@@ -1,3 +1,5 @@
+#ifndef __CPINFO_H__
+#define __CPINFO_H__
 #include <cstdint>
 #include <fstream>
 #include "ClassFileReader.hpp"
@@ -109,5 +111,6 @@ public:
         CONSTANT_InvokeDynamic_info invokeDynamicInfo;
     };
     CPInfo(uint8_t tag, FILE * fp);
-    uint8_t getTag();
 };
+
+#endif
