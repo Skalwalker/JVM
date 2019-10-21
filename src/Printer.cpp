@@ -269,15 +269,18 @@ void Printer::printFields() {
   title += to_string(field_count);
   title += "] Items";
   this->printHeader(title);
+  field_vec = cls_file.getFields();
 
   for(int i=0;i < field_vec.size();i++) {
     cout << "[" << dec << i << "] Field " << endl;
     cout << "| " << endl;
-    cout << "| Name: " << dec << field_vec[i].name_index << endl;
-    cout << "| Descriptor: " << dec << field_vec[i].descriptor_index << endl;
-    cout << "| Access Flags: " << dec << field_vec[i].access_flags << endl;
-    cout << "| Attributes Count: " << dec << field_vec[i].attributes_count << endl << endl;
-    // cout << "| " << endl << endl;
+    cout << "| Name: cp_info #" << dec << field_vec[i].name_index << endl;
+    cout << "| Descriptor: cp_info #" << dec << field_vec[i].descriptor_index << endl;
+    cout << "| Access Flags: ";
+    cout << "0x" << setfill('0') << setw(4) << hex << field_vec[i].access_flags << endl;
+    cout << "| Attributes Count: " << dec << field_vec[i].attributes_count << endl;
+    cout << "| Attributes: " << endl;
+    this->printAttributes(true, field_vec[i].attributes);
   }
 
   if (field_vec.size() == 0) {
