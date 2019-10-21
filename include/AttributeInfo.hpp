@@ -1,10 +1,21 @@
+#ifndef __ATTRIBUTEINFO_H__
+#define __ATTRIBUTEINFO_H__
 #include <vector>
+#include <string>
+#include <string.h>
+#include "CPInfo.hpp"
+
+#define typeof __typeof__
+
+using namespace std;
+
+class AttributeInfo;
 
 typedef struct {
     uint16_t start_pc;
     uint16_t end_pc;
     uint16_t handler_pc;
-    uint16_t catch_pc;
+    uint16_t catch_type;
 
 } Exception_table;
 
@@ -18,7 +29,7 @@ typedef struct {
     uint16_t start_pc;
     uint16_t length;
     uint16_t name_index;
-    uint16_t signature_index;
+    uint16_t descriptor_index;
     uint16_t index;
 
 } Local_variable_table;
@@ -53,11 +64,13 @@ class CodeAttribute {
 public:
     uint16_t maxStack;
     uint16_t maxLocals;
-    uint32_t codeLengths;
+    uint32_t codeLength;
     uint8_t * code;
     uint16_t exceptionTableLength;
     Exception_table * exceptionTable;
     uint16_t attributesCount;
+    AttributeInfo * attributes;
+    void create(vector<CPInfo> cp, FILE * fp);
 };
 
 class ExceptionsAttribute {
@@ -87,18 +100,24 @@ class SignatureAttribute {
 };
 
 class LineNumberTableAttribute {
+public:
     uint16_t lineNumberTableLength;
-    Line_number_table * LineNumberTable;
+    Line_number_table * lineNumberTable;
+    void create(FILE * fp);
 };
 
 class LocalVariableTableAttribute {
+public:
     uint16_t localVariableTableLength;
-    Local_variable_table * localVariableTypeTable;
+    Local_variable_table * localVariableTable;
+    void create(FILE * fp);
 };
 
 class LocalVariableTypeTableAttribute {
+public:
     uint16_t localVariableTypeTableLength;
     Local_variable_type_table * localVariableTypeTable;
+    void create(FILE * fp);
 };
 
 class MethodParameters {
@@ -109,6 +128,8 @@ class MethodParameters {
 };
 
 class AttributeInfo {
+public:
+    string attributeName;
     uint16_t attributeNameIndex;
     uint32_t attributeLength;
     union {
@@ -125,5 +146,9 @@ class AttributeInfo {
         LocalVariableTypeTableAttribute localVariableTypeTable;
         MethodParameters methodParameters;
     };
+    AttributeInfo(vector<CPInfo> cp, FILE * fp);
     AttributeInfo();
+
 };
+
+#endif

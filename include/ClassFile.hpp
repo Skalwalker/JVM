@@ -31,7 +31,7 @@ class ClassFile {
     uint16_t methodsCount;
     vector<MethodInfo> methods;
     uint16_t attributesCount;
-    // vector<AttributeInfo> attributes;
+    vector<AttributeInfo> attributes;
 
     void setMagicNumber(FILE * fp);
     void setMajorVersion(FILE * fp);
@@ -50,7 +50,6 @@ class ClassFile {
     void setAttributesCount(FILE * fp);
     // void setAttributes(FILE * fp);
     public:
-    ClassFile();
     ClassFile(FILE * fp);
     static const uint32_t MAGIC_NUMBER = 0xCAFEBABE;
     static const uint16_t ACC_PUBLIC = 0x0001;
