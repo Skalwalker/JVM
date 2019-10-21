@@ -13,6 +13,7 @@ private:
     void printInterfaces();
     void printFields();
     void printMethods();
+    void printAttributes(bool inside_type, std::vector<AttributeInfo> vec);
     string majorVersionValue(uint16_t version);
     string flagDescription(uint16_t flag);
     void printHeader(string sectionName);

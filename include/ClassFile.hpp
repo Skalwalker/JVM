@@ -76,7 +76,7 @@ class ClassFile {
     uint16_t getMethodsCount();
     vector<MethodInfo> getMethods();
     uint16_t getAttributesCount();
-    // vector<AttributeInfo> getAttributes();
+    vector<AttributeInfo> getAttributes();
 };
 
 #endif

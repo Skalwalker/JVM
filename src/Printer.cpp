@@ -7,6 +7,7 @@ Printer::Printer(ClassFile classFile) : cls_file{ classFile }  {
     this->printInterfaces();
     this->printFields();
     this->printMethods();
+    this->printAttributes(false, std::vector<AttributeInfo>());
 }
 
 void Printer::printHeader(string sectionName) {
@@ -302,16 +303,45 @@ void Printer::printMethods() {
     cout << "| Descriptor: " << dec << method_vec[i].descriptor_index << endl;
     cout << "| Access Flags: " << dec << method_vec[i].access_flags << endl;
     cout << "| Attributes Count: " << dec << method_vec[i].attributes_count << endl;
-    for (int j = 0; j < method_vec[i].attributes_count; j++) {
-        cout << "       Attribute Name: " << method_vec[i].attributes[j].attributeName << endl;
-    }
-    // cout << "| " << endl << endl;
+    cout << "| Attributes: " << endl;
+    this->printAttributes(true, method_vec[i].attributes);
+    cout << endl;
   }
 
   if (method_vec.size() == 0) {
     cout << "| NENHUM METHOD DISPONIVEL!" << endl;
   }
+}
 
-  // this->printFooter(title);
+void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) {
+  vector<AttributeInfo> attr_vec;
+  uint16_t attr_cont;
+  string starter = "";
 
+  if (inside_type == false) {
+     string title = " Attributes - [";
+     title += to_string(attr_cont);
+     title += "] Items";
+     this->printHeader(title);
+     attr_vec = this->cls_file.getAttributes();
+     attr_cont = this->cls_file.getAttributesCount();
+  } else {
+     attr_vec = vec;
+     attr_cont = attr_vec.size();
+     starter = "\t";
+  }
+
+  for(int i=0;i < attr_cont;i++) {
+    cout << starter << "[" << i << "] Attribute ";
+    cout << attr_vec[i].attributeName << endl;
+    cout << starter << "| " << endl;
+    cout << starter << "| Attribute Name Index: ";
+    cout << dec << attr_vec[i].attributeNameIndex << endl;
+    cout << starter << "| Attribute Length: ";
+    cout << dec << attr_vec[i].attributeLength << endl << endl;
+  }
+
+  if (attr_cont == 0) {
+    cout << "| NENHUM ATRIBUTO DISPONIVEL!" << endl;
+  }
 }
