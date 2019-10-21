@@ -64,13 +64,14 @@ void CodeAttribute::create(vector<CPInfo> cp, FILE * fp) {
         AttributeInfo attrInfo(cp, fp);
         attributes[attr] = attrInfo;
     }
+    cout << "PASSEI AQUI ANTES DO SEG FAULT" << endl;
 }
 
 AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
 
     attributeNameIndex = twoBytes.readBytes(fp);
     attributeLength = fourBytes.readBytes(fp);
-
+    // o index da cp na jvm vai de 1 a n não de 0 a n-1
     CPInfo utf8 = cp[attributeNameIndex-1];
     string str((char *)utf8.utf8Info.bytes);
     attributeName = str;
@@ -78,6 +79,8 @@ AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
     if (attributeName == "Code") {
         cout << "Criando Attribute Code" << endl;
         code.create(cp, fp);
+        cout << "DEBUG: " << code.codeLength << endl;
+
 
     } else if (attributeName == "LineNumberTable") {
         cout << "Criando Attribute LineNumberTable" << endl;

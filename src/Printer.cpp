@@ -267,6 +267,7 @@ void Printer::printMethods() {
   title += to_string(method_count);
   title += "] Items";
   this->printHeader(title);
+  method_vec = cls_file.getMethods();
 
   for(int i=0;i < method_count;i++) {
     cout << "[" << dec << i << "] Method " << endl;
