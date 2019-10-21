@@ -110,6 +110,7 @@ public:
         CONSTANT_MethodType_info methodTypeInfo;
         CONSTANT_InvokeDynamic_info invokeDynamicInfo;
     };
+    CPInfo();
     CPInfo(uint8_t tag, FILE * fp);
 };
 

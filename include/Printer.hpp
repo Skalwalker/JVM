@@ -4,6 +4,9 @@
 #include "ClassFile.hpp"
 #include <iostream>
 #include  <iomanip>
+#include <inttypes.h>
+#include <stdio.h>
+#include <string.h>
 
 class Printer {
 private:
@@ -14,12 +17,13 @@ private:
     void printFields();
     void printMethods();
     void printAttributes(bool inside_type, std::vector<AttributeInfo> vec);
+    string printCPString(CPInfo cp);
     string majorVersionValue(uint16_t version);
     string flagDescription(uint16_t flag);
     void printHeader(string sectionName);
-    void printFooter(string sectionName);
     string printCPString(uint16_t cp_num);
     void printCPBody(CPInfo cp);
+    void printAttributesBody();
 public:
     Printer(ClassFile classFile);
 };
