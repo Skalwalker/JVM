@@ -3,7 +3,10 @@
 #include <cstdint>
 #include <fstream>
 #include <iostream>
+#include <vector>
 #include "ClassFileReader.hpp"
+#include "AttributeInfo.hpp"
+#include "CPInfo.hpp"
 
 // #define ACC_PUBLIC 0x0001
 // #define ACC_PRIVATE 0x0002
@@ -18,11 +21,14 @@
 
 class FieldInfo {
   public:
-    FieldInfo(FILE * fp);
+    FieldInfo(vector<CPInfo> cp, FILE * fp);
     uint16_t access_flags;
     uint16_t name_index;
     uint16_t descriptor_index;
     uint16_t attributes_count;
+    vector<AttributeInfo> attributes;
+
+    void setAttributes(vector<CPInfo> cp, FILE * fp);
 };
 
 #endif

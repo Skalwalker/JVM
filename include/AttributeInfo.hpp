@@ -48,7 +48,7 @@ typedef struct {
     uint16_t outer_class_info_index;
     uint16_t inner_name_index;
     uint16_t inner_class_access_flags;
-} Classe;
+} Class;
 
 typedef struct {
     uint16_t name_index;
@@ -83,7 +83,9 @@ public:
 
 class InnerClassesAttribute {
     uint16_t numberOfClasses;
-    Classe * classes;
+    Class * classes;
+public:
+    void create(FILE * fp);
 };
 
 class EnclosingMethodAttribute {
@@ -104,6 +106,8 @@ public:
 
 class SignatureAttribute {
     uint16_t signatureIndex;
+public:
+    void create(FILE * fp);
 };
 
 class LineNumberTableAttribute {
@@ -128,6 +132,8 @@ public:
 };
 
 class Deprecated {
+public:
+    void create(FILE * fp);
 };
 
 class MethodParameters {

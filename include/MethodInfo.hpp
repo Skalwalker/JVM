@@ -31,7 +31,7 @@ class MethodInfo {
     uint16_t descriptor_index;
     uint16_t attributes_count;
     vector<AttributeInfo> attributes;
-  public:
+
     void setAttributes(vector<CPInfo> cp, FILE * fp);
 };
 

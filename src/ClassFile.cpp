@@ -92,7 +92,8 @@ void ClassFile::setFieldsCount(FILE * fp) {
 void ClassFile::setFields(FILE * fp) {
   int fCount = fieldsCount;
   for (int i = 0; i < fCount; i++) {
-      FieldInfo fieldInfo(fp);
+      vector<CPInfo> cp = getConstantPool();
+      FieldInfo fieldInfo(cp, fp);
       fields.push_back(fieldInfo);
   }
 }
