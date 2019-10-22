@@ -484,7 +484,6 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         cout << starter << "| [" << i << "] cp_info #" << index;
         cout << " <" << this->printCPString(cp_ref) << ">" << endl;
       }
-
     } else if (atr.attributeName == "SourceFile"){
         index = atr.sourceFile.sourceFileIndex;
         CPInfo cp_ref = this->cp_vec[index-1];
