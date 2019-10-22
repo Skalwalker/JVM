@@ -7,7 +7,7 @@ Printer::Printer(ClassFile classFile) : cls_file{ classFile }  {
     this->printInterfaces();
     this->printFields();
     this->printMethods();
-    this->printAttributes(false, std::vector<AttributeInfo>());
+    this->printAttributes(false, std::vector<AttributeInfo>(), "");
 }
 
 void Printer::printHeader(string sectionName) {
@@ -15,28 +15,39 @@ void Printer::printHeader(string sectionName) {
   cout << " ===================" << endl << endl;
 }
 
-// string Printer::flagDescription(uint16_t flag) {
-  //   switch (flag) {
-  //       case ClassFile::ACC_PUBLIC:
-  //           return "public";
-  //       case ClassFile::ACC_FINAL:
-  //           return "final";
-  //       case ClassFile::ACC_SUPER:
-  //           return "super";
-  //       case ClassFile::ACC_INTERFACE:
-  //           return "interface";
-  //       case ClassFile::ACC_ABSTRACT:
-  //           return "abstract";
-  //       case ClassFile::ACC_SYNTHETIC:
-  //           return "synthetic";
-  //       case ClassFile::ACC_ANNOTATION:
-  //           return "annotation";
-  //       case ClassFile::ACC_ENUM:
-  //           return "enum";
-  //       default:
-  //           return "";
-  // }
-// }
+string Printer::setAccessFlagsNames(uint16_t access_flags) {
+    string names;
+
+    if (access_flags & MethodInfo::ACC_PUBLIC) {
+        names += "public ";
+    }
+    if (access_flags & MethodInfo::ACC_PRIVATE) {
+        names += "private ";
+    }
+    if (access_flags & MethodInfo::ACC_PROTECTED) {
+        names += "protected ";
+    }
+    if (access_flags & MethodInfo::ACC_STATIC) {
+        names += "static ";
+    }
+    if (access_flags & MethodInfo::ACC_FINAL) {
+        names += "final ";
+    }
+    if (access_flags & FieldInfo::ACC_VOLATILE) {
+        names += "volatile ";
+    }
+    if (access_flags & FieldInfo::ACC_TRANSIENT) {
+        names += "transient ";
+    }
+    if (access_flags & MethodInfo::ACC_SYNTHETIC) {
+        names += "synthetic ";
+    }
+    if (access_flags & FieldInfo::ACC_ENUM) {
+        names += "enum ";
+    }
+    return names;
+}
+
 
 string Printer::majorVersionValue(uint16_t version) {
     switch (version) {
@@ -53,7 +64,7 @@ string Printer::majorVersionValue(uint16_t version) {
         case 51:
             return "7";
         case 52:
-            return "1.8";
+            return "8";
         case 53:
             return "9";
         case 54:
@@ -128,7 +139,8 @@ void Printer::printGeneralInfo() {
 
     uint16_t flag = this->cls_file.getAccessFlags();
     cout << "- Access Flags:           ";
-    cout << "0x" << setfill('0') << setw(4) << hex << flag << endl;
+    cout << "0x" << setfill('0') << setw(4) << hex << flag;
+    cout << " ( " << this->setAccessFlagsNames(flag) << ")" << endl;
     // cout << " [" << this->flagDescription(flag) << "]" << endl;
 
     cout << "- This Class:             ";
@@ -337,7 +349,7 @@ void Printer::printFields() {
             << " ( " << field_vec[i].access_flags_names << ")" << endl;
         cout << "| Attributes Count: " << dec << field_vec[i].attributes_count << endl;
         cout << "| Attributes: " << endl;
-        this->printAttributes(true, field_vec[i].attributes);
+        this->printAttributes(true, field_vec[i].attributes, "");
     }
 
     if (field_vec.size() == 0) {
@@ -376,7 +388,7 @@ void Printer::printMethods() {
 
         cout << "| Attributes Count: " << dec << method_vec[i].attributes_count << endl;
         cout << "| Attributes: " << endl;
-        this->printAttributes(true, method_vec[i].attributes);
+        this->printAttributes(true, method_vec[i].attributes, "");
         cout << endl;
     }
 
@@ -385,10 +397,9 @@ void Printer::printMethods() {
     }
 }
 
-void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) {
+void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec, string starter) {
     vector<AttributeInfo> attr_vec;
     uint16_t attr_cont;
-    string starter = "";
 
     if (inside_type == false) {
         attr_vec = this->cls_file.getAttributes();
@@ -400,7 +411,7 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) 
     } else {
         attr_vec = vec;
         attr_cont = attr_vec.size();
-        starter = "\t";
+        starter += "\t";
     }
 
     for (int i=0;i < attr_cont;i++) {
@@ -431,16 +442,19 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) 
 
 void Printer::printAttributesBody(AttributeInfo atr, string starter) {
     uint16_t index;
+    Instructions instructions;
 
     if (atr.attributeName == "Code"){
 
         cout << starter << "| ----- Bytecode -----" << endl;
 
         cout << starter << "| " << endl;
-
-        string code((char *)atr.code.code);
-        cout << starter<< "| " << code << endl;
-        cout << starter << "| " << endl;
+        for (int i = 0; i < atr.code.codeLength; i++) {
+            if (instructions.opcode[atr.code.code[i]] != "nop") {
+                cout << starter<< "| " << instructions.opcode[atr.code.code[i]] << endl;
+                cout << starter << "| " << endl;
+            }
+        }
 
         cout << starter << "| ----- Exception Table -----" << endl;
         cout << starter << "| " << endl;
@@ -465,25 +479,56 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         cout << starter << "| Maximum Stack: " << atr.code.maxStack << endl;
         cout << starter << "| Maximum Local Variables: " << atr.code.maxLocals << endl;
         cout << starter << "| Code Length: " << atr.code.codeLength << endl;
+        cout << starter << "| " << endl;
 
-        // cout << "----- Attributes -----" << endl
-        // cout << atr.code.attributesCount << endl;
+        vector<AttributeInfo> atr_aux;
+        for (int i = 0; i < atr.code.attributesCount; i++) {
+            atr_aux.push_back(atr.code.attributes[i]);
+        }
+
+        cout << starter << "| ----- Attributes -----" << endl;
+        printAttributes(true, atr_aux, "\t");
 
     } else if (atr.attributeName == "LineNumberTable"){
-
+        uint16_t line_numbe_table_length = atr.lineNumberTable.lineNumberTableLength;
+        cout << starter << "| Line Number Table Count: "<< line_numbe_table_length << endl;
+        for(int i = 0; i < line_numbe_table_length; i++) {
+            cout << starter << "| Number:  [" << i << "] ";
+            cout << " Start PC:  " << atr.lineNumberTable.lineNumberTable[i].start_pc << " ";
+            cout << " Line Number: "<< atr.lineNumberTable.lineNumberTable[i].line_number << endl;
+        }
     } else if (atr.attributeName == "LocalVariableTable"){
-
+        uint16_t local_variable_table_length = atr.localVariableTable.localVariableTableLength;
+        cout << starter << "| Local Variable Table Count: "<< local_variable_table_length << endl;
+        for(int i = 0; i < local_variable_table_length; i++) {
+            cout << starter << "| Number:  [" << i << "] ";
+            cout << " Start PC:  " << atr.localVariableTable.localVariableTable[i].start_pc << " ";
+            cout << " Length:  " << atr.localVariableTable.localVariableTable[i].length << " ";
+            cout << " Name Index:  " << atr.localVariableTable.localVariableTable[i].name_index << " ";
+            cout << " Descriptor Index:  " << atr.localVariableTable.localVariableTable[i].descriptor_index << " ";
+            cout << " Index:  " << atr.localVariableTable.localVariableTable[i].index << " ";
+        }
     } else if (atr.attributeName == "LocalVariableTypeTable"){
-
+        uint16_t local_variable_type_table_length = atr.localVariableTypeTable.localVariableTypeTableLength;
+        cout << starter << "| Local Variable Type Table Count: "<< local_variable_type_table_length << endl;
+        for(int i = 0; i < local_variable_type_table_length; i++) {
+            cout << starter << "| Number:  [" << i << "] ";
+            cout << " Start PC:  " << atr.localVariableTypeTable.localVariableTypeTable[i].start_pc << " ";
+            cout << " Length:  " << atr.localVariableTypeTable.localVariableTypeTable[i].length << " ";
+            cout << " Name Index:  " << atr.localVariableTypeTable.localVariableTypeTable[i].name_index << " ";
+            cout << " Signature Index:  " << atr.localVariableTypeTable.localVariableTypeTable[i].signature_index << " ";
+            cout << " Index:  " << atr.localVariableTypeTable.localVariableTypeTable[i].index << " ";
+        }
     } else if (atr.attributeName == "Exceptions"){
-      uint16_t excp_length = atr.exceptions.numberOfExceptions;
-      cout << starter << "| Exceptions Count: "<< excp_length << endl;
-      for(int i = 0; i < excp_length; i++) {
-        index = atr.exceptions.exception_index_table[i];
-        CPInfo cp_ref = this->cp_vec[index-1];
-        cout << starter << "| [" << i << "] cp_info #" << index;
-        cout << " <" << this->printCPString(cp_ref) << ">" << endl;
-      }
+        uint16_t excp_length = atr.exceptions.numberOfExceptions;
+        cout << starter << "| Exceptions Count: "<< excp_length << endl;
+        for(int i = 0; i < excp_length; i++) {
+            index = atr.exceptions.exception_index_table[i];
+            CPInfo cp_ref = this->cp_vec[index-1];
+            cout << starter << "| [" << i << "] cp_info #" << index;
+            cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+        }
+
     } else if (atr.attributeName == "SourceFile"){
         index = atr.sourceFile.sourceFileIndex;
         CPInfo cp_ref = this->cp_vec[index-1];
@@ -513,7 +558,9 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
             cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
 
-            cout << starter << "| Acess Flags: " << "0x" << setfill('0') << setw(4) << hex << atr.innerClasses.classes[i].inner_class_access_flags << endl;
+            cout << starter << "| Acess Flags: ";
+            cout << "0x" << setfill('0') << setw(4) << hex << atr.innerClasses.classes[i].inner_class_access_flags;
+            cout << " ( " << this->setAccessFlagsNames(atr.innerClasses.classes[i].inner_class_access_flags) << ")" << endl;
             cout << "| " << endl;
         }
     } else if (atr.attributeName == "Synthetic"){

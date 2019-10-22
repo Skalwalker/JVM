@@ -4,7 +4,6 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    Instructions instructions();
     string file_name;
     string path = "test_examples/";
     // Check the number of parameters

@@ -1,6 +1,10 @@
+#ifndef __INSTRUCTIONS_H__
+#define __INSTRUCTIONS_H__
+
 #include <iostream>
-#include <fstream>
+#include <sstream>
 #include <string>
+#include <fstream>
 #include <map>
 
 using namespace std;
@@ -10,3 +14,5 @@ public:
     map<uint8_t, string> opcode;
     Instructions();
 };
+
+#endif

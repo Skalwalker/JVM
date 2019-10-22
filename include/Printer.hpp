@@ -2,6 +2,7 @@
 #define __PRINTER_H__
 
 #include "ClassFile.hpp"
+#include "Instructions.hpp"
 #include <iostream>
 #include <iomanip>
 #include <inttypes.h>
@@ -18,7 +19,8 @@ private:
     void printInterfaces();
     void printFields();
     void printMethods();
-    void printAttributes(bool inside_type, std::vector<AttributeInfo> vec);
+    void printAttributes(bool inside_type, std::vector<AttributeInfo> vec, string starter);
+    string setAccessFlagsNames(uint16_t access_flags);
     string printCPString(CPInfo cp);
     string majorVersionValue(uint16_t version);
     string flagDescription(uint16_t flag);
