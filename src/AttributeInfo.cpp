@@ -101,7 +101,6 @@ void CodeAttribute::create(vector<CPInfo> cp, FILE * fp) {
 }
 
 AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
-
     attributeNameIndex = twoBytes.readBytes(fp);
     attributeLength = fourBytes.readBytes(fp);
     // o index da cp na jvm vai de 1 a n não de 0 a n-1

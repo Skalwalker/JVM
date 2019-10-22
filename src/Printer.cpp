@@ -431,16 +431,19 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) 
 
 void Printer::printAttributesBody(AttributeInfo atr, string starter) {
     uint16_t index;
+    Instructions instructions;
 
     if (atr.attributeName == "Code"){
 
         cout << starter << "| ----- Bytecode -----" << endl;
 
         cout << starter << "| " << endl;
-
-        string code((char *)atr.code.code);
-        cout << starter<< "| " << code << endl;
-        cout << starter << "| " << endl;
+        for (int i = 0; i < atr.code.codeLength; i++) {
+            if (instructions.opcode[atr.code.code[i]] != "nop") {
+                cout << starter<< "| " << instructions.opcode[atr.code.code[i]] << endl;
+                cout << starter << "| " << endl;
+            }
+        }
 
         cout << starter << "| ----- Exception Table -----" << endl;
         cout << starter << "| " << endl;
@@ -466,24 +469,51 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         cout << starter << "| Maximum Local Variables: " << atr.code.maxLocals << endl;
         cout << starter << "| Code Length: " << atr.code.codeLength << endl;
 
+        for (int i = 0; i < atr.code.attributesCount; i++) {
+            printAttributesBody(atr.code.attributes[i], starter += "\t");
+        }
         // cout << "----- Attributes -----" << endl
         // cout << atr.code.attributesCount << endl;
 
     } else if (atr.attributeName == "LineNumberTable"){
-
+        uint16_t line_numbe_table_length = atr.lineNumberTable.lineNumberTableLength;
+        cout << starter << "| Line Number Table Count: "<< line_numbe_table_length << endl;
+        for(int i = 0; i < line_numbe_table_length; i++) {
+            cout << starter << "| Number:  [" << i << "] ";
+            cout << " Start PC:  " << atr.lineNumberTable.lineNumberTable[i].start_pc << " ";
+            cout << " Line Number: "<< atr.lineNumberTable.lineNumberTable[i].line_number << endl;
+        }
     } else if (atr.attributeName == "LocalVariableTable"){
-
+        uint16_t local_variable_table_length = atr.localVariableTable.localVariableTableLength;
+        cout << starter << "| Local Variable Table Count: "<< local_variable_table_length << endl;
+        for(int i = 0; i < local_variable_table_length; i++) {
+            cout << starter << "| Number:  [" << i << "] ";
+            cout << " Start PC:  " << atr.localVariableTable.localVariableTable[i].start_pc << " ";
+            cout << " Length:  " << atr.localVariableTable.localVariableTable[i].length << " ";
+            cout << " Name Index:  " << atr.localVariableTable.localVariableTable[i].name_index << " ";
+            cout << " Descriptor Index:  " << atr.localVariableTable.localVariableTable[i].descriptor_index << " ";
+            cout << " Index:  " << atr.localVariableTable.localVariableTable[i].index << " ";
+        }
     } else if (atr.attributeName == "LocalVariableTypeTable"){
-
+        uint16_t local_variable_type_table_length = atr.localVariableTypeTable.localVariableTypeTableLength;
+        cout << starter << "| Local Variable Type Table Count: "<< local_variable_type_table_length << endl;
+        for(int i = 0; i < local_variable_type_table_length; i++) {
+            cout << starter << "| Number:  [" << i << "] ";
+            cout << " Start PC:  " << atr.localVariableTypeTable.localVariableTypeTable[i].start_pc << " ";
+            cout << " Length:  " << atr.localVariableTypeTable.localVariableTypeTable[i].length << " ";
+            cout << " Name Index:  " << atr.localVariableTypeTable.localVariableTypeTable[i].name_index << " ";
+            cout << " Signature Index:  " << atr.localVariableTypeTable.localVariableTypeTable[i].signature_index << " ";
+            cout << " Index:  " << atr.localVariableTypeTable.localVariableTypeTable[i].index << " ";
+        }
     } else if (atr.attributeName == "Exceptions"){
-      uint16_t excp_length = atr.exceptions.numberOfExceptions;
-      cout << starter << "| Exceptions Count: "<< excp_length << endl;
-      for(int i = 0; i < excp_length; i++) {
-        index = atr.exceptions.exception_index_table[i];
-        CPInfo cp_ref = this->cp_vec[index-1];
-        cout << starter << "| [" << i << "] cp_info #" << index;
-        cout << " <" << this->printCPString(cp_ref) << ">" << endl;
-      }
+        uint16_t excp_length = atr.exceptions.numberOfExceptions;
+        cout << starter << "| Exceptions Count: "<< excp_length << endl;
+        for(int i = 0; i < excp_length; i++) {
+            index = atr.exceptions.exception_index_table[i];
+            CPInfo cp_ref = this->cp_vec[index-1];
+            cout << starter << "| [" << i << "] cp_info #" << index;
+            cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+        }
 
     } else if (atr.attributeName == "SourceFile"){
         index = atr.sourceFile.sourceFileIndex;
