@@ -1,6 +1,7 @@
 #include "../include/Printer.hpp"
 
 Printer::Printer(ClassFile classFile) : cls_file{ classFile }  {
+    this->cp_vec = cls_file.getConstantPool();
     this->printGeneralInfo();
     this->printConstantPool();
     this->printInterfaces();
@@ -71,10 +72,17 @@ string Printer::majorVersionValue(uint16_t version) {
 }
 
 string Printer::printCPString(CPInfo cp) {
-    std::vector<CPInfo> cp_vec = this->cls_file.getConstantPool();
     if (cp.tag == 1){
       string str((char *)cp.utf8Info.bytes);
       return str;
+    } else if (cp.tag == 3) {
+      return to_string(cp.floatInfo.bytes);
+    } else if (cp.tag == 4) {
+      return to_string(cp.floatInfo.bytes);
+    } else if (cp.tag == 5) {
+      return to_string(cp.integerInfo.bytes);
+    } else if (cp.tag == 6) {
+      return to_string(cp.integerInfo.bytes);
     } else {
       if (cp.tag == 7) {
         cp = cp_vec[cp.classInfo.name_index-1];
@@ -117,13 +125,13 @@ void Printer::printGeneralInfo() {
     cout << "- This Class:             ";
     uint16_t cp_index = this->cls_file.getThisClass();
     cout << "cp_info #" << cp_index;
-    CPInfo cp_ref = this->cls_file.getConstantPool()[cp_index-1];
+    CPInfo cp_ref = this->cp_vec[cp_index-1];
     cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
     cp_index = this->cls_file.getSuperClass();
     cout << "- Super Class:            ";
     cout << "cp_info #" << cp_index;
-    cp_ref = this->cls_file.getConstantPool()[cp_index-1];
+    cp_ref = this->cp_vec[cp_index-1];
     cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
     cout << "- Interfaces Count:       ";
@@ -189,36 +197,36 @@ void Printer::printCPBody(CPInfo cp) {
     if (type == 9) {
       //FieldRef
       cp_id = cp.fieldRefInfo.class_index;
-      cp_ref = this->cls_file.getConstantPool()[cp_id-1];
+      cp_ref = this->cp_vec[cp_id-1];
       cout << "| Class Name: cp_info #" << dec << cp_id;
       cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
       cp_id = cp.fieldRefInfo.name_and_type_index;
-      cp_ref = this->cls_file.getConstantPool()[cp_id-1];
+      cp_ref = this->cp_vec[cp_id-1];
       cout << "| Name and Type: cp_info #" << dec << cp_id;
       cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
     } else if (type == 10) {
       //MethodRef
       cp_id = cp.methodRefInfo.class_index;
-      cp_ref = this->cls_file.getConstantPool()[cp_id-1];
+      cp_ref = this->cp_vec[cp_id-1];
       cout << "| Class Name: cp_info #" << dec << cp_id;
       cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
       cp_id = cp.methodRefInfo.name_and_type_index;
-      cp_ref = this->cls_file.getConstantPool()[cp_id-1];
+      cp_ref = this->cp_vec[cp_id-1];
       cout << "| Name and Type: cp_info #" << dec << cp_id;
       cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
     } else {
       //Interface
       cp_id = cp.interfaceMethodRef.class_index;
-      cp_ref = this->cls_file.getConstantPool()[cp_id-1];
+      cp_ref = this->cp_vec[cp_id-1];
       cout << "| Class Name: cp_info" << dec << cp_id;
       cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
       cp_id = cp.interfaceMethodRef.name_and_type_index;
-      cp_ref = this->cls_file.getConstantPool()[cp_id-1];
+      cp_ref = this->cp_vec[cp_id-1];
       cout << "| Name and Type: cp_info" << dec << cp_id;
       cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
@@ -226,12 +234,12 @@ void Printer::printCPBody(CPInfo cp) {
   } else if (type == 12){
     //NameAndType
     cp_id = cp.nameAndTypeInfo.name_index;
-    cp_ref = this->cls_file.getConstantPool()[cp_id-1];
+    cp_ref = this->cp_vec[cp_id-1];
     cout << "| Name: cp_info #" << dec << cp_id;
     cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
     cp_id = cp.nameAndTypeInfo.descriptor_index;
-    cp_ref = this->cls_file.getConstantPool()[cp_id-1];
+    cp_ref = this->cp_vec[cp_id-1];
     cout << "| Descriptor: cp_info #" << dec << cp_id;
     cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
@@ -256,7 +264,7 @@ void Printer::printConstantPool(){
       title += to_string(this->cls_file.getConstantPoolCount());
       title += "] Items";
       this->printHeader(title);
-      cp_vec = this->cls_file.getConstantPool();
+      cp_vec = this->cp_vec;
       for(int i = 0; i < cp_vec.size(); i++){
         cout << "[" << dec << i+1 << "] Constant " << cp_vec[i].name << endl;
         this->printCPBody(cp_vec[i]);
@@ -271,9 +279,14 @@ void Printer::printInterfaces(){
 
   vector<uint16_t> i_vec = this->cls_file.getInterfaces();
   for(int i=0;i < i_vec.size();i++) {
-    cout << "[" << dec << i << "] Interface " << i_vec[i] << endl;
+    cout << "[" << dec << i << "] Interface " << i << endl;
     cout << "| " << endl;
-    cout << "| Interface: " << dec << i_vec[i] << endl << endl;
+
+    cout << "| Interface: cp_info #" << dec << i_vec[i];
+    CPInfo cp_ref = this->cp_vec[i_vec[i]-1];
+    cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+
+    cout << "| " << endl << endl;
   }
 
   if (i_vec.size() == 0) {
@@ -293,7 +306,7 @@ void Printer::printFields() {
 
   for(int i=0;i < field_vec.size();i++) {
     cp_index = field_vec[i].name_index;
-    CPInfo cp_ref = this->cls_file.getConstantPool()[cp_index-1];
+    CPInfo cp_ref = this->cp_vec[cp_index-1];
     cout << "[" << dec << i << "] Field "  << this->printCPString(cp_ref) << endl;
     cout << "| " << endl;
 
@@ -301,7 +314,7 @@ void Printer::printFields() {
     cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
     cp_index = field_vec[i].descriptor_index;
-    cp_ref = this->cls_file.getConstantPool()[cp_index-1];
+    cp_ref = this->cp_vec[cp_index-1];
     cout << "| Descriptor: cp_info #" << dec << cp_index;
     cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
@@ -329,7 +342,7 @@ void Printer::printMethods() {
 
   for(int i=0;i < method_count;i++) {
     cp_index = method_vec[i].name_index;
-    CPInfo cp_ref = this->cls_file.getConstantPool()[cp_index-1];
+    CPInfo cp_ref = this->cp_vec[cp_index-1];
 
     cout << "[" << dec << i << "] Method " << this->printCPString(cp_ref) << endl;
     cout << "| " << endl;
@@ -339,7 +352,7 @@ void Printer::printMethods() {
 
     cp_index = method_vec[i].descriptor_index ;
     cout << "| Descriptor: cp_info #" << dec << cp_index;
-    cp_ref = this->cls_file.getConstantPool()[cp_index-1];
+    cp_ref = this->cp_vec[cp_index-1];
     cout << " <" << this->printCPString(cp_ref) << ">" << endl;
 
     cout << "| Access Flags: ";
@@ -375,20 +388,63 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) 
   }
 
   for(int i=0;i < attr_cont;i++) {
-    cout << starter << "[" << i << "] Attribute ";
+    cout << starter << "[" << i+1 << "] Attribute ";
     cout << attr_vec[i].attributeName << endl;
+
+    cout << starter << "| " << endl << starter << "| Generic Info -----------" << endl;
     cout << starter << "| " << endl;
-    cout << starter << "| Attribute Name Index: ";
-    cout << dec << attr_vec[i].attributeNameIndex << endl;
+
+    uint16_t index = attr_vec[i].attributeNameIndex;
+    cout << starter << "| Attribute Name Index: cp_info #";
+    cout << dec << index;
+    CPInfo cp_ref = this->cp_vec[index-1];
+    cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+
+
     cout << starter << "| Attribute Length: ";
-    cout << dec << attr_vec[i].attributeLength << endl << endl;
+    cout << dec << attr_vec[i].attributeLength << endl;
+    cout << starter << "| " << endl << starter << "| Specific Info -----------" << endl;
+    cout << starter << "| " << endl;
+    this->printAttributesBody(attr_vec[i], starter);
   }
 
   if (attr_cont == 0) {
-    cout << "| NENHUM ATRIBUTO DISPONIVEL!" << endl << endl;
+    cout << starter << "| NENHUM ATRIBUTO DISPONIVEL!" << endl << endl;
   }
 }
 
-void Printer::printAttributesBody() {
+void Printer::printAttributesBody(AttributeInfo atr, string starter) {
+  uint16_t index;
 
+  if (atr.attributeName == "Code"){
+
+  } else if (atr.attributeName == "LineNumberTable"){
+
+  } else if (atr.attributeName == "LocalVariableTable"){
+
+  } else if (atr.attributeName == "LocalVariableTypeTable"){
+
+  } else if (atr.attributeName == "Exceptions"){
+
+  } else if (atr.attributeName == "SourceFile"){
+      index = atr.sourceFile.sourceFileIndex;
+      CPInfo cp_ref = this->cp_vec[index-1];
+      cout << "| Source File Name Index: cp_info #" << index;
+      cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+  } else if (atr.attributeName == "Deprecated"){
+
+  } else if (atr.attributeName == "InnerClasses"){
+
+  } else if (atr.attributeName == "Synthetic"){
+
+  } else if (atr.attributeName == "ConstantValue"){
+      index = atr.constantValue.valueIndex;
+      CPInfo cp_ref = this->cp_vec[index-1];
+      cout << starter << "| Constant Value Index: cp_info #" << index;
+      cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+  } else {
+
+  }
+
+  cout << endl;
 }

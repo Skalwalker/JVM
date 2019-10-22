@@ -11,6 +11,7 @@
 class Printer {
 private:
     ClassFile cls_file;
+    vector<CPInfo> cp_vec;
     void printGeneralInfo();
     void printConstantPool();
     void printInterfaces();
@@ -23,7 +24,7 @@ private:
     void printHeader(string sectionName);
     string printCPString(uint16_t cp_num);
     void printCPBody(CPInfo cp);
-    void printAttributesBody();
+    void printAttributesBody(AttributeInfo atr, string starter);
 public:
     Printer(ClassFile classFile);
 };
