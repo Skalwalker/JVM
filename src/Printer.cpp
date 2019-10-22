@@ -167,11 +167,13 @@ void Printer::printCPBody(CPInfo cp) {
       cout << "| Low Bytes: " << hex << cp.longInfo.low_bytes << endl;
       long temp = (long)cp.longInfo.high_bytes << 32;
       temp += cp.longInfo.low_bytes;
-      cout << "| Long: " << (long)(temp) << endl;
+      cout << "| Long: " << dec << (long)(temp) << endl;
     } else {
       cout << "| High Bytes: " << "0x" << hex << cp.doubleInfo.high_bytes << endl;
       cout << "| Low Bytes: " << "0x" << hex << cp.doubleInfo.low_bytes << endl;
-      cout << "| Double: " << (double)(((long)cp.doubleInfo.high_bytes << 32) + cp.doubleInfo.low_bytes) << endl;
+      double temp = (long)cp.doubleInfo.high_bytes << 32;
+      temp += cp.doubleInfo.low_bytes;
+      cout << "| Double: " << dec << (double)temp<< endl;
     }
   } else if (type == 7){
     //Class
@@ -383,7 +385,7 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) 
   }
 
   if (attr_cont == 0) {
-    cout << "| NENHUM ATRIBUTO DISPONIVEL!" << endl;
+    cout << "| NENHUM ATRIBUTO DISPONIVEL!" << endl << endl;
   }
 }
 
