@@ -128,7 +128,7 @@ void Printer::printGeneralInfo() {
 
     uint16_t flag = this->cls_file.getAccessFlags();
     cout << "- Access Flags:           ";
-    cout << "0x" << setfill('0') << setw(4) << hex << flag;
+    cout << "0x" << setfill('0') << setw(4) << hex << flag << endl;
     // cout << " [" << this->flagDescription(flag) << "]" << endl;
 
     cout << "- This Class:             ";
@@ -433,6 +433,39 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
     uint16_t index;
 
     if (atr.attributeName == "Code"){
+
+        cout << starter << "| ----- Bytecode -----" << endl;
+
+        string code((char *)atr.code.code);
+        cout << code << endl;
+
+        cout << starter << "| ----- Exception Table -----" << endl;
+        cout << starter << "| " << endl;
+
+        uint16_t excp_length = atr.code.exceptionTableLength;
+
+        if (excp_length > 0) {
+            Exception_table *exceptions = (Exception_table *) calloc(excp_length, sizeof(Exception_table));
+            for (int i = 0; i < excp_length; i++) {
+              cout << i << endl;
+              cout << exceptions[i].start_pc << endl;
+              cout << exceptions[i].end_pc << endl;
+              cout << exceptions[i].handler_pc << endl;
+              cout << exceptions[i].catch_type << endl;
+            }
+        } else {
+          cout << starter << "| Nenhum Exception"
+        }
+        
+        cout << starter << "| " << endl;
+
+        cout << starter << "| ----- Misc -----" << endl;
+        cout << starter << "| Maximum Stack: " << atr.code.maxStack << endl;
+        cout << starter << "| Maximum Local Variables: " << atr.code.maxLocals << endl;
+        cout << starter << "| Code Length: " << atr.code.codeLength << endl;
+
+        // cout << "----- Attributes -----" << endl
+        // cout << atr.code.attributesCount << endl;
 
     } else if (atr.attributeName == "LineNumberTable"){
 
