@@ -391,12 +391,12 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) 
     string starter = "";
 
     if (inside_type == false) {
+        attr_vec = this->cls_file.getAttributes();
+        attr_cont = this->cls_file.getAttributesCount();
         string title = " Attributes - [";
         title += to_string(attr_cont);
         title += "] Items";
         this->printHeader(title);
-        attr_vec = this->cls_file.getAttributes();
-        attr_cont = this->cls_file.getAttributesCount();
     } else {
         attr_vec = vec;
         attr_cont = attr_vec.size();
@@ -404,7 +404,7 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) 
     }
 
     for (int i=0;i < attr_cont;i++) {
-        cout << starter << "[" << i+1 << "] Attribute ";
+        cout << starter << "[" << i << "] Attribute ";
         cout << attr_vec[i].attributeName << endl;
 
         cout << starter << "| " << endl << starter << "| Generic Info -----------" << endl;
@@ -491,8 +491,18 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         cout << "| Source File Name Index: cp_info #" << index;
         cout << " <" << this->printCPString(cp_ref) << ">" << endl;
     } else if (atr.attributeName == "Deprecated"){
-
+        cout << starter << "| Attribute dont have information" << endl;
     } else if (atr.attributeName == "InnerClasses"){
+        // uint16_t class_length = atr.innerClasses.numberOfClasses;
+        // cout << starter << "| Classes Count: "<< excp_length << endl;
+        // for(int i = 0; i < class_length; i++) {
+        //   cout << starter << "| [" << i << "] ------ #" << index;
+        //   cout << starter << atr.innerClasses.classes[i].inner_class_info_index;
+        //   cout << starter << atr.innerClasses.classes[i].outer_class_info_index;
+        //   cout << starter << atr.innerClasses.classes[i].inner_name_index;
+        //   cout << starter << atr.innerClasses.classes[i].inner_class_access_flags;
+        //   cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+        // }
 
     } else if (atr.attributeName == "Synthetic"){
 
@@ -502,7 +512,7 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         cout << starter << "| Constant Value Index: cp_info #" << index;
         cout << " <" << this->printCPString(cp_ref) << ">" << endl;
     } else {
-
+        cout << starter << "| Attribute not recognized by reader" << endl;
     }
 
   cout << endl;
