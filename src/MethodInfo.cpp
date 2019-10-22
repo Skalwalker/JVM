@@ -11,7 +11,7 @@ MethodInfo::MethodInfo(vector<CPInfo> cp, FILE * fp) {
   this->descriptor_index =  twoBytes.readBytes(fp);
   this->attributes_count =  twoBytes.readBytes(fp);
   this->setAttributes(cp, fp);
-
+  this->setAccessFlagsNames();
 
 }
 
@@ -21,4 +21,43 @@ void MethodInfo::setAttributes(vector<CPInfo> cp, FILE * fp) {
         AttributeInfo attrInfo(cp, fp);
         attributes.push_back(attrInfo);
     }
+}
+
+void MethodInfo::setAccessFlagsNames() {
+    string names;
+
+    if (access_flags & ACC_PUBLIC) {
+        names += "public ";
+    }
+    if (access_flags & ACC_PRIVATE) {
+        names += "private ";
+    }
+    if (access_flags & ACC_PROTECTED) {
+        names += "protected ";
+    }
+    if (access_flags & ACC_STATIC) {
+        names += "static ";
+    }
+    if (access_flags & ACC_FINAL) {
+        names += "final ";
+    }
+    if (access_flags & ACC_BRIDGE) {
+        names += "bridge ";
+    }
+    if (access_flags & ACC_VARARGS) {
+        names += "varargs ";
+    }
+    if (access_flags & ACC_NATIVE) {
+        names += "native ";
+    }
+    if (access_flags & ACC_ABSTRACT) {
+        names += "abstract ";
+    }
+    if (access_flags & ACC_STRICT) {
+        names += "strict ";
+    }
+    if (access_flags & ACC_SYNTHETIC) {
+        names += "synthetic ";
+    }
+    access_flags_names = names;
 }
