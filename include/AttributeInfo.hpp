@@ -82,9 +82,9 @@ public:
 };
 
 class InnerClassesAttribute {
+public:
     uint16_t numberOfClasses;
     Class * classes;
-public:
     void create(FILE * fp);
 };
 

@@ -493,16 +493,31 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
     } else if (atr.attributeName == "Deprecated"){
         cout << starter << "| Attribute dont have information" << endl;
     } else if (atr.attributeName == "InnerClasses"){
-        // uint16_t class_length = atr.innerClasses.numberOfClasses;
-        // cout << starter << "| Classes Count: "<< excp_length << endl;
-        // for(int i = 0; i < class_length; i++) {
-        //   cout << starter << "| [" << i << "] ------ #" << index;
-        //   cout << starter << atr.innerClasses.classes[i].inner_class_info_index;
-        //   cout << starter << atr.innerClasses.classes[i].outer_class_info_index;
-        //   cout << starter << atr.innerClasses.classes[i].inner_name_index;
-        //   cout << starter << atr.innerClasses.classes[i].inner_class_access_flags;
-        //   cout << " <" << this->printCPString(cp_ref) << ">" << endl;
-        // }
+        uint16_t class_length = atr.innerClasses.numberOfClasses;
+        cout << starter << "| Classes Count: "<< class_length << endl << "| " << endl;
+        for(int i = 0; i < class_length; i++) {
+          cout << starter << "| Nro [" << i << "] ------ " << endl;
+
+          index = atr.innerClasses.classes[i].inner_class_info_index;
+          CPInfo cp_ref = this->cp_vec[index-1];
+          cout << starter << "| Inner Class: cp_info #" << index;
+          cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+
+          index = atr.innerClasses.classes[i].outer_class_info_index;
+          cp_ref = this->cp_vec[index-1];
+          cout << starter << "| Outer Class: cp_info #" << index;
+          cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+
+          index = atr.innerClasses.classes[i].inner_name_index;
+          cp_ref = this->cp_vec[index-1];
+          cout << starter << "| Inner Name: cp_info #" << index;
+          cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+
+
+          cout << starter << "| Acess Flags: " << "0x" << setfill('0') << setw(4) << hex << atr.innerClasses.classes[i].inner_class_access_flags << endl;
+          cout << "| " << endl;
+          // cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+        }
 
     } else if (atr.attributeName == "Synthetic"){
 
