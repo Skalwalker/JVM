@@ -436,8 +436,11 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
 
         cout << starter << "| ----- Bytecode -----" << endl;
 
+        cout << starter << "| " << endl;
+
         string code((char *)atr.code.code);
-        cout << code << endl;
+        cout << starter<< "| " << code << endl;
+        cout << starter << "| " << endl;
 
         cout << starter << "| ----- Exception Table -----" << endl;
         cout << starter << "| " << endl;
@@ -445,17 +448,15 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         uint16_t excp_length = atr.code.exceptionTableLength;
 
         if (excp_length > 0) {
-            //ISSO AQUI TA ERRADO
-            Exception_table *exceptions = (Exception_table *) calloc(excp_length, sizeof(Exception_table));
-            for (int i = 0; i < excp_length; i++) {
+            for(int i = 0; i < excp_length; i++) {
               cout << i << endl;
-              cout << exceptions[i].start_pc << endl;
-              cout << exceptions[i].end_pc << endl;
-              cout << exceptions[i].handler_pc << endl;
-              cout << exceptions[i].catch_type << endl;
+              cout << atr.code.exceptionTable[i].start_pc << endl;
+              cout << atr.code.exceptionTable[i].end_pc << endl;
+              cout << atr.code.exceptionTable[i].handler_pc << endl;
+              cout << atr.code.exceptionTable[i].catch_type << endl;
             }
         } else {
-          cout << starter << "| Nenhum Exception"
+          cout << starter << "| Nenhum Exception" << endl;
         }
 
         cout << starter << "| " << endl;
@@ -475,8 +476,14 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
     } else if (atr.attributeName == "LocalVariableTypeTable"){
 
     } else if (atr.attributeName == "Exceptions"){
-      uint16_t excp_length = atr.exceptions.numberOfExceptions
-      something = atr.exceptions.exception_index_table
+      uint16_t excp_length = atr.exceptions.numberOfExceptions;
+      cout << starter << "| Exceptions Count: "<< excp_length << endl;
+      for(int i = 0; i < excp_length; i++) {
+        index = atr.exceptions.exception_index_table[i];
+        CPInfo cp_ref = this->cp_vec[index-1];
+        cout << starter << "| [" << i << "] cp_info #" << index;
+        cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+      }
 
     } else if (atr.attributeName == "SourceFile"){
         index = atr.sourceFile.sourceFileIndex;
