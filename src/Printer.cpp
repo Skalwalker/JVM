@@ -7,7 +7,7 @@ Printer::Printer(ClassFile classFile) : cls_file{ classFile }  {
     this->printInterfaces();
     this->printFields();
     this->printMethods();
-    this->printAttributes(false, std::vector<AttributeInfo>());
+    this->printAttributes(false, std::vector<AttributeInfo>(), "");
 }
 
 void Printer::printHeader(string sectionName) {
@@ -337,7 +337,7 @@ void Printer::printFields() {
             << " ( " << field_vec[i].access_flags_names << ")" << endl;
         cout << "| Attributes Count: " << dec << field_vec[i].attributes_count << endl;
         cout << "| Attributes: " << endl;
-        this->printAttributes(true, field_vec[i].attributes);
+        this->printAttributes(true, field_vec[i].attributes, "");
     }
 
     if (field_vec.size() == 0) {
@@ -376,7 +376,7 @@ void Printer::printMethods() {
 
         cout << "| Attributes Count: " << dec << method_vec[i].attributes_count << endl;
         cout << "| Attributes: " << endl;
-        this->printAttributes(true, method_vec[i].attributes);
+        this->printAttributes(true, method_vec[i].attributes, "");
         cout << endl;
     }
 
@@ -385,10 +385,9 @@ void Printer::printMethods() {
     }
 }
 
-void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) {
+void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec, string starter) {
     vector<AttributeInfo> attr_vec;
     uint16_t attr_cont;
-    string starter = "";
 
     if (inside_type == false) {
         attr_vec = this->cls_file.getAttributes();
@@ -400,7 +399,7 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec) 
     } else {
         attr_vec = vec;
         attr_cont = attr_vec.size();
-        starter = "\t";
+        starter += "\t";
     }
 
     for (int i=0;i < attr_cont;i++) {
@@ -469,9 +468,12 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         cout << starter << "| Maximum Local Variables: " << atr.code.maxLocals << endl;
         cout << starter << "| Code Length: " << atr.code.codeLength << endl;
 
+        vector<AttributeInfo> atr_aux;
         for (int i = 0; i < atr.code.attributesCount; i++) {
-            printAttributesBody(atr.code.attributes[i], starter += "\t");
+            atr_aux.push_back(atr.code.attributes[i]);
         }
+
+        printAttributes(true, atr_aux, "\t");
         // cout << "----- Attributes -----" << endl
         // cout << atr.code.attributesCount << endl;
 
