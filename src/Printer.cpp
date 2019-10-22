@@ -445,6 +445,7 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         uint16_t excp_length = atr.code.exceptionTableLength;
 
         if (excp_length > 0) {
+            //ISSO AQUI TA ERRADO
             Exception_table *exceptions = (Exception_table *) calloc(excp_length, sizeof(Exception_table));
             for (int i = 0; i < excp_length; i++) {
               cout << i << endl;
@@ -456,7 +457,7 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         } else {
           cout << starter << "| Nenhum Exception"
         }
-        
+
         cout << starter << "| " << endl;
 
         cout << starter << "| ----- Misc -----" << endl;
@@ -474,6 +475,8 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
     } else if (atr.attributeName == "LocalVariableTypeTable"){
 
     } else if (atr.attributeName == "Exceptions"){
+      uint16_t excp_length = atr.exceptions.numberOfExceptions
+      something = atr.exceptions.exception_index_table
 
     } else if (atr.attributeName == "SourceFile"){
         index = atr.sourceFile.sourceFileIndex;
