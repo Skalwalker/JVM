@@ -163,13 +163,15 @@ void Printer::printCPBody(CPInfo cp) {
   } else if ((type == 5)||(type == 6)) {
     // Long or double
     if (type == 5) {
-      cout << "| High Bytes: " << cp.longInfo.high_bytes << endl;
-      cout << "| Low Bytes: " << cp.longInfo.low_bytes << endl;
-      cout << "| Long: num" << endl;
+      cout << "| High Bytes: " << hex << cp.longInfo.high_bytes << endl;
+      cout << "| Low Bytes: " << hex << cp.longInfo.low_bytes << endl;
+      long temp = (long)cp.longInfo.high_bytes << 32;
+      temp += cp.longInfo.low_bytes;
+      cout << "| Long: " << (long)(temp) << endl;
     } else {
-      cout << "| High Bytes: " << cp.doubleInfo.high_bytes << endl;
-      cout << "| Low Bytes: " << cp.doubleInfo.low_bytes << endl;
-      cout << "| Double: num" << endl;
+      cout << "| High Bytes: " << "0x" << hex << cp.doubleInfo.high_bytes << endl;
+      cout << "| Low Bytes: " << "0x" << hex << cp.doubleInfo.low_bytes << endl;
+      cout << "| Double: " << (double)(((long)cp.doubleInfo.high_bytes << 32) + cp.doubleInfo.low_bytes) << endl;
     }
   } else if (type == 7){
     //Class
@@ -279,6 +281,7 @@ void Printer::printInterfaces(){
 
 void Printer::printFields() {
   vector<FieldInfo> field_vec;
+  uint16_t cp_index;
   uint16_t field_count = this->cls_file.getFieldsCount();
   string title = " Fields - [";
   title += to_string(field_count);
@@ -287,10 +290,19 @@ void Printer::printFields() {
   field_vec = cls_file.getFields();
 
   for(int i=0;i < field_vec.size();i++) {
-    cout << "[" << dec << i << "] Field " << endl;
+    cp_index = field_vec[i].name_index;
+    CPInfo cp_ref = this->cls_file.getConstantPool()[cp_index-1];
+    cout << "[" << dec << i << "] Field "  << this->printCPString(cp_ref) << endl;
     cout << "| " << endl;
-    cout << "| Name: cp_info #" << dec << field_vec[i].name_index << endl;
-    cout << "| Descriptor: cp_info #" << dec << field_vec[i].descriptor_index << endl;
+
+    cout << "| Name: cp_info #" << dec << cp_index;
+    cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+
+    cp_index = field_vec[i].descriptor_index;
+    cp_ref = this->cls_file.getConstantPool()[cp_index-1];
+    cout << "| Descriptor: cp_info #" << dec << cp_index;
+    cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+
     cout << "| Access Flags: ";
     cout << "0x" << setfill('0') << setw(4) << hex << field_vec[i].access_flags << endl;
     cout << "| Attributes Count: " << dec << field_vec[i].attributes_count << endl;
@@ -305,6 +317,7 @@ void Printer::printFields() {
 
 void Printer::printMethods() {
   vector<MethodInfo> method_vec;
+  uint16_t cp_index;
   uint16_t method_count = this->cls_file.getMethodsCount();
   string title = " Methods - [";
   title += to_string(method_count);
@@ -313,11 +326,23 @@ void Printer::printMethods() {
   method_vec = cls_file.getMethods();
 
   for(int i=0;i < method_count;i++) {
-    cout << "[" << dec << i << "] Method " << endl;
+    cp_index = method_vec[i].name_index;
+    CPInfo cp_ref = this->cls_file.getConstantPool()[cp_index-1];
+
+    cout << "[" << dec << i << "] Method " << this->printCPString(cp_ref) << endl;
     cout << "| " << endl;
-    cout << "| Name: " << dec << method_vec[i].name_index << endl;
-    cout << "| Descriptor: " << dec << method_vec[i].descriptor_index << endl;
-    cout << "| Access Flags: " << dec << method_vec[i].access_flags << endl;
+
+    cout << "| Name: cp_info #" << dec << cp_index;
+    cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+
+    cp_index = method_vec[i].descriptor_index ;
+    cout << "| Descriptor: cp_info #" << dec << cp_index;
+    cp_ref = this->cls_file.getConstantPool()[cp_index-1];
+    cout << " <" << this->printCPString(cp_ref) << ">" << endl;
+
+    cout << "| Access Flags: ";
+    cout << "0x" << setfill('0') << setw(4) << hex << method_vec[i].access_flags << endl;
+
     cout << "| Attributes Count: " << dec << method_vec[i].attributes_count << endl;
     cout << "| Attributes: " << endl;
     this->printAttributes(true, method_vec[i].attributes);
