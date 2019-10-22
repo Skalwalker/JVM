@@ -80,9 +80,18 @@ string Printer::printCPString(CPInfo cp) {
     } else if (cp.tag == 4) {
       return to_string(cp.floatInfo.bytes);
     } else if (cp.tag == 5) {
-      return to_string(cp.integerInfo.bytes);
+      long temp = (long)cp.longInfo.high_bytes << 32;
+      temp += cp.longInfo.low_bytes;
+      return to_string(temp);
     } else if (cp.tag == 6) {
-      return to_string(cp.integerInfo.bytes);
+      long temp = (long)cp.doubleInfo.high_bytes << 32;
+      temp += cp.doubleInfo.low_bytes;
+      int s = ((temp >> 63) == 0) ? 1 : -1;
+      int e = (int)((temp >> 52) & 0x7ffl);
+      long m = (e == 0) ? (temp & 0xfffffffffffffL) << 1 :
+                          (temp & 0xfffffffffffffL) | 0x10000000000000L;
+      double doubleNumb = s * m * pow(2, (e-1075));
+      return to_string(doubleNumb);
     } else {
       if (cp.tag == 7) {
         cp = cp_vec[cp.classInfo.name_index-1];
