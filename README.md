@@ -4,6 +4,30 @@ A Java Virtual Machine é a pedra angular da plataforma Java. É o componente de
 
 A Java Virtual Machine é uma máquina de computação abstrata. Como uma máquina de computação real, ela possui um conjunto de instruções e lida com várias áreas da memória em tempo de execução. É razoavelmente comum implementar uma linguagem de programação usando uma máquina virtual.
 
+## Instalação
+
+A forma mais facil de realizar a instalação é com utilização do Makefile disponível.
+
+Sem a utilização do Makefile a instalação pode ser feita com o seguinte comando.
+
+```bash
+$ g++ -std=c++11 -I include ./src/*.cpp -o ./bin/jvm
+```
+
+## Execução
+
+Após a instalação será criado um arquivo executável _jvm_, dentro do diretório _bin_. Logo a execução deve ser realizada no diretório principal da JVM e ser chamado com _./bin/jvm_.
+
+Para facilitar a execução de diversos arquivos _.class_, o executável utiliza dos atributos _argc_ e _argv_ realizando assim entradas por linha de comando. Por padrão, os arquivos _.class_ precisam estar dentro do diretório _test_examples_.
+
+ **ARQUIVOS .class FORA DO test_examples NAO FUNCIONARÃO**.
+
+##Exemplos de Execução:
+
+```bash
+$ ./bin/jvm HelloWorld.class
+$ ./bin/jvm Exceptions.class
+```
 ## Regras Gerais
 
 * **Utilize o cppcheck ao programar**
@@ -64,7 +88,7 @@ Quando todas as mudanças respectivas à branch estiverem prontas e testadas, so
 
 A modularização deve seguir esse [guia](https://hiltmon.com/blog/2013/07/03/a-simple-c-plus-plus-project-structure/)
 
-## Documentação 
+## Documentação
 
 Os comentários serão escritos com o propósito de se criar um [Doxygen](http://www.doxygen.nl/manual/docblocks.html)
 
@@ -74,7 +98,7 @@ Utilize apenas o seguinte formato para comentário Doxygen:
  * ... text ...
  */
  ```
- 
+
  E para explicações _inline_ que não irão para a documentação:
  ```c
  // Text
