@@ -101,7 +101,6 @@ void CodeAttribute::create(vector<CPInfo> cp, FILE * fp) {
 }
 
 AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
-
     attributeNameIndex = twoBytes.readBytes(fp);
     attributeLength = fourBytes.readBytes(fp);
     // o index da cp na jvm vai de 1 a n não de 0 a n-1
@@ -110,43 +109,37 @@ AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
     attributeName = str;
 
     if (attributeName == "Code") {
-        cout << "Criando Attribute Code" << endl;
         code.create(cp, fp);
 
     } else if (attributeName == "LineNumberTable") {
-        cout << "Criando Attribute LineNumberTable" << endl;
         lineNumberTable.create(fp);
 
     } else if (attributeName == "LocalVariableTable") {
-        cout << "Criando Attribute LocalVariableTable" << endl;
         localVariableTable.create(fp);
 
     } else if (attributeName == "LocalVariableTypeTable") {
-        cout << "Criando Attribute localVariableTypeTable" << endl;
         localVariableTypeTable.create(fp);
 
     } else if (attributeName == "Exceptions") {
-        cout << "Criando Attribute Exceptions" << endl;
         exceptions.create(fp);
 
     } else if (attributeName == "SourceFile") {
-        cout << "Criando Attribute SourceFile" << endl;
         sourceFile.create(fp);
 
     }  else if (attributeName == "Deprecated") {
-        cout << "Criando Attribute Deprecated" << endl;
         deprecated.create(fp);
 
     } else if (attributeName == "InnerClasses") {
-        cout << "Criando Attribute InnerClasses" << endl;
         innerClasses.create(fp);
 
     } else if (attributeName == "Synthetic") {
-       cout << "Criando Attribute Synthetic" << endl;
        synthetic.create(fp);
 
     }  else if (attributeName == "ConstantValue") {
-       cout << "Criando Attribute ConstantValue" << endl;
        constantValue.create(fp);
+
+    } else {
+        ClassFileReader<uint8_t>::advanceBytes(attributeLength, fp);
+        attributeName += " (Atributo não implementado)";
     }
 }

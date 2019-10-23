@@ -82,9 +82,9 @@ public:
 };
 
 class InnerClassesAttribute {
+public:
     uint16_t numberOfClasses;
     Class * classes;
-public:
     void create(FILE * fp);
 };
 
@@ -148,19 +148,20 @@ public:
     string attributeName;
     uint16_t attributeNameIndex;
     uint32_t attributeLength;
+    uint16_t tag;
     union {
         ConstantValueAttribute constantValue;
         CodeAttribute code;
         ExceptionsAttribute exceptions;
         InnerClassesAttribute innerClasses;
-        EnclosingMethodAttribute enclosingMethod;
+        EnclosingMethodAttribute enclosingMethod; //kd
         SyntheticAttribute synthetic;
         SourceFileAttribute sourceFile;
-        SignatureAttribute signarute;
+        SignatureAttribute signarute; //kd
         LineNumberTableAttribute lineNumberTable;
         LocalVariableTableAttribute localVariableTable;
         LocalVariableTypeTableAttribute localVariableTypeTable;
-        MethodParameters methodParameters;
+        MethodParameters methodParameters; //kd
         Deprecated deprecated;
     };
     AttributeInfo(vector<CPInfo> cp, FILE * fp);

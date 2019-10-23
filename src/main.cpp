@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/Printer.hpp"
+#include "Instructions.hpp"
 using namespace std;
 
 int main(int argc, char* argv[]) {
