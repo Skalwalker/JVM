@@ -31,4 +31,5 @@
 *.out
 *.app
 
-/bin
+bin/
+!*/bin/*.txt
