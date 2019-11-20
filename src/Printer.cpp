@@ -442,7 +442,7 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec, 
 
 void Printer::printAttributesBody(AttributeInfo atr, string starter) {
     uint16_t index;
-    Instructions instructions;
+    InstructionsManager instructionsManager;
 
     if (atr.attributeName == "Code"){
 
@@ -450,10 +450,9 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
 
         cout << starter << "| " << endl;
         for (int i = 0; i < atr.code.codeLength; i++) {
-            if (instructions.opcode[atr.code.code[i]] != "nop") {
-                cout << starter<< "| " << instructions.opcode[atr.code.code[i]] << endl;
-                cout << starter << "| " << endl;
-            }
+            cout << starter<< "| " << instructionsManager.opcode[atr.code.code[i]].mnemonic << endl;
+            i += instructionsManager.opcode[atr.code.code[i]].bytecount;
+            cout << starter << "| " << endl;
         }
 
         cout << starter << "| ----- Exception Table -----" << endl;

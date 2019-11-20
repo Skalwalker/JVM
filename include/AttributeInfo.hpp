@@ -154,14 +154,14 @@ public:
         CodeAttribute code;
         ExceptionsAttribute exceptions;
         InnerClassesAttribute innerClasses;
-        EnclosingMethodAttribute enclosingMethod; //kd
+        EnclosingMethodAttribute enclosingMethod;
         SyntheticAttribute synthetic;
         SourceFileAttribute sourceFile;
-        SignatureAttribute signarute; //kd
+        SignatureAttribute signarute;
         LineNumberTableAttribute lineNumberTable;
         LocalVariableTableAttribute localVariableTable;
         LocalVariableTypeTableAttribute localVariableTypeTable;
-        MethodParameters methodParameters; //kd
+        MethodParameters methodParameters;
         Deprecated deprecated;
     };
     AttributeInfo(vector<CPInfo> cp, FILE * fp);

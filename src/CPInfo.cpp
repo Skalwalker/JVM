@@ -81,3 +81,40 @@ CPInfo::CPInfo(uint8_t tag, FILE * fp) {
         this->name = "Large Numeric Continued";
     }
 }
+
+string CPInfo::getUTF8(vector<CPInfo> constantPool){
+    string str = (char*)utf8Info.bytes;
+    return str;
+}
+
+string CPInfo::getInfo(vector<CPInfo> constantPool) {
+    if (tag == CONSTANT_CLASS){
+        CPInfo nameClass = constantPool[classInfo.name_index-1];
+        return nameClass.getUTF8(constantPool);
+
+    } else if (tag == CONSTANT_UTF8) {
+        return getUTF8(constantPool);
+
+    } else if (tag == CONSTANT_FIELD_REF) {
+        CPInfo classInfo = constantPool[fieldRefInfo.class_index-1];
+        return classInfo.getInfo(constantPool);
+
+    } else if (tag == CONSTANT_STRING) {
+        CPInfo classInfo = constantPool[stringInfo.string_index-1];
+        return classInfo.getUTF8(constantPool);
+
+    } else if (tag == CONSTANT_NAME_AND_TYPE) {
+        CPInfo nameInfo = constantPool[nameAndTypeInfo.name_index-1];
+        CPInfo descriptorInfo = constantPool[nameAndTypeInfo.descriptor_index-1];
+        string name = nameInfo.getUTF8(constantPool);
+        string descriptor = descriptorInfo.getUTF8(constantPool);
+        return name + "$" + descriptor;
+
+    } else if (tag == CONSTANT_METHOD_REF) {
+        CPInfo cn = constantPool[methodRefInfo.class_index-1];
+        CPInfo nt = constantPool[methodRefInfo.name_and_type_index-1];
+        string className = cn.getInfo(constantPool);
+        string nameAndTypeName = nt.getInfo(constantPool);
+        return className + "#" + nameAndTypeName;
+    }
+}

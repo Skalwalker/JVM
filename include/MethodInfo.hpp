@@ -16,6 +16,7 @@ private:
     void setAccessFlagsNames();
 public:
     MethodInfo(vector<CPInfo> cp, FILE * fp);
+    MethodInfo();
     string access_flags_names;
     uint16_t access_flags;
     uint16_t name_index;

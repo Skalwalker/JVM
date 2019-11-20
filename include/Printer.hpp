@@ -2,7 +2,7 @@
 #define __PRINTER_H__
 
 #include "ClassFile.hpp"
-#include "Instructions.hpp"
+#include "InstructionsManager.hpp"
 #include <iostream>
 #include <iomanip>
 #include <inttypes.h>
