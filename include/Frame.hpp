@@ -7,6 +7,18 @@
 #include "CPInfo.hpp"
 #include "MethodInfo.hpp"
 
+#define TAG_EMPTY 0
+#define TAG_BOOL 1
+#define TAG_BYTE 2
+#define TAG_CHAR 3
+#define TAG_SHORT 4
+#define TAG_INT 5
+#define TAG_FLOAT 6
+#define TAG_REFERENCE 7
+#define TAG_RETURN 8
+#define TAG_LONG 9
+#define TAG_DOUBLE 10
+
 struct Type {
     uint8_t tag;
     union {
@@ -15,7 +27,7 @@ struct Type {
         uint32_t type_byte;
         uint32_t type_char;
         uint32_t type_short;
-        uint32_t type_int;
+        int32_t type_int;
         uint32_t type_float;
         uint64_t type_reference;
         uint32_t type_returnAddress;
