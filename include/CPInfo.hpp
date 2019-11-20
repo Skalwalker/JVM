@@ -2,6 +2,8 @@
 #define __CPINFO_H__
 #include <cstdint>
 #include <fstream>
+#include <vector>
+#include <string>
 #include "ClassFileReader.hpp"
 
 #define typeof __typeof__
@@ -20,6 +22,8 @@
 #define CONSTANT_METHOD_HANDLE 15
 #define CONSTANT_METHOD_TYPE 16
 #define CONSTANT_INVOKE_DYNAMIC 18
+
+using namespace std;
 
 // Definicao dos tipos de info que podem existir em CPinfo: pág 78 jvm
 typedef struct {
@@ -112,6 +116,8 @@ public:
     };
     CPInfo();
     CPInfo(uint8_t tag, FILE * fp);
+    string getInfo(vector<CPInfo>);
+    string getUTF8(vector<CPInfo>);
 };
 
 #endif

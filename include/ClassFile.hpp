@@ -51,6 +51,7 @@ class ClassFile {
     void setAttributes(FILE * fp);
     public:
     ClassFile(FILE * fp);
+    ClassFile();
     static const uint32_t MAGIC_NUMBER = 0xCAFEBABE;
     static const uint16_t ACC_PUBLIC = 0x0001;
     static const uint16_t ACC_FINAL = 0x0010;

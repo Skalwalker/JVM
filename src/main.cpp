@@ -1,6 +1,8 @@
 #include <iostream>
 #include "../include/Printer.hpp"
-#include "Instructions.hpp"
+#include "InstructionsManager.hpp"
+#include "ExecutionEngine.hpp"
+#include "ClassLoader.hpp"
 using namespace std;
 
 int main(int argc, char* argv[]) {
@@ -9,7 +11,7 @@ int main(int argc, char* argv[]) {
     // Check the number of parameters
     if (argc == 1) {
       file_name = path + "HelloWorld.class";
-    } else if (argc == 2){
+    } else if (argc == 2) {
       file_name = path + argv[1];
     }
 
@@ -18,7 +20,15 @@ int main(int argc, char* argv[]) {
     fp = fopen(file_name.c_str(), "rb");
     if (fp != NULL) {
         ClassFile classFile(fp);
-        Printer printer(classFile);
+        MethodArea methodArea;
+        InstructionsManager instructionsManager;
+        ClassLoader classLoader; //Em breve será usado
+        classLoader.methodArea = &methodArea;
+        classLoader.loadClassFile(classFile);
+        ExecutionEngine executionEngine(classFile, &methodArea, &instructionsManager);
+        executionEngine.run();
+        // Printer printer(classFile);
+
     }
     return 0;
 }

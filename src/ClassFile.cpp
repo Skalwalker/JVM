@@ -2,6 +2,8 @@
 #include "../include/ClassFile.hpp"
 using namespace std;
 
+ClassFile::ClassFile() {}
+
 // Constructor
 ClassFile::ClassFile(FILE * fp) {
     this->setMagicNumber(fp);
