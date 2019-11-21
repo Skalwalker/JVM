@@ -359,37 +359,88 @@ uint32_t Instruction::lxor(Frame * frame) {
 //     frame->operandStack.push(res);
 // }
 
-// uint32_t Instruction::fadd(Frame * frame) {
-//
-//
-//     return ++frame->local_pc;
-// }
-//
-// uint32_t Instruction::fsub(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
-//
-// uint32_t Instruction::fmul(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
-//
-// uint32_t Instruction::fdiv(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
-//
-// uint32_t Instruction::frem(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
-//
-// uint32_t Instruction::fneg(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
-//
+uint32_t Instruction::fadd(Frame * frame) {
+    float val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    res.tag = TAG_FLOAT;
+    res.type_float = val1 + val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fsub(Frame * frame) {
+    float val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    res.tag = TAG_FLOAT;
+    res.type_float = val1 - val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fmul(Frame * frame) {
+    float val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    res.tag = TAG_FLOAT;
+    res.type_float = val1 * val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fdiv(Frame * frame) {
+    float val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    res.tag = TAG_FLOAT;
+    res.type_float = val1 / val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::frem(Frame * frame) {
+    float val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    res.tag = TAG_FLOAT;
+    res.type_float = fmodf(val1, val2);
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fneg(Frame * frame) {
+    float val1;
+    Type res;
+    val1 = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    res.tag = TAG_FLOAT;
+    res.type_float = -val1;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
 // uint32_t Instruction::dadd(Frame * frame) {
 //
 //     return ++frame->local_pc;

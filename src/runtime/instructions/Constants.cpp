@@ -27,6 +27,12 @@ uint32_t Instruction::ldc(Frame* frame){
         value.tag = TAG_INT;
         value.type_int = cpInfo.integerInfo.bytes;
         frame->operandStack.push(value);
+    } else if (cpInfo.tag == CONSTANT_FLOAT) {
+        value.tag = TAG_FLOAT;
+        float f;
+        memcpy(&f, &(cpInfo.floatInfo.bytes), sizeof(float));
+        value.type_float = f;
+        frame->operandStack.push(value);
     }
     return ++frame->local_pc;
 }

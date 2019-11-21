@@ -53,6 +53,9 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
             } else if (descriptor.compare("(J)V") == 0){
                 cout << frame->operandStack.top().type_long << endl;
                 frame->operandStack.pop();
+            } else if (descriptor.compare("(F)V") == 0){
+                printf("%f\n", frame->operandStack.top().type_float);
+                frame->operandStack.pop();
             }
         }
     }

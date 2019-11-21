@@ -10,6 +10,54 @@ uint32_t Instruction::lload(Frame * frame){
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::fload(Frame * frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t index = bytecode[++frame->local_pc];
+
+    Type value = frame->localVariables[index];
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fload_0(Frame * frame){
+    Type value = frame->localVariables[0];
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fload_1(Frame * frame){
+    Type value = frame->localVariables[1];
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fload_2(Frame * frame){
+    Type value = frame->localVariables[2];
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fload_3(Frame * frame){
+    Type value = frame->localVariables[3];
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::iload(Frame * frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t index = bytecode[++frame->local_pc];
+
+    Type val = frame->localVariables[index];
+    frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::iload_0(Frame * frame){
     Type val = frame->localVariables[0];
     frame->operandStack.push(val);

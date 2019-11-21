@@ -40,7 +40,19 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("iand")->second.exec = Instruction::iand;
     this->instructionByName("ior")->second.exec = Instruction::ior;
     this->instructionByName("ixor")->second.exec = Instruction::ixor;
+
+    this->instructionByName("fadd")->second.exec = Instruction::fadd;
+    this->instructionByName("fsub")->second.exec = Instruction::fsub;
+    this->instructionByName("fmul")->second.exec = Instruction::fmul;
+    this->instructionByName("fdiv")->second.exec = Instruction::fdiv;
+    this->instructionByName("frem")->second.exec = Instruction::frem;
+    this->instructionByName("fneg")->second.exec = Instruction::fneg;
+
+
     this->instructionByName("bipush")->second.exec = Instruction::bipush;
+
+
+
 
 
     this->instructionByName("lstore")->second.exec = Instruction::lstore;
@@ -48,19 +60,37 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("lstore_1")->second.exec = Instruction::lstore_1;
     this->instructionByName("lstore_2")->second.exec = Instruction::lstore_2;
     this->instructionByName("lstore_3")->second.exec = Instruction::lstore_3;
+    this->instructionByName("istore")->second.exec = Instruction::istore;
     this->instructionByName("istore_0")->second.exec = Instruction::istore_0;
     this->instructionByName("istore_1")->second.exec = Instruction::istore_1;
     this->instructionByName("istore_2")->second.exec = Instruction::istore_2;
     this->instructionByName("istore_3")->second.exec = Instruction::istore_3;
+    this->instructionByName("fstore")->second.exec = Instruction::fstore;
+    this->instructionByName("fstore_0")->second.exec = Instruction::fstore_0;
+    this->instructionByName("fstore_1")->second.exec = Instruction::fstore_1;
+    this->instructionByName("fstore_2")->second.exec = Instruction::fstore_2;
+    this->instructionByName("fstore_3")->second.exec = Instruction::fstore_3;
+
+
     this->instructionByName("lload")->second.exec = Instruction::lload;
     this->instructionByName("lload_0")->second.exec = Instruction::lload_0;
     this->instructionByName("lload_1")->second.exec = Instruction::lload_1;
     this->instructionByName("lload_2")->second.exec = Instruction::lload_2;
     this->instructionByName("lload_3")->second.exec = Instruction::lload_3;
+    this->instructionByName("iload")->second.exec = Instruction::iload;
     this->instructionByName("iload_0")->second.exec = Instruction::iload_0;
     this->instructionByName("iload_1")->second.exec = Instruction::iload_1;
     this->instructionByName("iload_2")->second.exec = Instruction::iload_2;
     this->instructionByName("iload_3")->second.exec = Instruction::iload_3;
+
+    this->instructionByName("fload")->second.exec = Instruction::fload;
+    this->instructionByName("fload_0")->second.exec = Instruction::fload_0;
+    this->instructionByName("fload_1")->second.exec = Instruction::fload_1;
+    this->instructionByName("fload_2")->second.exec = Instruction::fload_2;
+    this->instructionByName("fload_3")->second.exec = Instruction::fload_3;
+
+
+
 
     this->instructionByName("lcmp")->second.exec = Instruction::lcmp;
     this->instructionByName("ifle")->second.exec = Instruction::ifle;

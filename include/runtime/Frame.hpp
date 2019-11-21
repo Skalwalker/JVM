@@ -28,7 +28,7 @@ struct Type {
         uint32_t type_char;
         uint32_t type_short;
         int32_t type_int;
-        uint32_t type_float;
+        float type_float;
         uint64_t type_reference;
         uint32_t type_returnAddress;
         int64_t type_long;

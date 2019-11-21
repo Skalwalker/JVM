@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <string>
+#include <math.h>
 #include "../Frame.hpp"
 #include "../../models/CPInfo.hpp"
 
@@ -52,24 +53,52 @@ public:
     static uint32_t ior(Frame*);
     static uint32_t ixor(Frame*);
     static uint32_t bipush(Frame*);
+    static uint32_t fadd(Frame *);
+    static uint32_t fsub(Frame *);
+    static uint32_t fmul(Frame *);
+    static uint32_t fdiv(Frame *);
+    static uint32_t frem(Frame *);
+    static uint32_t fneg(Frame *);
+
+    static uint32_t fstore(Frame *);
+    static uint32_t fstore_0(Frame *);
+    static uint32_t fstore_1(Frame *);
+    static uint32_t fstore_2(Frame *);
+    static uint32_t fstore_3(Frame *);
+
     static uint32_t lstore(Frame *);
     static uint32_t lstore_0(Frame *);
     static uint32_t lstore_1(Frame *);
     static uint32_t lstore_2(Frame *);
     static uint32_t lstore_3(Frame *);
+
+    static uint32_t istore(Frame *);
     static uint32_t istore_0(Frame *);
     static uint32_t istore_1(Frame *);
     static uint32_t istore_2(Frame *);
     static uint32_t istore_3(Frame *);
+
+
+
     static uint32_t lload(Frame *);
     static uint32_t lload_0(Frame *);
     static uint32_t lload_1(Frame *);
     static uint32_t lload_2(Frame *);
     static uint32_t lload_3(Frame *);
+
+    static uint32_t fload(Frame *);
+    static uint32_t fload_0(Frame *);
+    static uint32_t fload_1(Frame *);
+    static uint32_t fload_2(Frame *);
+    static uint32_t fload_3(Frame *);
+
+    static uint32_t iload(Frame *);
     static uint32_t iload_0(Frame *);
     static uint32_t iload_1(Frame *);
     static uint32_t iload_2(Frame *);
     static uint32_t iload_3(Frame *);
+
+
     static uint32_t iconst_m1(Frame *);
     static uint32_t iconst_0(Frame *);
     static uint32_t iconst_1(Frame *);
