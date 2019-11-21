@@ -347,17 +347,17 @@ uint32_t Instruction::lxor(Frame * frame) {
     return ++frame->local_pc;
 }
 
-// uint32_t Instruction::iinc(Frame * frame) {
-//     int32_t val1, val2;
-//     Type res;
-//     val1 = frame->operandStack.top().type_int;
-//     frame->operandStack.top();
-//     val2 = frame->operandStack.top().type_int;
-//     frame->operandStack.pop();
-//     res.tag = TAG_INT;
-//     res.type_int = val1 + val2;
-//     frame->operandStack.push(res);
-// }
+uint32_t Instruction::iinc(Frame * frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t index = bytecode[++frame->local_pc];
+    int8_t imm_const = bytecode[++frame->local_pc];
+    int32_t temp, sign_ext;
+
+    sign_ext = imm_const;
+    frame->localVariables[index].type_int += sign_ext;
+
+    return ++frame->local_pc;
+}
 
 uint32_t Instruction::fadd(Frame * frame) {
     float val1, val2;

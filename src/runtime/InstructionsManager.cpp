@@ -47,6 +47,8 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("frem")->second.exec = Instruction::frem;
     this->instructionByName("fneg")->second.exec = Instruction::fneg;
 
+    this->instructionByName("iinc")->second.exec = Instruction::iinc;
+
     this->instructionByName("dadd")->second.exec = Instruction::dadd;
     this->instructionByName("dsub")->second.exec = Instruction::dsub;
     this->instructionByName("dmul")->second.exec = Instruction::dmul;

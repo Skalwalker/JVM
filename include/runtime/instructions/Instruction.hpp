@@ -52,6 +52,7 @@ public:
     static uint32_t iand(Frame*);
     static uint32_t ior(Frame*);
     static uint32_t ixor(Frame*);
+    static uint32_t iinc(Frame*);
     static uint32_t bipush(Frame*);
     static uint32_t fadd(Frame *);
     static uint32_t fsub(Frame *);
