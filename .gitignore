@@ -31,5 +31,6 @@
 *.out
 *.app
 
+docs/
 bin/
 !*/bin/*.txt
