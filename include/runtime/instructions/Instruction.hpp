@@ -61,6 +61,7 @@ public:
     static uint32_t istore_1(Frame *);
     static uint32_t istore_2(Frame *);
     static uint32_t istore_3(Frame *);
+    static uint32_t lload(Frame *);
     static uint32_t lload_0(Frame *);
     static uint32_t lload_1(Frame *);
     static uint32_t lload_2(Frame *);
@@ -81,6 +82,8 @@ public:
 
     static uint32_t lcmp(Frame*);
     static uint32_t ifle(Frame*);
+    static uint32_t ifge(Frame*);
+    static uint32_t ifeq(Frame*);
 };
 
 #endif

@@ -52,6 +52,7 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("istore_1")->second.exec = Instruction::istore_1;
     this->instructionByName("istore_2")->second.exec = Instruction::istore_2;
     this->instructionByName("istore_3")->second.exec = Instruction::istore_3;
+    this->instructionByName("lload")->second.exec = Instruction::lload;
     this->instructionByName("lload_0")->second.exec = Instruction::lload_0;
     this->instructionByName("lload_1")->second.exec = Instruction::lload_1;
     this->instructionByName("lload_2")->second.exec = Instruction::lload_2;
@@ -63,7 +64,8 @@ InstructionsManager::InstructionsManager() {
 
     this->instructionByName("lcmp")->second.exec = Instruction::lcmp;
     this->instructionByName("ifle")->second.exec = Instruction::ifle;
-
+    this->instructionByName("ifge")->second.exec = Instruction::ifge;
+    this->instructionByName("ifeq")->second.exec = Instruction::ifeq;
 
     this->instructionByName("iconst_m1")->second.exec = Instruction::iconst_m1;
     this->instructionByName("iconst_0")->second.exec = Instruction::iconst_0;

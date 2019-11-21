@@ -37,3 +37,39 @@ uint32_t Instruction::ifle(Frame* frame) {
     // Nao passou
     return ++frame->local_pc;
 }
+
+uint32_t Instruction::ifge(Frame* frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t branchbyte1 = bytecode[++frame->local_pc];
+    uint8_t branchbyte2 = bytecode[++frame->local_pc];
+    int16_t offset = (branchbyte1 << 8) | branchbyte2;
+    int value;
+
+    value = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    //Passou no teste
+    if (value >= 0) {
+        frame->local_pc += offset;
+        return frame->local_pc;
+    }
+    // Nao passou
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::ifeq(Frame* frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t branchbyte1 = bytecode[++frame->local_pc];
+    uint8_t branchbyte2 = bytecode[++frame->local_pc];
+    int16_t offset = (branchbyte1 << 8) | branchbyte2;
+    int value;
+
+    value = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    //Passou no teste
+    if (value == 0) {
+        frame->local_pc += offset;
+        return frame->local_pc;
+    }
+    // Nao passou
+    return ++frame->local_pc;
+}
