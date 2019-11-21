@@ -133,6 +133,16 @@ uint32_t Instruction::ldc2_w(Frame* frame){
         temp += cpInfo.longInfo.low_bytes;
         value.type_long = temp;
         frame->operandStack.push(value);
+    } else if(cpInfo.tag == CONSTANT_DOUBLE) {
+        value.tag = TAG_DOUBLE;
+        uint32_t high, low;
+        double res;
+        high = cpInfo.doubleInfo.high_bytes;
+        low = cpInfo.doubleInfo.low_bytes;
+        uint32_t vec[2] = {low,high};
+        memcpy(&res, vec, sizeof(double));
+        value.type_double = res;
+        frame->operandStack.push(value);
     }
     return ++frame->local_pc;
 }

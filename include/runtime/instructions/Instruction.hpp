@@ -60,6 +60,13 @@ public:
     static uint32_t frem(Frame *);
     static uint32_t fneg(Frame *);
 
+    static uint32_t dadd(Frame *);
+    static uint32_t dsub(Frame *);
+    static uint32_t dmul(Frame *);
+    static uint32_t ddiv(Frame *);
+    static uint32_t drem(Frame *);
+    static uint32_t dneg(Frame *);
+
     static uint32_t fstore(Frame *);
     static uint32_t fstore_0(Frame *);
     static uint32_t fstore_1(Frame *);
@@ -78,7 +85,11 @@ public:
     static uint32_t istore_2(Frame *);
     static uint32_t istore_3(Frame *);
 
-
+    static uint32_t dstore(Frame *);
+    static uint32_t dstore_0(Frame *);
+    static uint32_t dstore_1(Frame *);
+    static uint32_t dstore_2(Frame *);
+    static uint32_t dstore_3(Frame *);
 
     static uint32_t lload(Frame *);
     static uint32_t lload_0(Frame *);
@@ -98,6 +109,11 @@ public:
     static uint32_t iload_2(Frame *);
     static uint32_t iload_3(Frame *);
 
+    static uint32_t dload(Frame *);
+    static uint32_t dload_0(Frame *);
+    static uint32_t dload_1(Frame *);
+    static uint32_t dload_2(Frame *);
+    static uint32_t dload_3(Frame *);
 
     static uint32_t iconst_m1(Frame *);
     static uint32_t iconst_0(Frame *);

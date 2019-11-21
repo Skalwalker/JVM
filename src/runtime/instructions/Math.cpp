@@ -441,32 +441,84 @@ uint32_t Instruction::fneg(Frame * frame) {
     return ++frame->local_pc;
 }
 
-// uint32_t Instruction::dadd(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
-//
-// uint32_t Instruction::dsub(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
-//
-// uint32_t Instruction::dmul(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
-//
-// uint32_t Instruction::ddiv(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
-//
-// uint32_t Instruction::drem(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
-//
-// uint32_t Instruction::dneg(Frame * frame) {
-//
-//     return ++frame->local_pc;
-// }
+uint32_t Instruction::dadd(Frame * frame) {
+    double val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    res.tag = TAG_DOUBLE;
+    res.type_double = val1 + val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::dsub(Frame * frame) {
+    double val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    res.tag = TAG_DOUBLE;
+    res.type_double = val1 - val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::dmul(Frame * frame) {
+    double val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    res.tag = TAG_DOUBLE;
+    res.type_double = val1 * val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::ddiv(Frame * frame) {
+    double val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    res.tag = TAG_DOUBLE;
+    res.type_double = val1 / val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::drem(Frame * frame) {
+    double val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    res.tag = TAG_DOUBLE;
+    res.type_double = fmod(val1,val2);
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::dneg(Frame * frame) {
+    double val1;
+    Type res;
+    val1 = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    res.tag = TAG_DOUBLE;
+    res.type_double = -val1;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}

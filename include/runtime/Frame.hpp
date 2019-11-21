@@ -32,7 +32,7 @@ struct Type {
         uint64_t type_reference;
         uint32_t type_returnAddress;
         int64_t type_long;
-        uint64_t type_double;
+        double type_double;
     };
 };
 

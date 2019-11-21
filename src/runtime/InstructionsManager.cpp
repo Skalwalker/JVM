@@ -40,7 +40,6 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("iand")->second.exec = Instruction::iand;
     this->instructionByName("ior")->second.exec = Instruction::ior;
     this->instructionByName("ixor")->second.exec = Instruction::ixor;
-
     this->instructionByName("fadd")->second.exec = Instruction::fadd;
     this->instructionByName("fsub")->second.exec = Instruction::fsub;
     this->instructionByName("fmul")->second.exec = Instruction::fmul;
@@ -48,13 +47,15 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("frem")->second.exec = Instruction::frem;
     this->instructionByName("fneg")->second.exec = Instruction::fneg;
 
+    this->instructionByName("dadd")->second.exec = Instruction::dadd;
+    this->instructionByName("dsub")->second.exec = Instruction::dsub;
+    this->instructionByName("dmul")->second.exec = Instruction::dmul;
+    this->instructionByName("ddiv")->second.exec = Instruction::ddiv;
+    this->instructionByName("drem")->second.exec = Instruction::drem;
+    this->instructionByName("dneg")->second.exec = Instruction::dneg;
+
 
     this->instructionByName("bipush")->second.exec = Instruction::bipush;
-
-
-
-
-
     this->instructionByName("lstore")->second.exec = Instruction::lstore;
     this->instructionByName("lstore_0")->second.exec = Instruction::lstore_0;
     this->instructionByName("lstore_1")->second.exec = Instruction::lstore_1;
@@ -70,8 +71,11 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("fstore_1")->second.exec = Instruction::fstore_1;
     this->instructionByName("fstore_2")->second.exec = Instruction::fstore_2;
     this->instructionByName("fstore_3")->second.exec = Instruction::fstore_3;
-
-
+    this->instructionByName("dstore")->second.exec = Instruction::dstore;
+    this->instructionByName("dstore_0")->second.exec = Instruction::dstore_0;
+    this->instructionByName("dstore_1")->second.exec = Instruction::dstore_1;
+    this->instructionByName("dstore_2")->second.exec = Instruction::dstore_2;
+    this->instructionByName("dstore_3")->second.exec = Instruction::dstore_3;
     this->instructionByName("lload")->second.exec = Instruction::lload;
     this->instructionByName("lload_0")->second.exec = Instruction::lload_0;
     this->instructionByName("lload_1")->second.exec = Instruction::lload_1;
@@ -88,15 +92,15 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("fload_1")->second.exec = Instruction::fload_1;
     this->instructionByName("fload_2")->second.exec = Instruction::fload_2;
     this->instructionByName("fload_3")->second.exec = Instruction::fload_3;
-
-
-
-
+    this->instructionByName("dload")->second.exec = Instruction::dload;
+    this->instructionByName("dload_0")->second.exec = Instruction::dload_0;
+    this->instructionByName("dload_1")->second.exec = Instruction::dload_1;
+    this->instructionByName("dload_2")->second.exec = Instruction::dload_2;
+    this->instructionByName("dload_3")->second.exec = Instruction::dload_3;
     this->instructionByName("lcmp")->second.exec = Instruction::lcmp;
     this->instructionByName("ifle")->second.exec = Instruction::ifle;
     this->instructionByName("ifge")->second.exec = Instruction::ifge;
     this->instructionByName("ifeq")->second.exec = Instruction::ifeq;
-
     this->instructionByName("iconst_m1")->second.exec = Instruction::iconst_m1;
     this->instructionByName("iconst_0")->second.exec = Instruction::iconst_0;
     this->instructionByName("iconst_1")->second.exec = Instruction::iconst_1;
