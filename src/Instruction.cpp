@@ -70,6 +70,9 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 string* stringReference = (string*)(frame->operandStack.top().type_reference);
                 frame->operandStack.pop();
                 cout << *stringReference << endl;
+            } else if (descriptor.compare("(I)V") == 0){
+                cout << frame->operandStack.top().type_int << endl;
+                frame->operandStack.pop();
             }
         }
     }
@@ -78,6 +81,70 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
 
 uint32_t Instruction::returnfunc(Frame * frame) {
     return frame->local_pc;
+}
+
+
+uint32_t Instruction::iconst_m1(Frame * frame){
+    Type res;
+    res.tag = TAG_INT;
+    res.type_int = -1;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::iconst_0(Frame * frame){
+    Type res;
+    res.tag = TAG_INT;
+    res.type_int = 0;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::iconst_1(Frame * frame){
+    Type res;
+    res.tag = TAG_INT;
+    res.type_int = 1;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::iconst_2(Frame * frame){
+    Type res;
+    res.tag = TAG_INT;
+    res.type_int = 2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::iconst_3(Frame * frame){
+    Type res;
+    res.tag = TAG_INT;
+    res.type_int = 3;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::iconst_4(Frame * frame){
+    Type res;
+    res.tag = TAG_INT;
+    res.type_int = 4;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::iconst_5(Frame * frame){
+    Type res;
+    res.tag = TAG_INT;
+    res.type_int = 5;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
 }
 
 
@@ -165,9 +232,9 @@ uint32_t Instruction::iload_3(Frame * frame){
 uint32_t Instruction::iadd(Frame * frame) {
     int32_t val1, val2;
     Type res;
-    val1 = frame->operandStack.top().type_int;
-    frame->operandStack.pop();
     val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     res.tag = TAG_INT;
     res.type_int = val1 + val2;
@@ -179,9 +246,9 @@ uint32_t Instruction::iadd(Frame * frame) {
 uint32_t Instruction::isub(Frame * frame) {
     int32_t val1, val2;
     Type res;
-    val1 = frame->operandStack.top().type_int;
-    frame->operandStack.pop();
     val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     res.tag = TAG_INT;
     res.type_int = val1 - val2;
@@ -194,9 +261,9 @@ uint32_t Instruction::isub(Frame * frame) {
 uint32_t Instruction::imul(Frame * frame) {
     int32_t val1, val2;
     Type res;
-    val1 = frame->operandStack.top().type_int;
-    frame->operandStack.pop();
     val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     res.tag = TAG_INT;
     res.type_int = val1 * val2;
@@ -206,29 +273,43 @@ uint32_t Instruction::imul(Frame * frame) {
 }
 
 
-// uint32_t Instruction::idiv(Frame * frame) {
-//     int32_t val1, val2;
-//     Type res;
-//     val1 = frame->operandStack.top().type_int;
-//     frame->operandStack.top();
-//     val2 = frame->operandStack.top().type_int;
-//     frame->operandStack.pop();
-//     res.tag = TAG_INT;
-//     res.type_int = val1 + val2;
-//     frame->operandStack.push(res);
-// }
-//
-// uint32_t Instruction::irem(Frame * frame) {
-//     int32_t val1, val2;
-//     Type res;
-//     val1 = frame->operandStack.top().type_int;
-//     frame->operandStack.top();
-//     val2 = frame->operandStack.top().type_int;
-//     frame->operandStack.pop();
-//     res.tag = TAG_INT;
-//     res.type_int = val1 + val2;
-//     frame->operandStack.push(res);
-// }
+uint32_t Instruction::idiv(Frame * frame) {
+    int32_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+
+    if(val2 == 0) {
+        printf("TODO\n");
+    } else {
+        res.tag = TAG_INT;
+        res.type_int = val1 / val2;
+        frame->operandStack.push(res);
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::irem(Frame * frame) {
+    int32_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+
+    if(val2 == 0) {
+        printf("TODO\n");
+    } else {
+        res.tag = TAG_INT;
+        res.type_int = val1 % val2;
+        frame->operandStack.push(res);
+    }
+
+    return ++frame->local_pc;
+}
 
 uint32_t Instruction::ineg(Frame * frame) {
     int32_t val1;
@@ -245,10 +326,10 @@ uint32_t Instruction::ineg(Frame * frame) {
 uint32_t Instruction::ishl(Frame * frame) {
     int32_t val1, val2;
     Type res;
-    val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.top();
     val2 = val2 & 0x0000001F;
     res.tag = TAG_INT;
     res.type_int = val1 << val2;
@@ -260,10 +341,10 @@ uint32_t Instruction::ishl(Frame * frame) {
 uint32_t Instruction::ishr(Frame * frame) {
     int32_t val1, val2;
     Type res;
-    val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.top();
     val2 = val2 & 0x0000001F;
     res.tag = TAG_INT;
     res.type_int = val1 >> val2;
@@ -275,10 +356,10 @@ uint32_t Instruction::ishr(Frame * frame) {
 uint32_t Instruction::iushr(Frame * frame) {
     int32_t val1, val2;
     Type res;
-    val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.top();
     val2 = val2 & 0x0000001F;
     res.tag = TAG_INT;
     res.type_int = val1 >> val2;
@@ -290,22 +371,24 @@ uint32_t Instruction::iushr(Frame * frame) {
 uint32_t Instruction::iand(Frame * frame) {
     int32_t val1, val2;
     Type res;
-    val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.top();
     res.tag = TAG_INT;
     res.type_int = val1 & val2;
     frame->operandStack.push(res);
+
+    return ++frame->local_pc;
 }
 
 uint32_t Instruction::ior(Frame * frame) {
     int32_t val1, val2;
     Type res;
-    val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.top();
     res.tag = TAG_INT;
     res.type_int = val1 | val2;
     frame->operandStack.push(res);
@@ -316,10 +399,10 @@ uint32_t Instruction::ior(Frame * frame) {
 uint32_t Instruction::ixor(Frame * frame) {
     int32_t val1, val2;
     Type res;
-    val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.top();
     res.tag = TAG_INT;
     res.type_int = val1 ^ val2;
     frame->operandStack.push(res);
@@ -338,3 +421,63 @@ uint32_t Instruction::ixor(Frame * frame) {
 //     res.type_int = val1 + val2;
 //     frame->operandStack.push(res);
 // }
+uint32_t Instruction::fadd(Frame * frame) {
+
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fsub(Frame * frame) {
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fmul(Frame * frame) {
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fdiv(Frame * frame) {
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::frem(Frame * frame) {
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fneg(Frame * frame) {
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::dadd(Frame * frame) {
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::dsub(Frame * frame) {
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::dmul(Frame * frame) {
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::ddiv(Frame * frame) {
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::drem(Frame * frame) {
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::dneg(Frame * frame) {
+
+    return ++frame->local_pc;
+}

@@ -24,6 +24,8 @@ public:
     static uint32_t iadd(Frame*);
     static uint32_t isub(Frame *);
     static uint32_t imul(Frame *);
+    static uint32_t idiv(Frame *);
+    static uint32_t irem(Frame *);
     static uint32_t ineg(Frame *);
     static uint32_t ishl(Frame*);
     static uint32_t ishr(Frame*);
@@ -40,6 +42,13 @@ public:
     static uint32_t iload_1(Frame *);
     static uint32_t iload_2(Frame *);
     static uint32_t iload_3(Frame *);
+    static uint32_t iconst_m1(Frame *);
+    static uint32_t iconst_0(Frame *);
+    static uint32_t iconst_1(Frame *);
+    static uint32_t iconst_2(Frame *);
+    static uint32_t iconst_3(Frame *);
+    static uint32_t iconst_4(Frame *);
+    static uint32_t iconst_5(Frame *);
 };
 
 #endif

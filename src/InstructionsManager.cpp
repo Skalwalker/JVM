@@ -19,6 +19,8 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("iadd")->second.exec = Instruction::iadd;
     this->instructionByName("isub")->second.exec = Instruction::isub;
     this->instructionByName("imul")->second.exec = Instruction::imul;
+    this->instructionByName("idiv")->second.exec = Instruction::idiv;
+    this->instructionByName("irem")->second.exec = Instruction::irem;
     this->instructionByName("ineg")->second.exec = Instruction::ineg;
     this->instructionByName("ishl")->second.exec = Instruction::ishl;
     this->instructionByName("ishr")->second.exec = Instruction::ishr;
@@ -35,6 +37,14 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("iload_1")->second.exec = Instruction::iload_1;
     this->instructionByName("iload_2")->second.exec = Instruction::iload_2;
     this->instructionByName("iload_3")->second.exec = Instruction::iload_3;
+
+    this->instructionByName("iconst_m1")->second.exec = Instruction::iconst_m1;
+    this->instructionByName("iconst_0")->second.exec = Instruction::iconst_0;
+    this->instructionByName("iconst_1")->second.exec = Instruction::iconst_1;
+    this->instructionByName("iconst_2")->second.exec = Instruction::iconst_2;
+    this->instructionByName("iconst_3")->second.exec = Instruction::iconst_3;
+    this->instructionByName("iconst_4")->second.exec = Instruction::iconst_4;
+    this->instructionByName("iconst_5")->second.exec = Instruction::iconst_5;
 
 }
 
