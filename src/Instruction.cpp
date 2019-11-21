@@ -421,63 +421,63 @@ uint32_t Instruction::ixor(Frame * frame) {
 //     res.type_int = val1 + val2;
 //     frame->operandStack.push(res);
 // }
-uint32_t Instruction::fadd(Frame * frame) {
-
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::fsub(Frame * frame) {
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::fmul(Frame * frame) {
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::fdiv(Frame * frame) {
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::frem(Frame * frame) {
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::fneg(Frame * frame) {
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::dadd(Frame * frame) {
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::dsub(Frame * frame) {
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::dmul(Frame * frame) {
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::ddiv(Frame * frame) {
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::drem(Frame * frame) {
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::dneg(Frame * frame) {
-
-    return ++frame->local_pc;
-}
+// uint32_t Instruction::fadd(Frame * frame) {
+//
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::fsub(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::fmul(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::fdiv(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::frem(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::fneg(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::dadd(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::dsub(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::dmul(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::ddiv(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::drem(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
+//
+// uint32_t Instruction::dneg(Frame * frame) {
+//
+//     return ++frame->local_pc;
+// }
