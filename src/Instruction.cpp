@@ -32,9 +32,12 @@ uint32_t Instruction::ldc(Frame* frame){
     Type value;
 
     CPInfo cpInfo = frame->constantPool[index-1];
-    if(cpInfo.tag == 8) {
+    if(cpInfo.tag == CONSTANT_STRING) {
         value.type_reference = (uint64_t)new string(cpInfo.getInfo(frame->constantPool));
         // value.tag = CAT1;
+        frame->operandStack.push(value);
+    } else if (cpInfo.tag == CONSTANT_INTEGER) {
+        value.type_int = cpInfo.integerInfo.bytes;
         frame->operandStack.push(value);
     }
     return ++frame->local_pc;

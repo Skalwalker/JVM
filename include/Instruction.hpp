@@ -6,6 +6,12 @@
 #include "Frame.hpp"
 #include "CPInfo.hpp"
 
+#define CONSTANT_STRING 8
+#define CONSTANT_INTEGER 3
+#define CONSTANT_FLOAT 4
+#define CONSTANT_LONG 5
+#define CONSTANT_DOUBLE 6
+
 using namespace std;
 
 class Instruction {

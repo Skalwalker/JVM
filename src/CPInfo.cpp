@@ -116,5 +116,6 @@ string CPInfo::getInfo(vector<CPInfo> constantPool) {
         string className = cn.getInfo(constantPool);
         string nameAndTypeName = nt.getInfo(constantPool);
         return className + "#" + nameAndTypeName;
+
     }
 }
