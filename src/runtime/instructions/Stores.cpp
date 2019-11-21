@@ -1,5 +1,18 @@
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
+uint32_t Instruction::lstore(Frame * frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t index = bytecode[++frame->local_pc];
+    Type value;
+
+    value = frame->operandStack.top();
+    frame->operandStack.pop();
+    frame->localVariables[index] = value;
+    frame->localVariables[index+1] = value;
+
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::istore_0(Frame * frame){
     Type val;
     val = frame->operandStack.top();

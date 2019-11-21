@@ -94,6 +94,24 @@ uint32_t Instruction::iconst_5(Frame * frame){
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::lconst_0(Frame * frame){
+    Type res;
+    res.tag = TAG_LONG;
+    res.type_long = 0;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lconst_1(Frame * frame){
+    Type res;
+    res.tag = TAG_LONG;
+    res.type_long = 1;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::ldc2_w(Frame* frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];

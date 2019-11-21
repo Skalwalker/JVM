@@ -1,189 +1,6 @@
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
 /* MAAAAAAATH */
-uint32_t Instruction::ladd(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    res.tag = TAG_LONG;
-    res.type_long = val1 + val2;
-    frame->operandStack.push(res);
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::lsub(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    res.tag = TAG_LONG;
-    res.type_long = val1 - val2;
-    frame->operandStack.push(res);
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::lmul(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    res.tag = TAG_LONG;
-    res.type_long = val1 * val2;
-    frame->operandStack.push(res);
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::ldiv(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-
-    if(val2 == 0) {
-        printf("TODO\n");
-    } else {
-        res.tag = TAG_LONG;
-        res.type_long = val1 / val2;
-        frame->operandStack.push(res);
-    }
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::lrem(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-
-    if(val2 == 0) {
-        printf("TODO\n");
-    } else {
-        res.tag = TAG_INT;
-        res.type_long = val1 % val2;
-        frame->operandStack.push(res);
-    }
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::lneg(Frame * frame) {
-    int64_t val1;
-    Type res;
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
-    res.tag = TAG_LONG;
-    res.type_long = -val1;
-    frame->operandStack.push(res);
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::land(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
-    res.tag = TAG_LONG;
-    res.type_long = val1 & val2;
-    frame->operandStack.push(res);
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::lshl(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
-    val2 = val2 & 0x0000003F;
-    res.tag = TAG_LONG;
-    res.type_long = val1 << val2;
-    frame->operandStack.push(res);
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::lshr(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
-    val2 = val2 & 0x0000003F;
-    res.tag = TAG_LONG;
-    res.type_long = val1 >> val2;
-    frame->operandStack.push(res);
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::lor(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
-    res.tag = TAG_LONG;
-    res.type_long = val1 | val2;
-    frame->operandStack.push(res);
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::lxor(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
-    res.tag = TAG_LONG;
-    res.type_long = val1 ^ val2;
-    frame->operandStack.push(res);
-
-    return ++frame->local_pc;
-}
-
-uint32_t Instruction::lcmp(Frame * frame) {
-    int64_t val1, val2;
-    Type res;
-    val2 = frame->operandStack.top().type_long;
-    frame->operandStack.pop();
-    val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
-    res.tag = TAG_INT;
-    if (val1 > val2) {
-        res.type_int = 1;
-    } else if (val1 == val2) {
-        res.type_int = 0;
-    } else {
-        res.type_int = -1;
-    }
-    frame->operandStack.push(res);
-
-    return ++frame->local_pc;
-}
 
 uint32_t Instruction::iadd(Frame * frame) {
     int32_t val1, val2;
@@ -361,6 +178,170 @@ uint32_t Instruction::ixor(Frame * frame) {
     frame->operandStack.top();
     res.tag = TAG_INT;
     res.type_int = val1 ^ val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::ladd(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    res.tag = TAG_LONG;
+    res.type_long = val1 + val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lsub(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    res.tag = TAG_LONG;
+    res.type_long = val1 - val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lmul(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    res.tag = TAG_LONG;
+    res.type_long = val1 * val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::ldiv(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+
+    if(val2 == 0) {
+        printf("TODO\n");
+    } else {
+        res.tag = TAG_LONG;
+        res.type_long = val1 / val2;
+        frame->operandStack.push(res);
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lrem(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+
+    if(val2 == 0) {
+        printf("TODO\n");
+    } else {
+        res.tag = TAG_INT;
+        res.type_long = val1 % val2;
+        frame->operandStack.push(res);
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lneg(Frame * frame) {
+    int64_t val1;
+    Type res;
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    res.tag = TAG_LONG;
+    res.type_long = -val1;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::land(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    res.tag = TAG_LONG;
+    res.type_long = val1 & val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lshl(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    val2 = val2 & 0x0000003F;
+    res.tag = TAG_LONG;
+    res.type_long = val1 << val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lshr(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    val2 = val2 & 0x0000003F;
+    res.tag = TAG_LONG;
+    res.type_long = val1 >> val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lor(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    res.tag = TAG_LONG;
+    res.type_long = val1 | val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lxor(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    res.tag = TAG_LONG;
+    res.type_long = val1 ^ val2;
     frame->operandStack.push(res);
 
     return ++frame->local_pc;

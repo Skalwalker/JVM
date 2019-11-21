@@ -37,7 +37,6 @@ public:
     static uint32_t lshl(Frame*);
     static uint32_t lshr(Frame*);
     static uint32_t land(Frame*);
-    static uint32_t lcmp(Frame*);
     static uint32_t lor(Frame*);
     static uint32_t lxor(Frame*);
     static uint32_t iadd(Frame*);
@@ -53,6 +52,7 @@ public:
     static uint32_t ior(Frame*);
     static uint32_t ixor(Frame*);
     static uint32_t bipush(Frame*);
+    static uint32_t lstore(Frame *);
     static uint32_t lstore_0(Frame *);
     static uint32_t lstore_1(Frame *);
     static uint32_t lstore_2(Frame *);
@@ -76,6 +76,11 @@ public:
     static uint32_t iconst_3(Frame *);
     static uint32_t iconst_4(Frame *);
     static uint32_t iconst_5(Frame *);
+    static uint32_t lconst_0(Frame *);
+    static uint32_t lconst_1(Frame *);
+
+    static uint32_t lcmp(Frame*);
+    static uint32_t ifle(Frame*);
 };
 
 #endif

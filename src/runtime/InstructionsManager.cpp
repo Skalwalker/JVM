@@ -28,7 +28,6 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("land")->second.exec = Instruction::land;
     this->instructionByName("lor")->second.exec = Instruction::lor;
     this->instructionByName("lxor")->second.exec = Instruction::lxor;
-    this->instructionByName("lcmp")->second.exec = Instruction::lcmp;
     this->instructionByName("iadd")->second.exec = Instruction::iadd;
     this->instructionByName("isub")->second.exec = Instruction::isub;
     this->instructionByName("imul")->second.exec = Instruction::imul;
@@ -42,6 +41,9 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("ior")->second.exec = Instruction::ior;
     this->instructionByName("ixor")->second.exec = Instruction::ixor;
     this->instructionByName("bipush")->second.exec = Instruction::bipush;
+
+
+    this->instructionByName("lstore")->second.exec = Instruction::lstore;
     this->instructionByName("lstore_0")->second.exec = Instruction::lstore_0;
     this->instructionByName("lstore_1")->second.exec = Instruction::lstore_1;
     this->instructionByName("lstore_2")->second.exec = Instruction::lstore_2;
@@ -59,6 +61,10 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("iload_2")->second.exec = Instruction::iload_2;
     this->instructionByName("iload_3")->second.exec = Instruction::iload_3;
 
+    this->instructionByName("lcmp")->second.exec = Instruction::lcmp;
+    this->instructionByName("ifle")->second.exec = Instruction::ifle;
+
+
     this->instructionByName("iconst_m1")->second.exec = Instruction::iconst_m1;
     this->instructionByName("iconst_0")->second.exec = Instruction::iconst_0;
     this->instructionByName("iconst_1")->second.exec = Instruction::iconst_1;
@@ -66,6 +72,8 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("iconst_3")->second.exec = Instruction::iconst_3;
     this->instructionByName("iconst_4")->second.exec = Instruction::iconst_4;
     this->instructionByName("iconst_5")->second.exec = Instruction::iconst_5;
+    this->instructionByName("lconst_0")->second.exec = Instruction::lconst_0;
+    this->instructionByName("lconst_1")->second.exec = Instruction::lconst_1;
 
 }
 
