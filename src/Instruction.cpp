@@ -33,11 +33,32 @@ uint32_t Instruction::ldc(Frame* frame){
 
     CPInfo cpInfo = frame->constantPool[index-1];
     if(cpInfo.tag == CONSTANT_STRING) {
+        value.tag = TAG_REFERENCE;
         value.type_reference = (uint64_t)new string(cpInfo.getInfo(frame->constantPool));
         // value.tag = CAT1;
         frame->operandStack.push(value);
     } else if (cpInfo.tag == CONSTANT_INTEGER) {
+        value.tag = TAG_INT;
         value.type_int = cpInfo.integerInfo.bytes;
+        frame->operandStack.push(value);
+    }
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::ldc2_w(Frame* frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+    uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+    Type value;
+
+
+    CPInfo cpInfo = frame->constantPool[index-1];
+    if(cpInfo.tag == CONSTANT_LONG) {
+        value.tag = TAG_LONG;
+        long temp = (long)cpInfo.longInfo.high_bytes << 32;
+        temp += cpInfo.longInfo.low_bytes;
+        value.type_long = temp;
         frame->operandStack.push(value);
     }
     return ++frame->local_pc;
@@ -75,6 +96,9 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 cout << *stringReference << endl;
             } else if (descriptor.compare("(I)V") == 0){
                 cout << frame->operandStack.top().type_int << endl;
+                frame->operandStack.pop();
+            } else if (descriptor.compare("(J)V") == 0){
+                cout << frame->operandStack.top().type_long << endl;
                 frame->operandStack.pop();
             }
         }
@@ -163,6 +187,41 @@ uint32_t Instruction::bipush(Frame * frame){
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::lstore_0(Frame * frame){
+    Type val;
+    val = frame->operandStack.top();
+    frame->operandStack.pop();
+    frame->localVariables[0] = val;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lstore_1(Frame * frame){
+    Type val;
+    val = frame->operandStack.top();
+    frame->operandStack.pop();
+    frame->localVariables[1] = val;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lstore_2(Frame * frame){
+    Type val;
+    val = frame->operandStack.top();
+    frame->operandStack.pop();
+    frame->localVariables[2] = val;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lstore_3(Frame * frame){
+    Type val;
+    val = frame->operandStack.top();
+    frame->operandStack.pop();
+    frame->localVariables[3] = val;
+
+    return ++frame->local_pc;
+}
 
 uint32_t Instruction::istore_0(Frame * frame){
     Type val;
@@ -200,6 +259,33 @@ uint32_t Instruction::istore_3(Frame * frame){
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::lload_0(Frame * frame){
+    Type val = frame->localVariables[0];
+    frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lload_1(Frame * frame){
+    Type val = frame->localVariables[1];
+    frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lload_2(Frame * frame){
+    Type val = frame->localVariables[2];
+    frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lload_3(Frame * frame){
+    Type val = frame->localVariables[3];
+    frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
 
 uint32_t Instruction::iload_0(Frame * frame){
     Type val = frame->localVariables[0];
@@ -231,6 +317,189 @@ uint32_t Instruction::iload_3(Frame * frame){
 
 
 /* MAAAAAAATH */
+uint32_t Instruction::ladd(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    res.tag = TAG_LONG;
+    res.type_long = val1 + val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lsub(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    res.tag = TAG_LONG;
+    res.type_long = val1 - val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lmul(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    res.tag = TAG_LONG;
+    res.type_long = val1 * val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::ldiv(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+
+    if(val2 == 0) {
+        printf("TODO\n");
+    } else {
+        res.tag = TAG_LONG;
+        res.type_long = val1 / val2;
+        frame->operandStack.push(res);
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lrem(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+
+    if(val2 == 0) {
+        printf("TODO\n");
+    } else {
+        res.tag = TAG_INT;
+        res.type_long = val1 % val2;
+        frame->operandStack.push(res);
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lneg(Frame * frame) {
+    int64_t val1;
+    Type res;
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    res.tag = TAG_LONG;
+    res.type_long = -val1;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::land(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    res.tag = TAG_LONG;
+    res.type_long = val1 & val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lshl(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    val2 = val2 & 0x0000003F;
+    res.tag = TAG_LONG;
+    res.type_long = val1 << val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lshr(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    val2 = val2 & 0x0000003F;
+    res.tag = TAG_LONG;
+    res.type_long = val1 >> val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lor(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    res.tag = TAG_LONG;
+    res.type_long = val1 | val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lxor(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    res.tag = TAG_LONG;
+    res.type_long = val1 ^ val2;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lcmp(Frame * frame) {
+    int64_t val1, val2;
+    Type res;
+    val2 = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_long;
+    frame->operandStack.top();
+    res.tag = TAG_INT;
+    if (val1 > val2) {
+        res.type_int = 1;
+    } else if (val1 == val2) {
+        res.type_int = 0;
+    } else {
+        res.type_int = -1;
+    }
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
 
 uint32_t Instruction::iadd(Frame * frame) {
     int32_t val1, val2;

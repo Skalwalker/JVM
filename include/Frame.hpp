@@ -31,7 +31,7 @@ struct Type {
         uint32_t type_float;
         uint64_t type_reference;
         uint32_t type_returnAddress;
-        uint64_t type_long;
+        int64_t type_long;
         uint64_t type_double;
     };
 };

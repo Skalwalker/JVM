@@ -3,6 +3,7 @@
 #include "InstructionsManager.hpp"
 #include "ExecutionEngine.hpp"
 #include "ClassLoader.hpp"
+#include <limits>
 using namespace std;
 
 int main(int argc, char* argv[]) {
