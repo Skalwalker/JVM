@@ -20,8 +20,8 @@ public class int_aritmetica{
 		System.out.println(a>>2);
 		a=-1>>>2;
 		System.out.println(a);
-		
-		
+
+
 		/*-1=0xFFFF FFFF*/
 		/*0011 1111*/
 		/*3FFF FFFF*/
