@@ -1,10 +1,4 @@
-#include <iostream>
-#include "../include/Printer.hpp"
-#include "InstructionsManager.hpp"
-#include "ExecutionEngine.hpp"
-#include "ClassLoader.hpp"
-#include <limits>
-using namespace std;
+#include "../include/main.hpp"
 
 int main(int argc, char* argv[]) {
     string file_name;

@@ -21,6 +21,11 @@ $(TARGET): $(OBJECTS)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
+	@mkdir -p $(BUILDDIR)/execution
+	@mkdir -p $(BUILDDIR)/loader
+	@mkdir -p $(BUILDDIR)/models
+	@mkdir -p $(BUILDDIR)/runtime
+	@mkdir -p $(BUILDDIR)/runtime/instructions
 	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
