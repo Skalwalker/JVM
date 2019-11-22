@@ -145,6 +145,16 @@ InstructionsManager::InstructionsManager() {
 
     this->instructionByName("goto")->second.exec = Instruction::goto_func;
 
+    this->instructionByName("d2f")->second.exec = Instruction::d2f;
+    this->instructionByName("d2i")->second.exec = Instruction::d2i;
+    this->instructionByName("d2l")->second.exec = Instruction::d2l;
+    this->instructionByName("f2i")->second.exec = Instruction::f2i;
+    this->instructionByName("f2l")->second.exec = Instruction::f2l;
+    this->instructionByName("f2d")->second.exec = Instruction::f2d;
+
+    this->instructionByName("jsr")->second.exec = Instruction::jsr;
+
+    this->instructionByName("ret")->second.exec = Instruction::ret;
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {

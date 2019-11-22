@@ -159,6 +159,15 @@ public:
     static uint32_t if_acmpne(Frame*);
     static uint32_t goto_func(Frame *);
 
+    static uint32_t f2d(Frame *);
+    static uint32_t f2i(Frame *);
+    static uint32_t f2l(Frame *);
+    static uint32_t d2f(Frame *);
+    static uint32_t d2i(Frame *);
+    static uint32_t d2l(Frame *);
+
+    static uint32_t jsr(Frame *);
+    static uint32_t ret(Frame *);
 
 };
 
