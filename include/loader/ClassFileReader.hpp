@@ -18,7 +18,13 @@ T ClassFileReader<T>::readBytes(FILE * fp) {
     int bytesForRead = sizeof(T);
     T readBytes;
     fread(&readBytes, bytesForRead, 1, fp);
-    readBytes = ClassFileReader<T>::littleEndianToBigEndian(readBytes);
+    if (bytesForRead == 4) {
+        readBytes = ((readBytes << 8) & 0xFF00FF00) | ((readBytes >> 8) & 0xFF00FF);
+        readBytes = (readBytes << 16) | (readBytes >> 16);
+    } else if (bytesForRead == 2) {
+        readBytes = (readBytes << 8) | (readBytes >> 8);
+    }
+    // readBytes = ClassFileReader<T>::littleEndianToBigEndian(readBytes);
     return (readBytes);
 }
 
