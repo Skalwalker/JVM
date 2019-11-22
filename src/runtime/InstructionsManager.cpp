@@ -47,6 +47,13 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("frem")->second.exec = Instruction::frem;
     this->instructionByName("fneg")->second.exec = Instruction::fneg;
 
+    this->instructionByName("i2d")->second.exec = Instruction::i2d;
+    this->instructionByName("i2l")->second.exec = Instruction::i2l;
+    this->instructionByName("i2f")->second.exec = Instruction::i2f;
+    this->instructionByName("i2b")->second.exec = Instruction::i2b;
+    this->instructionByName("i2s")->second.exec = Instruction::i2s;
+    this->instructionByName("i2c")->second.exec = Instruction::i2c;
+
     this->instructionByName("iinc")->second.exec = Instruction::iinc;
 
     this->instructionByName("dadd")->second.exec = Instruction::dadd;
@@ -58,6 +65,7 @@ InstructionsManager::InstructionsManager() {
 
 
     this->instructionByName("bipush")->second.exec = Instruction::bipush;
+    this->instructionByName("sipush")->second.exec = Instruction::sipush;
     this->instructionByName("lstore")->second.exec = Instruction::lstore;
     this->instructionByName("lstore_0")->second.exec = Instruction::lstore_0;
     this->instructionByName("lstore_1")->second.exec = Instruction::lstore_1;
@@ -137,6 +145,25 @@ InstructionsManager::InstructionsManager() {
 
     this->instructionByName("goto")->second.exec = Instruction::goto_func;
 
+    this->instructionByName("d2f")->second.exec = Instruction::d2f;
+    this->instructionByName("d2i")->second.exec = Instruction::d2i;
+    this->instructionByName("d2l")->second.exec = Instruction::d2l;
+    this->instructionByName("f2i")->second.exec = Instruction::f2i;
+    this->instructionByName("f2l")->second.exec = Instruction::f2l;
+    this->instructionByName("f2d")->second.exec = Instruction::f2d;
+    this->instructionByName("l2i")->second.exec = Instruction::l2i;
+    this->instructionByName("l2f")->second.exec = Instruction::l2f;
+    this->instructionByName("l2d")->second.exec = Instruction::l2d;
+    this->instructionByName("i2f")->second.exec = Instruction::i2f;
+    this->instructionByName("i2d")->second.exec = Instruction::i2d;
+    this->instructionByName("i2c")->second.exec = Instruction::i2c;
+    this->instructionByName("i2s")->second.exec = Instruction::i2s;
+    this->instructionByName("i2l")->second.exec = Instruction::i2l;
+    this->instructionByName("i2b")->second.exec = Instruction::i2b;
+
+    this->instructionByName("jsr")->second.exec = Instruction::jsr;
+
+    this->instructionByName("ret")->second.exec = Instruction::ret;
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {

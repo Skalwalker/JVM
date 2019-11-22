@@ -48,7 +48,14 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 frame->operandStack.pop();
                 cout << *stringReference << endl;
             } else if (descriptor.compare("(I)V") == 0){
-                cout << frame->operandStack.top().type_int << endl;
+                Type value = frame->operandStack.top();
+                if (value.tag == TAG_INT) {
+                    cout << frame->operandStack.top().type_int << endl;
+                } else if (value.tag == TAG_SHORT) {
+                    cout << frame->operandStack.top().type_short << endl;
+                } else if (value.tag == TAG_BYTE) {
+                    cout << (int32_t)frame->operandStack.top().type_byte << endl;
+                }
                 frame->operandStack.pop();
             } else if (descriptor.compare("(J)V") == 0){
                 cout << frame->operandStack.top().type_long << endl;
@@ -58,6 +65,14 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 frame->operandStack.pop();
             } else if (descriptor.compare("(D)V") == 0){
                 printf("%f\n",frame->operandStack.top().type_double);
+                frame->operandStack.pop();
+            } else if (descriptor.compare("(C)V") == 0){
+                int c = (int32_t)(frame->operandStack.top().type_char);
+                if (isprint(c)) {
+                    printf("%c\n", (char)(frame->operandStack.top().type_char));
+                } else {
+                    cout << "Non-Printable-Char: " << (int)c << endl;
+                }
                 frame->operandStack.pop();
             }
         }

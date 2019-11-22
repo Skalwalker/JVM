@@ -24,9 +24,9 @@ struct Type {
     union {
         uint32_t type_empty;
         uint32_t type_boolean;
-        uint32_t type_byte;
-        uint32_t type_char;
-        uint32_t type_short;
+        int8_t type_byte;
+        uint8_t type_char;
+        int16_t type_short;
         int32_t type_int;
         float type_float;
         uint64_t type_reference;
