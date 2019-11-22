@@ -158,6 +158,9 @@ public:
     static uint32_t d2i(Frame *);
     static uint32_t d2l(Frame *);
 
+    static uint32_t jsr(Frame *);
+    static uint32_t ret(Frame *);
+
 };
 
 #endif

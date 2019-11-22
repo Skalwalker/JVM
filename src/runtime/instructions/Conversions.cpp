@@ -1,5 +1,22 @@
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
+/**
+A brief description on a single line, ended by a period or blank line.
+
+@file
+*/
+
+
+/**
+A brief description on a single line, ended by a period or blank line.
+
+A longer comment, which may stretch over several lines and may include other things like:
+- a list like this
+- special markup like below
+@param myParam1 Description of 1st parameter.
+@param myParam2 Description of 2nd parameter.
+@returns Description of returned value.
+*/
 uint32_t Instruction::f2d(Frame * frame){
     float val1;
     val1 = frame->operandStack.top().type_float;
@@ -13,6 +30,16 @@ uint32_t Instruction::f2d(Frame * frame){
     return ++frame->local_pc;
 }
 
+/**
+A brief description on a single line, ended by a period or blank line.
+
+A longer comment, which may stretch over several lines and may include other things like:
+- a list like this
+- special markup like below
+@param myParam1 Description of 1st parameter.
+@param myParam2 Description of 2nd parameter.
+@returns Description of returned value.
+*/
 uint32_t Instruction::f2i(Frame * frame){
     float val1;
     val1 = frame->operandStack.top().type_float;
@@ -26,6 +53,16 @@ uint32_t Instruction::f2i(Frame * frame){
     return ++frame->local_pc;
 }
 
+/**
+A brief description on a single line, ended by a period or blank line.
+
+A longer comment, which may stretch over several lines and may include other things like:
+- a list like this
+- special markup like below
+@param myParam1 Description of 1st parameter.
+@param myParam2 Description of 2nd parameter.
+@returns Description of returned value.
+*/
 uint32_t Instruction::f2l(Frame * frame){
     float val1;
     val1 = frame->operandStack.top().type_float;
@@ -39,6 +76,16 @@ uint32_t Instruction::f2l(Frame * frame){
     return ++frame->local_pc;
 }
 
+/**
+A brief description on a single line, ended by a period or blank line.
+
+A longer comment, which may stretch over several lines and may include other things like:
+- a list like this
+- special markup like below
+@param myParam1 Description of 1st parameter.
+@param myParam2 Description of 2nd parameter.
+@returns Description of returned value.
+*/
 uint32_t Instruction::d2f(Frame * frame){
     double val1;
     val1 = frame->operandStack.top().type_double;
@@ -52,6 +99,16 @@ uint32_t Instruction::d2f(Frame * frame){
     return ++frame->local_pc;
 }
 
+/**
+A brief description on a single line, ended by a period or blank line.
+
+A longer comment, which may stretch over several lines and may include other things like:
+- a list like this
+- special markup like below
+@param myParam1 Description of 1st parameter.
+@param myParam2 Description of 2nd parameter.
+@returns Description of returned value.
+*/
 uint32_t Instruction::d2i(Frame * frame){
     double val1;
     val1 = frame->operandStack.top().type_double;
@@ -65,6 +122,16 @@ uint32_t Instruction::d2i(Frame * frame){
     return ++frame->local_pc;
 }
 
+/**
+A brief description on a single line, ended by a period or blank line.
+
+A longer comment, which may stretch over several lines and may include other things like:
+- a list like this
+- special markup like below
+@param myParam1 Description of 1st parameter.
+@param myParam2 Description of 2nd parameter.
+@returns Description of returned value.
+*/
 uint32_t Instruction::d2l(Frame * frame){
     double val1;
     val1 = frame->operandStack.top().type_double;

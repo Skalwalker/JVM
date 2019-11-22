@@ -143,6 +143,10 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("f2i")->second.exec = Instruction::f2i;
     this->instructionByName("f2l")->second.exec = Instruction::f2l;
     this->instructionByName("f2d")->second.exec = Instruction::f2d;
+
+    this->instructionByName("jsr")->second.exec = Instruction::jsr;
+
+    this->instructionByName("ret")->second.exec = Instruction::ret;
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {
