@@ -6,8 +6,8 @@ uint32_t Instruction::pop2(Frame* frame) {
     if (value == TAG_LONG || value == TAG_DOUBLE) {
         frame->operandStack.pop();
     } else {
-        frame->operandStack.pop()
-        frame->operandStack.pop()
+        frame->operandStack.pop();
+        frame->operandStack.pop();
     }
 
     return ++frame->local_pc;
