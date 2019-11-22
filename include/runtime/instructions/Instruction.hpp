@@ -125,11 +125,33 @@ public:
     static uint32_t iconst_5(Frame *);
     static uint32_t lconst_0(Frame *);
     static uint32_t lconst_1(Frame *);
+    static uint32_t dconst_0(Frame *);
+    static uint32_t dconst_1(Frame *);
+    static uint32_t fconst_0(Frame *);
+    static uint32_t fconst_1(Frame *);
 
     static uint32_t lcmp(Frame*);
     static uint32_t ifle(Frame*);
     static uint32_t ifge(Frame*);
     static uint32_t ifeq(Frame*);
+    static uint32_t ifne(Frame*);
+    static uint32_t iflt(Frame*);
+    static uint32_t ifgt(Frame*);
+    static uint32_t fcmpl(Frame*);
+    static uint32_t fcmpg(Frame*);
+    static uint32_t dcmpl(Frame*);
+    static uint32_t dcmpg(Frame*);
+    static uint32_t if_icmpeq(Frame*);
+    static uint32_t if_icmpne(Frame*);
+    static uint32_t if_icmplt(Frame*);
+    static uint32_t if_icmpge(Frame*);
+    static uint32_t if_icmpgt(Frame*);
+    static uint32_t if_icmple(Frame*);
+    static uint32_t if_acmpeq(Frame*);
+    static uint32_t if_acmpne(Frame*);
+    static uint32_t goto_func(Frame *);
+
+
 };
 
 #endif
