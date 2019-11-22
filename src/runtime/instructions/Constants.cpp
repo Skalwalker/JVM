@@ -118,6 +118,42 @@ uint32_t Instruction::lconst_1(Frame * frame){
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::dconst_0(Frame * frame){
+    Type res;
+    res.tag = TAG_DOUBLE;
+    res.type_double = 0.0;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::dconst_1(Frame * frame){
+    Type res;
+    res.tag = TAG_DOUBLE;
+    res.type_double = 1.0;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fconst_0(Frame * frame){
+    Type res;
+    res.tag = TAG_FLOAT;
+    res.type_float = 0.0f;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fconst_1(Frame * frame){
+    Type res;
+    res.tag = TAG_FLOAT;
+    res.type_float = 1.0f;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::ldc2_w(Frame* frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];

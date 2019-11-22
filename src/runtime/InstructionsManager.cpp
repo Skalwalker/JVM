@@ -99,10 +99,19 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("dload_1")->second.exec = Instruction::dload_1;
     this->instructionByName("dload_2")->second.exec = Instruction::dload_2;
     this->instructionByName("dload_3")->second.exec = Instruction::dload_3;
+
     this->instructionByName("lcmp")->second.exec = Instruction::lcmp;
-    this->instructionByName("ifle")->second.exec = Instruction::ifle;
-    this->instructionByName("ifge")->second.exec = Instruction::ifge;
     this->instructionByName("ifeq")->second.exec = Instruction::ifeq;
+    this->instructionByName("ifne")->second.exec = Instruction::ifne;
+    this->instructionByName("iflt")->second.exec = Instruction::iflt;
+    this->instructionByName("ifle")->second.exec = Instruction::ifle;
+    this->instructionByName("ifgt")->second.exec = Instruction::ifgt;
+    this->instructionByName("ifge")->second.exec = Instruction::ifge;
+    this->instructionByName("fcmpl")->second.exec = Instruction::fcmpl;
+    this->instructionByName("fcmpg")->second.exec = Instruction::fcmpg;
+    this->instructionByName("dcmpl")->second.exec = Instruction::dcmpl;
+    this->instructionByName("dcmpg")->second.exec = Instruction::dcmpg;
+
     this->instructionByName("iconst_m1")->second.exec = Instruction::iconst_m1;
     this->instructionByName("iconst_0")->second.exec = Instruction::iconst_0;
     this->instructionByName("iconst_1")->second.exec = Instruction::iconst_1;
@@ -112,6 +121,10 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("iconst_5")->second.exec = Instruction::iconst_5;
     this->instructionByName("lconst_0")->second.exec = Instruction::lconst_0;
     this->instructionByName("lconst_1")->second.exec = Instruction::lconst_1;
+    this->instructionByName("dconst_0")->second.exec = Instruction::dconst_0;
+    this->instructionByName("dconst_1")->second.exec = Instruction::dconst_1;
+    this->instructionByName("fconst_0")->second.exec = Instruction::fconst_0;
+    this->instructionByName("fconst_1")->second.exec = Instruction::fconst_1;
 
     this->instructionByName("if_icmpeq")->second.exec = Instruction::if_icmpeq;
     this->instructionByName("if_icmpne")->second.exec = Instruction::if_icmpne;

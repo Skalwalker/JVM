@@ -52,7 +52,7 @@ void ExecutionEngine::run() {
         uint8_t opcode = bytecode[thread.pc];
         Instruction currentInstruction = instructionsManager->opcode[opcode];
 
-        // cout << "Instrução: " << currentInstruction.mnemonic << " frame: " << currentFrame << endl;
+        cout << "Instrução: " << currentInstruction.mnemonic << " frame: " << currentFrame << endl;
         thread.pc = currentInstruction.exec(currentFrame);
 
         if (currentInstruction.mnemonic.compare("return") == 0) {
