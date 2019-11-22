@@ -354,7 +354,10 @@ uint32_t Instruction::iinc(Frame * frame) {
     int32_t temp, sign_ext;
 
     sign_ext = imm_const;
-    frame->localVariables[index].type_int += sign_ext;
+    temp = frame->localVariables[index].type_int;
+    temp += sign_ext;
+
+    frame->localVariables[index].type_int = temp;
 
     return ++frame->local_pc;
 }

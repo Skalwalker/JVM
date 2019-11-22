@@ -113,6 +113,17 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("lconst_0")->second.exec = Instruction::lconst_0;
     this->instructionByName("lconst_1")->second.exec = Instruction::lconst_1;
 
+    this->instructionByName("if_icmpeq")->second.exec = Instruction::if_icmpeq;
+    this->instructionByName("if_icmpne")->second.exec = Instruction::if_icmpne;
+    this->instructionByName("if_icmplt")->second.exec = Instruction::if_icmplt;
+    this->instructionByName("if_icmpge")->second.exec = Instruction::if_icmpge;
+    this->instructionByName("if_icmpgt")->second.exec = Instruction::if_icmpgt;
+    this->instructionByName("if_icmple")->second.exec = Instruction::if_icmple;
+    this->instructionByName("if_acmpeq")->second.exec = Instruction::if_acmpeq;
+    this->instructionByName("if_acmpne")->second.exec = Instruction::if_acmpne;
+
+    this->instructionByName("goto")->second.exec = Instruction::goto_func;
+
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {

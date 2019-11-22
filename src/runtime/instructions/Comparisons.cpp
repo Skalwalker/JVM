@@ -73,3 +73,171 @@ uint32_t Instruction::ifeq(Frame* frame) {
     // Nao passou
     return ++frame->local_pc;
 }
+
+uint32_t Instruction::if_icmpeq(Frame* frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t branchbyte1 = bytecode[++frame->local_pc];
+    uint8_t branchbyte2 = bytecode[++frame->local_pc];
+    int32_t val1, val2;
+    int16_t offset;
+
+    val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+
+    if(val1 == val2) {
+         offset = (branchbyte1 << 8) | branchbyte2;
+         frame->local_pc += offset-2;
+         return frame->local_pc;
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::if_icmpne(Frame* frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t branchbyte1 = bytecode[++frame->local_pc];
+    uint8_t branchbyte2 = bytecode[++frame->local_pc];
+    int32_t val1, val2;
+    int16_t offset;
+
+    val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+
+    if(val1 != val2) {
+         offset = (branchbyte1 << 8) | branchbyte2;
+         frame->local_pc += offset-2;
+         return frame->local_pc;
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::if_icmplt(Frame* frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t branchbyte1 = bytecode[++frame->local_pc];
+    uint8_t branchbyte2 = bytecode[++frame->local_pc];
+    int32_t val1, val2;
+    int16_t offset;
+
+    val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+
+    if(val1 < val2) {
+         offset = (branchbyte1 << 8) | branchbyte2;
+         frame->local_pc += offset-2;
+         return frame->local_pc;
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::if_icmpge(Frame* frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t branchbyte1 = bytecode[++frame->local_pc];
+    uint8_t branchbyte2 = bytecode[++frame->local_pc];
+    int32_t val1, val2;
+    int16_t offset;
+
+    val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+
+    if(val1 >= val2) {
+         offset = (branchbyte1 << 8) | branchbyte2;
+         frame->local_pc += offset-2;
+         return frame->local_pc;
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::if_icmpgt(Frame* frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t branchbyte1 = bytecode[++frame->local_pc];
+    uint8_t branchbyte2 = bytecode[++frame->local_pc];
+    int32_t val1, val2;
+    int16_t offset;
+
+    val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+
+    if(val1 > val2) {
+        offset = (branchbyte1 << 8) | branchbyte2;
+        frame->local_pc += offset-2;
+        return frame->local_pc;
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::if_icmple(Frame* frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t branchbyte1 = bytecode[++frame->local_pc];
+    uint8_t branchbyte2 = bytecode[++frame->local_pc];
+    int32_t val1, val2;
+    int16_t offset;
+
+    val2 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+
+    if(val1 <= val2) {
+         offset = (branchbyte1 << 8) | branchbyte2;
+         frame->local_pc += offset-2;
+         return frame->local_pc;
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::if_acmpeq(Frame* frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t branchbyte1 = bytecode[++frame->local_pc];
+    uint8_t branchbyte2 = bytecode[++frame->local_pc];
+    uint64_t val1, val2;
+    int16_t offset;
+
+    val2 = frame->operandStack.top().type_reference;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_reference;
+    frame->operandStack.pop();
+
+    if(val1 == val2) {
+         offset = (branchbyte1 << 8) | branchbyte2;
+         frame->local_pc += offset-2;
+         return frame->local_pc;
+    }
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::if_acmpne(Frame* frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t branchbyte1 = bytecode[++frame->local_pc];
+    uint8_t branchbyte2 = bytecode[++frame->local_pc];
+    uint64_t val1, val2;
+    int16_t offset;
+
+    val2 = frame->operandStack.top().type_reference;
+    frame->operandStack.pop();
+    val1 = frame->operandStack.top().type_reference;
+    frame->operandStack.pop();
+
+    if(val1 != val2) {
+         offset = (branchbyte1 << 8) | branchbyte2;
+         frame->local_pc += offset-2;
+         return frame->local_pc;
+    }
+
+    return ++frame->local_pc;
+}

@@ -130,6 +130,18 @@ public:
     static uint32_t ifle(Frame*);
     static uint32_t ifge(Frame*);
     static uint32_t ifeq(Frame*);
+
+    static uint32_t if_icmpeq(Frame*);
+    static uint32_t if_icmpne(Frame*);
+    static uint32_t if_icmplt(Frame*);
+    static uint32_t if_icmpge(Frame*);
+    static uint32_t if_icmpgt(Frame*);
+    static uint32_t if_icmple(Frame*);
+    static uint32_t if_acmpeq(Frame*);
+    static uint32_t if_acmpne(Frame*);
+
+
+    static uint32_t goto_func(Frame *);
 };
 
 #endif
