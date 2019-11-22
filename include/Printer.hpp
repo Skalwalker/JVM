@@ -1,8 +1,8 @@
 #ifndef __PRINTER_H__
 #define __PRINTER_H__
 
-#include "ClassFile.hpp"
-#include "InstructionsManager.hpp"
+#include "./models/ClassFile.hpp"
+#include "./runtime/InstructionsManager.hpp"
 #include <iostream>
 #include <iomanip>
 #include <inttypes.h>
