@@ -11,6 +11,20 @@ uint32_t Instruction::bipush(Frame * frame){
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::sipush(Frame * frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+
+    int32_t value = (byte1<<8) | byte2;
+    Type res;
+    res.tag = TAG_INT;
+    res.type_int = (int32_t)value;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::ldc(Frame* frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte = bytecode[++frame->local_pc];

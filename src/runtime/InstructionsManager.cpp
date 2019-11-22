@@ -47,6 +47,13 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("frem")->second.exec = Instruction::frem;
     this->instructionByName("fneg")->second.exec = Instruction::fneg;
 
+    this->instructionByName("i2d")->second.exec = Instruction::i2d;
+    this->instructionByName("i2l")->second.exec = Instruction::i2l;
+    this->instructionByName("i2f")->second.exec = Instruction::i2f;
+    this->instructionByName("i2b")->second.exec = Instruction::i2b;
+    this->instructionByName("i2s")->second.exec = Instruction::i2s;
+    this->instructionByName("i2c")->second.exec = Instruction::i2c;
+
     this->instructionByName("iinc")->second.exec = Instruction::iinc;
 
     this->instructionByName("dadd")->second.exec = Instruction::dadd;
@@ -58,6 +65,7 @@ InstructionsManager::InstructionsManager() {
 
 
     this->instructionByName("bipush")->second.exec = Instruction::bipush;
+    this->instructionByName("sipush")->second.exec = Instruction::sipush;
     this->instructionByName("lstore")->second.exec = Instruction::lstore;
     this->instructionByName("lstore_0")->second.exec = Instruction::lstore_0;
     this->instructionByName("lstore_1")->second.exec = Instruction::lstore_1;
