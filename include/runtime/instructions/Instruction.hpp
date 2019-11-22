@@ -171,6 +171,11 @@ public:
     static uint32_t jsr(Frame *);
     static uint32_t ret(Frame *);
 
+    static uint32_t pop(Frame *);
+    static uint32_t dup(Frame *);
+    static uint32_t dup_x1(Frame *);
+    static uint32_t dup_x2(Frame *);
+    static uint32_t swap(Frame *);
 };
 
 #endif
