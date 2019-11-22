@@ -162,8 +162,17 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("i2b")->second.exec = Instruction::i2b;
 
     this->instructionByName("jsr")->second.exec = Instruction::jsr;
-
     this->instructionByName("ret")->second.exec = Instruction::ret;
+
+    this->instructionByName("pop")->second.exec = Instruction::pop;
+    this->instructionByName("pop2")->second.exec = Instruction::pop2;
+    this->instructionByName("dup")->second.exec = Instruction::dup;
+    this->instructionByName("dup2")->second.exec = Instruction::dup2;
+    this->instructionByName("dup_x1")->second.exec = Instruction::dup_x1;
+    this->instructionByName("dup_x2")->second.exec = Instruction::dup_x2;
+    this->instructionByName("dup2_x1")->second.exec = Instruction::dup2_x1;
+    this->instructionByName("dup2_x2")->second.exec = Instruction::dup2_x2;
+    this->instructionByName("swap")->second.exec = Instruction::swap;
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {
