@@ -62,13 +62,6 @@ public:
     static uint32_t bipush(Frame*);
     static uint32_t sipush(Frame*);
 
-    static uint32_t i2d(Frame*);
-    static uint32_t i2l(Frame*);
-    static uint32_t i2f(Frame*);
-    static uint32_t i2b(Frame*);
-    static uint32_t i2s(Frame*);
-    static uint32_t i2c(Frame*);
-
     static uint32_t dadd(Frame *);
     static uint32_t dsub(Frame *);
     static uint32_t dmul(Frame *);
@@ -165,6 +158,15 @@ public:
     static uint32_t d2f(Frame *);
     static uint32_t d2i(Frame *);
     static uint32_t d2l(Frame *);
+    static uint32_t l2f(Frame *);
+    static uint32_t l2i(Frame *);
+    static uint32_t l2d(Frame *);
+    static uint32_t i2d(Frame*);
+    static uint32_t i2l(Frame*);
+    static uint32_t i2f(Frame*);
+    static uint32_t i2b(Frame*);
+    static uint32_t i2s(Frame*);
+    static uint32_t i2c(Frame*);
 
     static uint32_t jsr(Frame *);
     static uint32_t ret(Frame *);

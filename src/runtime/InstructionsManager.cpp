@@ -151,6 +151,15 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("f2i")->second.exec = Instruction::f2i;
     this->instructionByName("f2l")->second.exec = Instruction::f2l;
     this->instructionByName("f2d")->second.exec = Instruction::f2d;
+    this->instructionByName("l2i")->second.exec = Instruction::l2i;
+    this->instructionByName("l2f")->second.exec = Instruction::l2f;
+    this->instructionByName("l2d")->second.exec = Instruction::l2d;
+    this->instructionByName("i2f")->second.exec = Instruction::i2f;
+    this->instructionByName("i2d")->second.exec = Instruction::i2d;
+    this->instructionByName("i2c")->second.exec = Instruction::i2c;
+    this->instructionByName("i2s")->second.exec = Instruction::i2s;
+    this->instructionByName("i2l")->second.exec = Instruction::i2l;
+    this->instructionByName("i2b")->second.exec = Instruction::i2b;
 
     this->instructionByName("jsr")->second.exec = Instruction::jsr;
 
