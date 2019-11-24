@@ -206,12 +206,13 @@ uint32_t Instruction::dstore_3(Frame * frame){
 uint32_t Instruction::iastore(Frame * frame) {
     int32_t value = frame->operandStack.top().type_int;
     frame->operandStack.pop();
-    int index = frame->operandStack.top().type_int;
+    int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
     Type* arrayPointer = (Type*)(arrayref.type_reference);
+
     (arrayPointer[index]).type_int = value;
 
     return ++frame->local_pc;
