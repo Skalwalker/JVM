@@ -7,6 +7,51 @@
 #include "../Frame.hpp"
 #include "../../models/CPInfo.hpp"
 
+/** \file Instruction.hpp
+ * Definição das instruções de acordo com a Java SE 8 Edition.
+ * São divididas em 10 tipos:
+ * -# Instruções de Load e Store
+ *      - iload, iload_<n>, lload, lload_<n>, fload, fload_<n>, dload, dload_<n>, aload, aload_<n> - Loads.cpp
+ *      - istore, istore_<n>, lstore, lstore_<n>, fstore, fstore_<n>, dstore, dstore_<n>, astore, astore_<n> - Stores.Cpp
+ *      - bipush, sipush, ldc, ldc_w, ldc2_w, aconst_null, iconst_m1, iconst_<i>, lconst_<l>, fconst_<f>, dconst_<d> - Constants.cpp    
+ *      - wide  ???
+ * -# Instruções Aritméticas - Math.cpp
+ *      - Add: iadd, ladd, fadd, dadd.
+ *      - Subtract: isub, lsub, fsub, dsub.
+ *      - Multiply: imul, lmul, fmul, dmul.
+ *      - Divide: idiv, ldiv, fdiv, ddiv.
+ *      - Remainder: irem, lrem, frem, drem.
+ *      - Negate: ineg, lneg, fneg, dneg.
+ *      - Shift: ishl, ishr, iushr, lshl, lshr, lushr.
+ *      - Bitwise OR: ior, lor.
+ *      - Bitwise AND: iand, land.
+ *      - Bitwise exclusive OR: ixor, lxor.
+ *      - Local variable increment: iinc
+ *      - Comparison: dcmpg, dcmpl, fcmpg, fcmpl, lcmp - Comparison.cpp
+ * -# Instruções de Conversão de Tipo - Conversions.cpp
+ *      - i2l, i2f, i2d, l2f, l2d, e f2d.
+ *      - i2l, i2f, i2d, l2f, l2d, e f2d.
+ * -# Instruções de Criação e Manipulação de Objetos - Reference.cpp
+ *      - new
+ *      - newarray, anewarray, multianewarray
+ *      - getstatic, putstatic, getfield, putfield
+ *      - baload, caload, saload, iaload, laload, faload, daload, aaload
+ *      - bastore, castore, sastore, iastore, lastore, fastore, dastore, aastore
+ *      - arraylength
+ *      - instanceof, checkcast
+ * -# Instruções de Gerenciamento da Pilha de Operandos - Stack.cpp
+ *      - pop, pop2, dup, dup2, dup_x1, dup2_x1, dup_x2, dup2_x2, swap
+ * -# Instruções de Transferência de Controle
+ *      - ifeq, ifne, iflt, ifle, ifgt, ifge, ifnull*, ifnonnull*, if_icmpeq, if_icmpne, if_icmplt, if_icmple, if_icmpgt, if_icmpge, if_acmpeq, if_acmpne. - Comparisons.cpp
+ *      - tableswitch, lookupswitch - Control.cpp
+ *      - goto, goto_w*, jsr, jsr_w, ret - Control.cpp
+ * -# Instruções de Invocação de Método e Retorno - References.cpp
+ *      - invokevirtual, invokeinterface, invokespecial, invokestatic, invokedynamic 
+ * -# Instruções de Exceções - ?
+ *      - athrow
+ * -# Instruções de Sincronização - ?
+ */
+
 #define CONSTANT_STRING 8
 #define CONSTANT_INTEGER 3
 #define CONSTANT_FLOAT 4
