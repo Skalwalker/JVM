@@ -1,5 +1,57 @@
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
+uint32_t Instruction::newarray(Frame *frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t atype = bytecode[++frame->local_pc];
+    int count = frame->operandStack.top().type_int;
+    frame->operandStack.top();
+
+    Type *arr_type = (Type*)malloc(count*(sizeof(Type)));
+
+    Type *value;
+    value = (Type*)malloc(sizeof(Type));
+
+    if (atype == T_BOOLEAN) {
+        value->tag = TAG_BOOL;
+        value->type_boolean = false;
+    } else if (atype == T_CHAR) {
+        value->tag = TAG_CHAR;
+        value->type_char = 0;
+    }  else if (atype == T_FLOAT) {
+        value->tag = TAG_FLOAT;
+        value->type_float = 0.0f;
+    }  else if (atype == T_DOUBLE) {
+        value->tag = TAG_DOUBLE;
+        value->type_double = 0.0;
+    }  else if (atype == T_BYTE) {
+        value->tag = TAG_BYTE;
+        value->type_byte = 0;
+    }  else if (atype == T_SHORT) {
+        value->tag = TAG_SHORT;
+        value->type_short = 0;
+    }  else if (atype == T_INT) {
+        value->tag = TAG_INT;
+        value->type_int = 0;
+    }  else if (atype == T_LONG) {
+        value->tag = TAG_LONG;
+        value->type_long = 0;
+    }
+
+    for (int i = 0; i < count; i++) {
+        arr_type[i] = *value;
+    }
+
+    Type arrayReference;
+    arrayReference.tag = TAG_REFERENCE;
+    arrayReference.type_reference = (uint64_t)&arr_type[0];
+    frame->operandStack.push(arrayReference);
+
+    Type res = frame->operandStack.top();
+    Type* arrayPointer = (Type*)(res.type_reference);
+
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::getstatic(Frame* frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];
@@ -48,31 +100,10 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 frame->operandStack.pop();
                 cout << *stringReference << endl;
             } else if (descriptor.compare("(I)V") == 0){
-                Type value = frame->operandStack.top();
-                if (value.tag == TAG_INT) {
-                    cout << frame->operandStack.top().type_int << endl;
-                } else if (value.tag == TAG_SHORT) {
-                    cout << frame->operandStack.top().type_short << endl;
-                } else if (value.tag == TAG_BYTE) {
-                    cout << (int32_t)frame->operandStack.top().type_byte << endl;
-                }
+                cout << frame->operandStack.top().type_int << endl;
                 frame->operandStack.pop();
             } else if (descriptor.compare("(J)V") == 0){
                 cout << frame->operandStack.top().type_long << endl;
-                frame->operandStack.pop();
-            } else if (descriptor.compare("(F)V") == 0){
-                printf("%f\n", frame->operandStack.top().type_float);
-                frame->operandStack.pop();
-            } else if (descriptor.compare("(D)V") == 0){
-                printf("%f\n",frame->operandStack.top().type_double);
-                frame->operandStack.pop();
-            } else if (descriptor.compare("(C)V") == 0){
-                int c = (int32_t)(frame->operandStack.top().type_char);
-                if (isprint(c)) {
-                    printf("%c\n", (char)(frame->operandStack.top().type_char));
-                } else {
-                    cout << "Non-Printable-Char: " << (int)c << endl;
-                }
                 frame->operandStack.pop();
             }
         }

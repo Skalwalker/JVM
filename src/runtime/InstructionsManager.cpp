@@ -86,6 +86,18 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("dstore_1")->second.exec = Instruction::dstore_1;
     this->instructionByName("dstore_2")->second.exec = Instruction::dstore_2;
     this->instructionByName("dstore_3")->second.exec = Instruction::dstore_3;
+    this->instructionByName("iastore")->second.exec = Instruction::iastore;
+    this->instructionByName("lastore")->second.exec = Instruction::lastore;
+    this->instructionByName("dastore")->second.exec = Instruction::dastore;
+    this->instructionByName("fastore")->second.exec = Instruction::fastore;
+    this->instructionByName("bastore")->second.exec = Instruction::bastore;
+    this->instructionByName("castore")->second.exec = Instruction::castore;
+    this->instructionByName("sastore")->second.exec = Instruction::sastore;
+    this->instructionByName("astore")->second.exec = Instruction::astore;
+    this->instructionByName("astore_0")->second.exec = Instruction::astore_0;
+    this->instructionByName("astore_1")->second.exec = Instruction::astore_1;
+    this->instructionByName("astore_2")->second.exec = Instruction::astore_2;
+    this->instructionByName("astore_3")->second.exec = Instruction::astore_3;
     this->instructionByName("lload")->second.exec = Instruction::lload;
     this->instructionByName("lload_0")->second.exec = Instruction::lload_0;
     this->instructionByName("lload_1")->second.exec = Instruction::lload_1;
@@ -96,6 +108,11 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("iload_1")->second.exec = Instruction::iload_1;
     this->instructionByName("iload_2")->second.exec = Instruction::iload_2;
     this->instructionByName("iload_3")->second.exec = Instruction::iload_3;
+    this->instructionByName("aload_0")->second.exec = Instruction::aload_0;
+    this->instructionByName("aload_1")->second.exec = Instruction::aload_1;
+    this->instructionByName("aload_2")->second.exec = Instruction::aload_2;
+    this->instructionByName("aload_3")->second.exec = Instruction::aload_3;
+    this->instructionByName("iaload")->second.exec = Instruction::iaload;
 
     this->instructionByName("fload")->second.exec = Instruction::fload;
     this->instructionByName("fload_0")->second.exec = Instruction::fload_0;
@@ -163,6 +180,8 @@ InstructionsManager::InstructionsManager() {
 
     this->instructionByName("jsr")->second.exec = Instruction::jsr;
     this->instructionByName("ret")->second.exec = Instruction::ret;
+
+    this->instructionByName("newarray")->second.exec = Instruction::newarray;
 
     this->instructionByName("pop")->second.exec = Instruction::pop;
     this->instructionByName("pop2")->second.exec = Instruction::pop2;
