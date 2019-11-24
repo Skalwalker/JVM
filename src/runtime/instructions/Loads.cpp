@@ -184,6 +184,7 @@ uint32_t Instruction::iaload(Frame * frame){
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     Type* array = (Type*)frame->operandStack.top().type_reference;
+    frame->operandStack.pop();
     Type value;
     value.tag = TAG_INT;
     value.type_int = array[index].type_int;
