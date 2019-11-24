@@ -13,6 +13,15 @@
 #define CONSTANT_LONG 5
 #define CONSTANT_DOUBLE 6
 
+#define T_BOOLEAN 4
+#define T_CHAR 5
+#define T_FLOAT 6
+#define T_DOUBLE 7
+#define T_BYTE 8
+#define T_SHORT 9
+#define T_INT 10
+#define T_LONG 11
+
 using namespace std;
 
 class Instruction {
@@ -93,11 +102,30 @@ public:
     static uint32_t dstore_2(Frame *);
     static uint32_t dstore_3(Frame *);
 
+    static uint32_t iastore(Frame *);
+    static uint32_t dastore(Frame *);
+    static uint32_t fastore(Frame *);
+    static uint32_t castore(Frame *);
+    static uint32_t sastore(Frame *);
+    static uint32_t lastore(Frame *);
+    static uint32_t bastore(Frame *);
+    static uint32_t astore(Frame *);
+    static uint32_t astore_0(Frame *);
+    static uint32_t astore_1(Frame *);
+    static uint32_t astore_2(Frame *);
+    static uint32_t astore_3(Frame *);
+
     static uint32_t lload(Frame *);
     static uint32_t lload_0(Frame *);
     static uint32_t lload_1(Frame *);
     static uint32_t lload_2(Frame *);
     static uint32_t lload_3(Frame *);
+
+    static uint32_t aload_0(Frame *);
+    static uint32_t aload_1(Frame *);
+    static uint32_t aload_2(Frame *);
+    static uint32_t aload_3(Frame *);
+    static uint32_t iaload(Frame *);
 
     static uint32_t fload(Frame *);
     static uint32_t fload_0(Frame *);
@@ -170,6 +198,8 @@ public:
 
     static uint32_t jsr(Frame *);
     static uint32_t ret(Frame *);
+
+    static uint32_t newarray(Frame *);
 
     static uint32_t pop(Frame *);
     static uint32_t pop2(Frame *);

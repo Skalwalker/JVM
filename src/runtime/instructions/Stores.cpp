@@ -202,3 +202,148 @@ uint32_t Instruction::dstore_3(Frame * frame){
 
     return ++frame->local_pc;
 }
+
+uint32_t Instruction::iastore(Frame * frame) {
+    int32_t value = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    int index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    Type arrayref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    Type* arrayPointer = (Type*)(arrayref.type_reference);
+    (arrayPointer[index]).type_int = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::lastore(Frame * frame) {
+    uint64_t value = frame->operandStack.top().type_long;
+    frame->operandStack.pop();
+    int index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    Type arrayref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    Type* arrayPointer = (Type*)(arrayref.type_reference);
+    (arrayPointer[index]).type_long = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::dastore(Frame * frame) {
+    double value = frame->operandStack.top().type_double;
+    frame->operandStack.pop();
+    int index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    Type arrayref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    Type* arrayPointer = (Type*)(arrayref.type_reference);
+    (arrayPointer[index]).type_double = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::fastore(Frame * frame) {
+    float value = frame->operandStack.top().type_float;
+    frame->operandStack.pop();
+    int index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    Type arrayref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    Type* arrayPointer = (Type*)(arrayref.type_reference);
+    (arrayPointer[index]).type_float = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::sastore(Frame * frame) {
+    uint16_t value = frame->operandStack.top().type_short;
+    frame->operandStack.pop();
+    int index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    Type arrayref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    Type* arrayPointer = (Type*)(arrayref.type_reference);
+    (arrayPointer[index]).type_short = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::bastore(Frame * frame) {
+    uint8_t value = frame->operandStack.top().type_byte;
+    frame->operandStack.pop();
+    int index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    Type arrayref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    Type* arrayPointer = (Type*)(arrayref.type_reference);
+    (arrayPointer[index]).type_byte = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::castore(Frame * frame) {
+    uint8_t value = frame->operandStack.top().type_char;
+    frame->operandStack.pop();
+    int index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    Type arrayref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    Type* arrayPointer = (Type*)(arrayref.type_reference);
+    (arrayPointer[index]).type_char = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::astore(Frame * frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t index = bytecode[++frame->local_pc];
+    Type value = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    frame->localVariables[index] = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::astore_0(Frame * frame) {
+    Type value = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    frame->localVariables[0] = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::astore_1(Frame * frame) {
+    Type value = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    frame->localVariables[1] = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::astore_2(Frame * frame) {
+    Type value = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    frame->localVariables[2] = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::astore_3(Frame * frame) {
+    Type value = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    frame->localVariables[3] = value;
+
+    return ++frame->local_pc;
+}
