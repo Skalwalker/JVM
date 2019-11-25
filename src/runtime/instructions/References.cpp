@@ -4,7 +4,7 @@ uint32_t Instruction::newarray(Frame *frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t atype = bytecode[++frame->local_pc];
     int count = frame->operandStack.top().type_int;
-    frame->operandStack.top();
+    frame->operandStack.pop();
 
     Type *arr_type = (Type*)malloc(count*(sizeof(Type)));
 
@@ -110,3 +110,93 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
     }
     return ++frame->local_pc;
 }
+
+// uint32_t Instruction::putstatic(Frame* frame){
+// }
+//
+// uint32_t Instruction::getfield(Frame* frame){
+// }
+//
+// uint32_t Instruction::putfield(Frame* frame){
+// }
+//
+// uint32_t Instruction::getfield(Frame* frame){
+// }
+//
+// uint32_t Instruction::invokespecial(Frame* frame){
+// }
+//
+// uint32_t Instruction::invokeinterface(Frame* frame){
+// }
+//
+// uint32_t Instruction::invokedynamic(Frame* frame){
+// }
+//
+// uint32_t Instruction::new_func(Frame* frame){
+//     uint8_t* bytecode = frame->codeAttribute.code;
+//     uint8_t byte1 = bytecode[++frame->local_pc];
+//     uint8_t byte2 = bytecode[++frame->local_pc];
+//
+//     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+//
+//     Type res;
+//     res.tag = TAG_REFERENCE;
+//     res.type_reference =  (uint64_t)new string((frame->constantPool[index-1].getInfo(frame->constantPool)));
+//
+//     frame->operandStack.push(res);
+// }
+
+uint32_t Instruction::anewarray(Frame* frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+    uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+
+    int count = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+
+    Type *arr_vec = (Type*)malloc(count*(sizeof(Type)));
+
+    for(int i = 0; i < count; i++){
+        arr_vec[i].tag = TAG_REFERENCE;
+        arr_vec[i].type_reference = (uint64_t)NULL;
+    }
+
+    Type res;
+    res.tag = TAG_REFERENCE;
+    res.type_reference = (uint64_t)arr_vec;
+
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+
+}
+
+uint32_t Instruction::arraylength(Frame* frame){
+    Type arrayref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    vector<Type>* type_vec = (vector<Type>*)arrayref.type_reference;
+    Type len;
+    len.tag = TAG_INT;
+    len.type_int = type_vec->size();
+
+    frame->operandStack.push(len);
+
+    return ++frame->local_pc;
+}
+//
+// uint32_t Instruction::athrow(Frame* frame){
+// }
+//
+// uint32_t Instruction::checkcast(Frame* frame){
+// }
+//
+// uint32_t Instruction::instanceof(Frame* frame){
+// }
+//
+// uint32_t Instruction::monitorenter(Frame* frame){
+// }
+//
+// uint32_t Instruction::monitorexit(Frame* frame){
+// }
