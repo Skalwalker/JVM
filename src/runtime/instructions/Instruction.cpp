@@ -8,6 +8,7 @@ Instruction::Instruction(string opcode_name) {
 }
 
 Instruction::Instruction(string opcode_name, uint32_t bytecount) {
+    this->classLoader = classLoader;
     this->mnemonic = opcode_name;
     this->bytecount = bytecount;
 }

@@ -5,6 +5,7 @@
 #include <string>
 #include <math.h>
 #include "../Frame.hpp"
+#include "../../loader/ClassLoader.hpp"
 #include "../../models/CPInfo.hpp"
 
 #define CONSTANT_STRING 8
@@ -28,6 +29,7 @@ class Instruction {
 public:
     string mnemonic;
     uint32_t bytecount;
+    static ClassLoader * classLoader;
     uint32_t (*exec)(Frame*);
     Instruction(string);
     Instruction(string, uint32_t);
@@ -37,7 +39,9 @@ public:
     static uint32_t ldc(Frame*);
     static uint32_t ldc2_w(Frame*);
     static uint32_t invokevirtual(Frame*);
+    static uint32_t invokestatic(Frame*);
     static uint32_t returnfunc(Frame*);
+    static uint32_t ireturn(Frame*);
     static uint32_t ladd(Frame*);
     static uint32_t lsub(Frame*);
     static uint32_t lmul(Frame*);

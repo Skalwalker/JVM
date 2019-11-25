@@ -76,7 +76,6 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
 
     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
 
-
     string method = frame->constantPool[index-1].getInfo(frame->constantPool);
     int j = 0;
     int w = 0;
@@ -109,4 +108,74 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
         }
     }
     return ++frame->local_pc;
+}
+
+uint32_t Instruction::invokestatic(Frame* frame){
+
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+
+    uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+
+    string method = frame->constantPool[index-1].getInfo(frame->constantPool);
+
+    int j = 0;
+    int w = 0;
+
+    while (w < method.size() && method[w+1] != '#') {
+        w++;
+    }
+    string className = method.substr(0,w+1);
+    string nameAndType = method.substr(w+2, method.size());
+    while (j < nameAndType.size() && nameAndType[j+1] != '$') {
+        j++;
+    }
+    string methodName = nameAndType.substr(0,j+1);
+    string descriptor = nameAndType.substr(j+2,nameAndType.size());
+
+    ClassFile classfile = classLoader->methodArea->getClassFile(className);
+    vector<MethodInfo> methods = classfile.getMethods();
+    int i;
+    for (i = 0; i < classfile.getMethodsCount(); i++) {
+        if(methods[i].name == methodName) {
+            cout << methods[i].name << endl;
+            break;
+        }
+    }
+    Frame newFrame(frame->constantPool, methods[i], frame->jvmStack);
+
+    // Empilha os argumentos para reverter a ordem
+    stack<Type> auxstack;
+    i = 1;
+    int narg = 0;
+    while (descriptor[i] != ')') {
+        if (descriptor[i] == '[') {
+            while(descriptor[i] == '[') {
+                i++;
+            }
+        } else if (descriptor[i] == 'L') {
+            while(descriptor[i] != ';') {
+                i++;
+            }
+        } else if (descriptor[i] != ')') {
+            auxstack.push(frame->operandStack.top());
+            frame->operandStack.pop();
+            narg += 1;
+        }
+        i++;
+    }
+
+    for (i = 0; i < narg; i++) {
+        newFrame.localVariables[i] = auxstack.top();
+        if (auxstack.top().tag == TAG_LONG || auxstack.top().tag == TAG_DOUBLE) {
+            newFrame.localVariables[i] = auxstack.top();
+            i += 1;
+        }
+        auxstack.pop();
+    }
+
+    frame->jvmStack->push(newFrame);
+    ++frame->local_pc;
+    return newFrame.local_pc;
 }

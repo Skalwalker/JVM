@@ -51,7 +51,6 @@ uint32_t Instruction::iload(Frame * frame){
 uint32_t Instruction::iload_0(Frame * frame){
     Type val = frame->localVariables[0];
     frame->operandStack.push(val);
-
     return ++frame->local_pc;
 }
 

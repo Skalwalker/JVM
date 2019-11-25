@@ -14,7 +14,9 @@ class InstructionsManager {
 public:
     map<uint8_t, Instruction> opcode;
     InstructionsManager();
+    InstructionsManager(ClassLoader*);
     pair<uint8_t, Instruction>* instructionByName(string);
+    void setInstructions();
 };
 
 

@@ -50,9 +50,15 @@ uint32_t Instruction::ret(Frame * frame){
 //
 // }
 //
-// uint32_t Instruction::ireturn(Frame * frame){
-//
-// }
+uint32_t Instruction::ireturn(Frame * frame){
+    Type value = frame->operandStack.top();
+    frame->operandStack.pop();
+    frame->jvmStack->pop();
+
+    Frame* caller = &(frame->jvmStack->top());
+    caller->operandStack.push(value);
+    return caller->local_pc;
+}
 //
 // uint32_t Instruction::lreturn(Frame * frame){
 //

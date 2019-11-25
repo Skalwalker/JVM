@@ -1,22 +1,35 @@
 #include "../../include/runtime/InstructionsManager.hpp"
 
+ClassLoader * Instruction::classLoader;
+
 InstructionsManager::InstructionsManager() {
+
+}
+
+InstructionsManager::InstructionsManager(ClassLoader * classLoader) {
     string line;
     ifstream myfile ("external_data/opcode_mnemonics.txt");
-
     string opcode_name, opcode_numb;
     uint32_t bytecount;
     uint8_t numb;
+
+    Instruction::classLoader = classLoader;
     while (myfile >> opcode_name >> opcode_numb >> bytecount) {
         numb = stoi(opcode_numb, nullptr, 16);
         opcode[numb] = Instruction(opcode_name, bytecount);
     }
 
+    this->setInstructions();
+}
+
+void InstructionsManager::setInstructions(){
     this->instructionByName("getstatic")->second.exec = Instruction::getstatic;
     this->instructionByName("ldc")->second.exec = Instruction::ldc;
     this->instructionByName("ldc2_w")->second.exec = Instruction::ldc2_w;
     this->instructionByName("invokevirtual")->second.exec = Instruction::invokevirtual;
+    this->instructionByName("invokestatic")->second.exec = Instruction::invokestatic;
     this->instructionByName("return")->second.exec = Instruction::returnfunc;
+    this->instructionByName("ireturn")->second.exec = Instruction::ireturn;
     this->instructionByName("ladd")->second.exec = Instruction::ladd;
     this->instructionByName("lsub")->second.exec = Instruction::lsub;
     this->instructionByName("lmul")->second.exec = Instruction::lmul;
@@ -62,7 +75,6 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("ddiv")->second.exec = Instruction::ddiv;
     this->instructionByName("drem")->second.exec = Instruction::drem;
     this->instructionByName("dneg")->second.exec = Instruction::dneg;
-
 
     this->instructionByName("bipush")->second.exec = Instruction::bipush;
     this->instructionByName("sipush")->second.exec = Instruction::sipush;
