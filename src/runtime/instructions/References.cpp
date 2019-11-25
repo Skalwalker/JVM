@@ -4,7 +4,7 @@ uint32_t Instruction::newarray(Frame *frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t atype = bytecode[++frame->local_pc];
     int count = frame->operandStack.top().type_int;
-    frame->operandStack.top();
+    frame->operandStack.pop();
 
     Type *arr_type = (Type*)malloc(count*(sizeof(Type)));
 
@@ -76,7 +76,6 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
 
     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
 
-
     string method = frame->constantPool[index-1].getInfo(frame->constantPool);
     int j = 0;
     int w = 0;
@@ -110,3 +109,164 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
     }
     return ++frame->local_pc;
 }
+
+
+uint32_t Instruction::invokestatic(Frame* frame){
+
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+
+    uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+
+    string method = frame->constantPool[index-1].getInfo(frame->constantPool);
+
+    int j = 0;
+    int w = 0;
+
+    while (w < method.size() && method[w+1] != '#') {
+        w++;
+    }
+    string className = method.substr(0,w+1);
+    string nameAndType = method.substr(w+2, method.size());
+    while (j < nameAndType.size() && nameAndType[j+1] != '$') {
+        j++;
+    }
+    string methodName = nameAndType.substr(0,j+1);
+    string descriptor = nameAndType.substr(j+2,nameAndType.size());
+
+    ClassFile classfile = classLoader->methodArea->getClassFile(className);
+    vector<MethodInfo> methods = classfile.getMethods();
+    int i;
+    for (i = 0; i < classfile.getMethodsCount(); i++) {
+        if(methods[i].name == methodName) {
+            cout << methods[i].name << endl;
+            break;
+        }
+    }
+    Frame newFrame(frame->constantPool, methods[i], frame->jvmStack);
+
+    // Empilha os argumentos para reverter a ordem
+    stack<Type> auxstack;
+    i = 1;
+    int narg = 0;
+    while (descriptor[i] != ')') {
+        if (descriptor[i] == '[') {
+            while(descriptor[i] == '[') {
+                i++;
+            }
+        } else if (descriptor[i] == 'L') {
+            while(descriptor[i] != ';') {
+                i++;
+            }
+        } else if (descriptor[i] != ')') {
+            auxstack.push(frame->operandStack.top());
+            frame->operandStack.pop();
+            narg += 1;
+        }
+        i++;
+    }
+
+    for (i = 0; i < narg; i++) {
+        newFrame.localVariables[i] = auxstack.top();
+        if (auxstack.top().tag == TAG_LONG || auxstack.top().tag == TAG_DOUBLE) {
+            newFrame.localVariables[i] = auxstack.top();
+            i += 1;
+        }
+        auxstack.pop();
+    }
+
+    frame->jvmStack->push(newFrame);
+    ++frame->local_pc;
+    return newFrame.local_pc;
+}
+
+// uint32_t Instruction::putstatic(Frame* frame){
+// }
+//
+// uint32_t Instruction::getfield(Frame* frame){
+// }
+//
+// uint32_t Instruction::putfield(Frame* frame){
+// }
+//
+// uint32_t Instruction::getfield(Frame* frame){
+// }
+//
+// uint32_t Instruction::invokespecial(Frame* frame){
+// }
+//
+// uint32_t Instruction::invokeinterface(Frame* frame){
+// }
+//
+// uint32_t Instruction::invokedynamic(Frame* frame){
+// }
+//
+// uint32_t Instruction::new_func(Frame* frame){
+//     uint8_t* bytecode = frame->codeAttribute.code;
+//     uint8_t byte1 = bytecode[++frame->local_pc];
+//     uint8_t byte2 = bytecode[++frame->local_pc];
+//
+//     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+//
+//     Type res;
+//     res.tag = TAG_REFERENCE;
+//     res.type_reference =  (uint64_t)new string((frame->constantPool[index-1].getInfo(frame->constantPool)));
+//
+//     frame->operandStack.push(res);
+// }
+
+uint32_t Instruction::anewarray(Frame* frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+    uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+
+    int count = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+
+    Type *arr_vec = (Type*)malloc(count*(sizeof(Type)));
+
+    for(int i = 0; i < count; i++){
+        arr_vec[i].tag = TAG_REFERENCE;
+        arr_vec[i].type_reference = (uint64_t)NULL;
+    }
+
+    Type res;
+    res.tag = TAG_REFERENCE;
+    res.type_reference = (uint64_t)arr_vec;
+
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+
+}
+
+uint32_t Instruction::arraylength(Frame* frame){
+    Type arrayref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    vector<Type>* type_vec = (vector<Type>*)arrayref.type_reference;
+    Type len;
+    len.tag = TAG_INT;
+    len.type_int = type_vec->size();
+
+    frame->operandStack.push(len);
+
+    return ++frame->local_pc;
+}
+//
+// uint32_t Instruction::athrow(Frame* frame){
+// }
+//
+// uint32_t Instruction::checkcast(Frame* frame){
+// }
+//
+// uint32_t Instruction::instanceof(Frame* frame){
+// }
+//
+// uint32_t Instruction::monitorenter(Frame* frame){
+// }
+//
+// uint32_t Instruction::monitorexit(Frame* frame){
+// }

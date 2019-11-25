@@ -1,22 +1,35 @@
 #include "../../include/runtime/InstructionsManager.hpp"
 
+ClassLoader * Instruction::classLoader;
+
 InstructionsManager::InstructionsManager() {
+
+}
+
+InstructionsManager::InstructionsManager(ClassLoader * classLoader) {
     string line;
     ifstream myfile ("external_data/opcode_mnemonics.txt");
-
     string opcode_name, opcode_numb;
     uint32_t bytecount;
     uint8_t numb;
+
+    Instruction::classLoader = classLoader;
     while (myfile >> opcode_name >> opcode_numb >> bytecount) {
         numb = stoi(opcode_numb, nullptr, 16);
         opcode[numb] = Instruction(opcode_name, bytecount);
     }
 
+    this->setInstructions();
+}
+
+void InstructionsManager::setInstructions(){
     this->instructionByName("getstatic")->second.exec = Instruction::getstatic;
     this->instructionByName("ldc")->second.exec = Instruction::ldc;
     this->instructionByName("ldc2_w")->second.exec = Instruction::ldc2_w;
     this->instructionByName("invokevirtual")->second.exec = Instruction::invokevirtual;
+    this->instructionByName("invokestatic")->second.exec = Instruction::invokestatic;
     this->instructionByName("return")->second.exec = Instruction::returnfunc;
+    this->instructionByName("ireturn")->second.exec = Instruction::ireturn;
     this->instructionByName("ladd")->second.exec = Instruction::ladd;
     this->instructionByName("lsub")->second.exec = Instruction::lsub;
     this->instructionByName("lmul")->second.exec = Instruction::lmul;
@@ -62,7 +75,6 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("ddiv")->second.exec = Instruction::ddiv;
     this->instructionByName("drem")->second.exec = Instruction::drem;
     this->instructionByName("dneg")->second.exec = Instruction::dneg;
-
 
     this->instructionByName("bipush")->second.exec = Instruction::bipush;
     this->instructionByName("sipush")->second.exec = Instruction::sipush;
@@ -192,6 +204,22 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("dup2_x1")->second.exec = Instruction::dup2_x1;
     this->instructionByName("dup2_x2")->second.exec = Instruction::dup2_x2;
     this->instructionByName("swap")->second.exec = Instruction::swap;
+
+    // this->instructionByName("new")->second.exec = Instruction::new_func;
+
+    this->instructionByName("goto_w")->second.exec = Instruction::goto_w;
+    this->instructionByName("jsr_w")->second.exec = Instruction::jsr_w;
+    this->instructionByName("ifnull")->second.exec = Instruction::ifnull;
+    this->instructionByName("ifnonnull")->second.exec = Instruction::ifnonnull;
+
+    this->instructionByName("fconst_2")->second.exec = Instruction::fconst_2;
+    this->instructionByName("nop")->second.exec = Instruction::nop;
+    this->instructionByName("tableswitch")->second.exec = Instruction::tableswitch;
+    this->instructionByName("lookupswitch")->second.exec = Instruction::lookupswitch;
+    this->instructionByName("aconst_null")->second.exec = Instruction::aconst_null;
+    this->instructionByName("anewarray")->second.exec = Instruction::anewarray;
+    this->instructionByName("arraylength")->second.exec = Instruction::arraylength;
+    this->instructionByName("aaload")->second.exec = Instruction::aaload;
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {

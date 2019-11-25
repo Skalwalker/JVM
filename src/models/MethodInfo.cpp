@@ -11,7 +11,8 @@ MethodInfo::MethodInfo(vector<CPInfo> cp, FILE * fp) {
   ClassFileReader<uint32_t> fourBytes;
 
   this->access_flags = twoBytes.readBytes(fp);
-  this->name_index =  twoBytes.readBytes(fp);
+  this->name_index = twoBytes.readBytes(fp);
+  this->name = cp[this->name_index-1].getInfo(cp);
   this->descriptor_index =  twoBytes.readBytes(fp);
   this->attributes_count =  twoBytes.readBytes(fp);
   this->setAttributes(cp, fp);

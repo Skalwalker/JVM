@@ -5,6 +5,7 @@
 #include <string>
 #include <math.h>
 #include "../Frame.hpp"
+#include "../../loader/ClassLoader.hpp"
 #include "../../models/CPInfo.hpp"
 
 #define CONSTANT_STRING 8
@@ -28,6 +29,7 @@ class Instruction {
 public:
     string mnemonic;
     uint32_t bytecount;
+    static ClassLoader * classLoader;
     uint32_t (*exec)(Frame*);
     Instruction(string);
     Instruction(string, uint32_t);
@@ -37,7 +39,9 @@ public:
     static uint32_t ldc(Frame*);
     static uint32_t ldc2_w(Frame*);
     static uint32_t invokevirtual(Frame*);
+    static uint32_t invokestatic(Frame*);
     static uint32_t returnfunc(Frame*);
+    static uint32_t ireturn(Frame*);
     static uint32_t ladd(Frame*);
     static uint32_t lsub(Frame*);
     static uint32_t lmul(Frame*);
@@ -158,6 +162,7 @@ public:
     static uint32_t dconst_1(Frame *);
     static uint32_t fconst_0(Frame *);
     static uint32_t fconst_1(Frame *);
+    static uint32_t fconst_2(Frame *);
 
     static uint32_t lcmp(Frame*);
     static uint32_t ifle(Frame*);
@@ -210,6 +215,21 @@ public:
     static uint32_t dup2_x1(Frame *);
     static uint32_t dup2_x2(Frame *);
     static uint32_t swap(Frame *);
+
+    // static uint32_t new_func(Frame*);
+
+    static uint32_t ifnonnull(Frame*);
+    static uint32_t ifnull(Frame*);
+    static uint32_t goto_w(Frame*);
+    static uint32_t jsr_w(Frame*);
+    static uint32_t nop(Frame*);
+    static uint32_t tableswitch(Frame*);
+    static uint32_t lookupswitch(Frame*);
+    static uint32_t aconst_null(Frame*);
+    static uint32_t anewarray(Frame*);
+    static uint32_t arraylength(Frame*);
+    static uint32_t aaload(Frame *);
 };
+
 
 #endif
