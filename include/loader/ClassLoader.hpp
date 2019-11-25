@@ -7,7 +7,9 @@
 class ClassLoader {
 public:
     MethodArea * methodArea;
+    int madalena;
     ClassLoader();
+    ClassLoader(int);
     ClassFile loadClassFile(ClassFile);
 };
 

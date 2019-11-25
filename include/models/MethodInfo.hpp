@@ -20,7 +20,9 @@ public:
     string access_flags_names;
     uint16_t access_flags;
     uint16_t name_index;
+    string name;
     uint16_t descriptor_index;
+    string descriptor;
     uint16_t attributes_count;
     vector<AttributeInfo> attributes;
 

@@ -12,7 +12,7 @@ uint32_t Instruction::iadd(Frame * frame) {
     res.tag = TAG_INT;
     res.type_int = val1 + val2;
     frame->operandStack.push(res);
-
+    
     return ++frame->local_pc;
 }
 

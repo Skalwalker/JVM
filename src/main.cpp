@@ -17,10 +17,10 @@ int main(int argc, char* argv[]) {
         ClassFile classFile(fp);
         // Printer printer(classFile);
         MethodArea methodArea;
-        InstructionsManager instructionsManager;
-        ClassLoader classLoader; //Em breve será usado
+        ClassLoader classLoader;
         classLoader.methodArea = &methodArea;
         classLoader.loadClassFile(classFile);
+        InstructionsManager instructionsManager(&classLoader);
         ExecutionEngine executionEngine(classFile, &methodArea, &instructionsManager);
         executionEngine.run();
 

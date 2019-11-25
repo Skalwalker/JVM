@@ -12,15 +12,15 @@ Frame::Frame(vector<CPInfo> constantPool, MethodInfo method, stack<Frame>* jvmSt
     // i tem que ser declaro aqui pois será usado fora do loop
     int i;
     for (i = 0; i < attributes_count && !codeFounded; i++) {
-    AttributeInfo attribute = attributes[i];
-    uint16_t nameIndex = attribute.attributeNameIndex;
-    string attributeName = constantPool[nameIndex-1].getInfo(constantPool);
+        AttributeInfo attribute = attributes[i];
+        uint16_t nameIndex = attribute.attributeNameIndex;
+        string attributeName = constantPool[nameIndex-1].getInfo(constantPool);
 
-    if (attributeName.compare("Code") == 0) {
-        codeFounded = true;
-        i--;
+        if (attributeName.compare("Code") == 0) {
+            codeFounded = true;
+            i--;
+        }
     }
-}
 
     if (codeFounded) {
         uint16_t maxLocals = attributes[i].code.maxLocals;

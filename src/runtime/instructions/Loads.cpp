@@ -51,7 +51,6 @@ uint32_t Instruction::iload(Frame * frame){
 uint32_t Instruction::iload_0(Frame * frame){
     Type val = frame->localVariables[0];
     frame->operandStack.push(val);
-
     return ++frame->local_pc;
 }
 
@@ -190,6 +189,21 @@ uint32_t Instruction::iaload(Frame * frame){
     value.type_int = array[index].type_int;
 
     frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::aaload(Frame * frame){
+    Type index, array_ref;
+    index = frame->operandStack.top();
+    frame->operandStack.pop();
+    array_ref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    Type *arr = (Type*)array_ref.type_reference;
+    Type res = arr[index.type_int];
+
+    frame->operandStack.push(res);
 
     return ++frame->local_pc;
 }
