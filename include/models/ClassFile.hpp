@@ -10,6 +10,34 @@
 #include "MethodInfo.hpp"
 #include "../loader/ClassFileReader.hpp"
 
+/** \file ClassFile.hpp
+ * Definição dos campos de um arquivo .class.
+ * O formato de um arquivo .class:
+ * 
+ * ClassFile { \n 
+ * <pre>
+ *      u4 magic;   // Magic number para checar a integridade do arquivo.
+ *      u2 minor_version;   // Junto à major_version determina o intervalo de versões suportadas. 
+ *      u2 major_version; 
+ *      u2 constant_pool_count;   // Número de entradas na ConstantPool + 1. 
+ *      cp_info constant_pool[constant_pool_count-1];   // Tabela de estruturas representando strings, constantes, classes e nomes de interfaces, nomes de campos, e outras constantes.
+ *      u2 access_flags;   // Máscara de flags usada para denotar permissão de acesso e propriedades da classe ou interface.
+ *      u2 this_class;   // Index de referência na ConstantPool da própria classe do arquivo .class.
+ *      u2 super_class;   // Zero ou index de referência na ConstantPool da super classe direta da classe do arquivo .class.
+ *      u2 interfaces_count;   // Número de superinterfaces diretas da classe ou interface do arquivo .class.
+ *      u2 interfaces[interfaces_count];   // Array de index de referência na ConstantPool da super interface direta da classe ou interface do arquivo .class
+ *      u2 fields_count;   // Número de estruturas de field_info na tabela de campos. 
+ *      field_info fields[fields_count];   // Todos os campos, variáveis de classe e variáveis de instância, declaradas pela classe ou interface do arquivo .class.
+ *      u2 methods_count;   // Número de estruturas de methods_info na tabela de métodos. 
+ *      method_info methods[methods_count];  // Todos os métodos declarados pela classe ou interface do arquivo .class.
+ *      u2 attributes_count;   // Número de atributos na tabela de atributos da classe ou interface do arquivo .class.
+ *      attribute_info attributes[attributes_count]; // Tabela de estruturas do tipo attribute_info.
+ * </pre>
+ * }
+ * 
+ */
+
+
 using namespace std;
 
 #define typeof __typeof__

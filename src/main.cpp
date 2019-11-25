@@ -5,7 +5,7 @@ int main(int argc, char* argv[]) {
     string path = "test_examples/";
     // Check the number of parameters
     if (argc == 1) {
-      file_name = path + "HelloWorld.class";
+      file_name = path + "aconst_null.class";
     } else if (argc == 2) {
       file_name = path + argv[1];
     }
