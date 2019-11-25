@@ -207,6 +207,7 @@ InstructionsManager::InstructionsManager() {
     this->instructionByName("aconst_null")->second.exec = Instruction::aconst_null;
     this->instructionByName("anewarray")->second.exec = Instruction::anewarray;
     this->instructionByName("arraylength")->second.exec = Instruction::arraylength;
+    this->instructionByName("aaload")->second.exec = Instruction::aaload;
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {
