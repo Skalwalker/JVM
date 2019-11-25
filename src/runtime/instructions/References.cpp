@@ -166,8 +166,7 @@ uint32_t Instruction::invokestatic(Frame* frame){
     for (i = 0; i < narg; i++) {
         newFrame.localVariables[i] = auxstack.top();
         if (auxstack.top().tag == TAG_LONG || auxstack.top().tag == TAG_DOUBLE) {
-            i += 1;
-            newFrame.localVariables[i] = auxstack.top();
+            newFrame.localVariables[i+1] = auxstack.top();
         }
         auxstack.pop();
     }
