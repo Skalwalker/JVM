@@ -14,7 +14,7 @@
  * -# Instruções de Load e Store
  *      - iload, iload_<n>, lload, lload_<n>, fload, fload_<n>, dload, dload_<n>, aload, aload_<n> - Loads.cpp
  *      - istore, istore_<n>, lstore, lstore_<n>, fstore, fstore_<n>, dstore, dstore_<n>, astore, astore_<n> - Stores.Cpp
- *      - bipush, sipush, ldc, ldc_w, ldc2_w, aconst_null, iconst_m1, iconst_<i>, lconst_<l>, fconst_<f>, dconst_<d> - Constants.cpp    
+ *      - bipush, sipush, ldc, ldc_w, ldc2_w, aconst_null, iconst_m1, iconst_<i>, lconst_<l>, fconst_<f>, dconst_<d> - Constants.cpp
  *      - wide  ???
  * -# Instruções Aritméticas - Math.cpp
  *      - Add: iadd, ladd, fadd, dadd.
@@ -47,7 +47,7 @@
  *      - tableswitch, lookupswitch - Control.cpp
  *      - goto, goto_w*, jsr, jsr_w, ret - Control.cpp
  * -# Instruções de Invocação de Método e Retorno - References.cpp
- *      - invokevirtual, invokeinterface, invokespecial, invokestatic, invokedynamic 
+ *      - invokevirtual, invokeinterface, invokespecial, invokestatic, invokedynamic
  * -# Instruções de Exceções - ?
  *      - athrow
  * -# Instruções de Sincronização - ?
@@ -274,6 +274,7 @@ public:
     static uint32_t anewarray(Frame*);
     static uint32_t arraylength(Frame*);
     static uint32_t aaload(Frame *);
+    static uint32_t aastore(Frame *);
 };
 
 

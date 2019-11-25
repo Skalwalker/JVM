@@ -6,10 +6,15 @@ uint32_t Instruction::newarray(Frame *frame){
     int count = frame->operandStack.top().type_int;
     frame->operandStack.pop();
 
-    Type *arr_type = (Type*)malloc(count*(sizeof(Type)));
+
+    // Type *arr_type = (Type*)malloc(count*(sizeof(Type)));
+    // vector<Type>* arr = (vector<Type>*)array_ref.type_reference;
+    // vector<Type> arr_type(count);
+    vector<Type>* arr_type = new vector<Type>(count);
 
     Type *value;
     value = (Type*)malloc(sizeof(Type));
+
 
     if (atype == T_BOOLEAN) {
         value->tag = TAG_BOOL;
@@ -38,7 +43,7 @@ uint32_t Instruction::newarray(Frame *frame){
     }
 
     for (int i = 0; i < count; i++) {
-        arr_type[i] = *value;
+        arr_type->at(i) = *value;
     }
 
     Type arrayReference;
@@ -47,7 +52,8 @@ uint32_t Instruction::newarray(Frame *frame){
     frame->operandStack.push(arrayReference);
 
     Type res = frame->operandStack.top();
-    Type* arrayPointer = (Type*)(res.type_reference);
+    // Type* arrayPointer = (Type*)(res.type_reference);
+    vector<Type>* arrayPointer = (vector<Type>*)res.type_reference;
 
     return ++frame->local_pc;
 }
@@ -225,16 +231,16 @@ uint32_t Instruction::anewarray(Frame* frame){
     int count = frame->operandStack.top().type_int;
     frame->operandStack.pop();
 
-    Type *arr_vec = (Type*)malloc(count*(sizeof(Type)));
+    vector<Type>* arr_type = new vector<Type>(count);
 
     for(int i = 0; i < count; i++){
-        arr_vec[i].tag = TAG_REFERENCE;
-        arr_vec[i].type_reference = (uint64_t)NULL;
+        arr_type->at(i).tag = TAG_REFERENCE;
+        arr_type->at(i).type_reference = (uint64_t)NULL;
     }
 
     Type res;
     res.tag = TAG_REFERENCE;
-    res.type_reference = (uint64_t)arr_vec;
+    res.type_reference = (uint64_t)arr_type;
 
     frame->operandStack.push(res);
 
@@ -255,7 +261,7 @@ uint32_t Instruction::arraylength(Frame* frame){
 
     return ++frame->local_pc;
 }
-//
+
 // uint32_t Instruction::athrow(Frame* frame){
 // }
 //
