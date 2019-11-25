@@ -162,6 +162,7 @@ public:
     static uint32_t dconst_1(Frame *);
     static uint32_t fconst_0(Frame *);
     static uint32_t fconst_1(Frame *);
+    static uint32_t fconst_2(Frame *);
 
     static uint32_t lcmp(Frame*);
     static uint32_t ifle(Frame*);
@@ -214,6 +215,21 @@ public:
     static uint32_t dup2_x1(Frame *);
     static uint32_t dup2_x2(Frame *);
     static uint32_t swap(Frame *);
+
+    // static uint32_t new_func(Frame*);
+
+    static uint32_t ifnonnull(Frame*);
+    static uint32_t ifnull(Frame*);
+    static uint32_t goto_w(Frame*);
+    static uint32_t jsr_w(Frame*);
+    static uint32_t nop(Frame*);
+    static uint32_t tableswitch(Frame*);
+    static uint32_t lookupswitch(Frame*);
+    static uint32_t aconst_null(Frame*);
+    static uint32_t anewarray(Frame*);
+    static uint32_t arraylength(Frame*);
+    static uint32_t aaload(Frame *);
 };
+
 
 #endif

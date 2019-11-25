@@ -1,5 +1,18 @@
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
+uint32_t Instruction::nop(Frame * frame){
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::aconst_null(Frame * frame){
+    Type res;
+    res.tag = TAG_REFERENCE;
+    res.type_reference = (uint64_t)NULL;
+
+    frame->operandStack.push(res);
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::bipush(Frame * frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     int8_t byte1 = bytecode[++frame->local_pc];
@@ -168,6 +181,16 @@ uint32_t Instruction::fconst_1(Frame * frame){
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::fconst_2(Frame * frame){
+    Type res;
+    res.tag = TAG_FLOAT;
+    res.type_float = 2.0f;
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
+
+
 uint32_t Instruction::ldc2_w(Frame* frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];
@@ -196,3 +219,34 @@ uint32_t Instruction::ldc2_w(Frame* frame){
     }
     return ++frame->local_pc;
 }
+
+// uint32_t Instruction::ldc_w(Frame* frame){
+//     uint8_t* bytecode = frame->codeAttribute.code;
+//     uint8_t byte1 = bytecode[++frame->local_pc];
+//     uint8_t byte2 = bytecode[++frame->local_pc];
+//
+//     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+//
+//     Type value;
+//
+//
+//     CPInfo cpInfo = frame->constantPool[index-1];
+//     if(cpInfo.tag == CONSTANT_INTEGER) {
+//         value.tag = TAG_INT;
+//
+//
+//     } else if(cpInfo.tag == CONSTANT_FLOAT) {
+//         value.tag = TAG_FLOAT;
+//
+//     } else if(cpInfo.tag == CONSTANT_STRING) {
+//         value.tag = TAG_REFERENCE;
+//
+//     } else if(cpInfo.tag == CONSTANT_CLASS) {
+//
+//     } else if(cpInfo.tag == CONSTANT_METHOD_TYPE) {
+//
+//     } else if(cpInfo.tag == CONSTANT_METHOD_HANDLE) {
+//
+//     }
+//
+// }

@@ -192,3 +192,18 @@ uint32_t Instruction::iaload(Frame * frame){
 
     return ++frame->local_pc;
 }
+
+uint32_t Instruction::aaload(Frame * frame){
+    Type index, array_ref;
+    index = frame->operandStack.top();
+    frame->operandStack.pop();
+    array_ref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    Type *arr = (Type*)array_ref.type_reference;
+    Type res = arr[index.type_int];
+
+    frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}

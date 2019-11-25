@@ -204,6 +204,22 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("dup2_x1")->second.exec = Instruction::dup2_x1;
     this->instructionByName("dup2_x2")->second.exec = Instruction::dup2_x2;
     this->instructionByName("swap")->second.exec = Instruction::swap;
+
+    // this->instructionByName("new")->second.exec = Instruction::new_func;
+
+    this->instructionByName("goto_w")->second.exec = Instruction::goto_w;
+    this->instructionByName("jsr_w")->second.exec = Instruction::jsr_w;
+    this->instructionByName("ifnull")->second.exec = Instruction::ifnull;
+    this->instructionByName("ifnonnull")->second.exec = Instruction::ifnonnull;
+
+    this->instructionByName("fconst_2")->second.exec = Instruction::fconst_2;
+    this->instructionByName("nop")->second.exec = Instruction::nop;
+    this->instructionByName("tableswitch")->second.exec = Instruction::tableswitch;
+    this->instructionByName("lookupswitch")->second.exec = Instruction::lookupswitch;
+    this->instructionByName("aconst_null")->second.exec = Instruction::aconst_null;
+    this->instructionByName("anewarray")->second.exec = Instruction::anewarray;
+    this->instructionByName("arraylength")->second.exec = Instruction::arraylength;
+    this->instructionByName("aaload")->second.exec = Instruction::aaload;
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {
