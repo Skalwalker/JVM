@@ -1,6 +1,5 @@
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
-
 uint32_t Instruction::fload(Frame * frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t index = bytecode[++frame->local_pc];
@@ -149,6 +148,48 @@ uint32_t Instruction::dload_2(Frame * frame){
 uint32_t Instruction::dload_3(Frame * frame){
     Type val = frame->localVariables[3];
     frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::aload_0(Frame * frame){
+    Type val = frame->localVariables[0];
+    frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::aload_1(Frame * frame){
+    Type val = frame->localVariables[1];
+    frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::aload_2(Frame * frame){
+    Type val = frame->localVariables[2];
+    frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::aload_3(Frame * frame){
+    Type val = frame->localVariables[3];
+    frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::iaload(Frame * frame){
+    int32_t index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    Type* array = (Type*)frame->operandStack.top().type_reference;
+    frame->operandStack.pop();
+    Type value;
+    value.tag = TAG_INT;
+    value.type_int = array[index].type_int;
+
+    frame->operandStack.push(value);
 
     return ++frame->local_pc;
 }
