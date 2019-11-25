@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 #include <math.h>
+#include <tuple>
 #include "../Frame.hpp"
 #include "../../loader/ClassLoader.hpp"
 #include "../../models/CPInfo.hpp"
@@ -79,6 +80,7 @@ public:
     Instruction(string);
     Instruction(string, uint32_t);
     Instruction();
+    static tuple<string, string, string> methodInfoSplit(string);
 
     static uint32_t getstatic(Frame*);
     static uint32_t ldc(Frame*);
@@ -87,6 +89,8 @@ public:
     static uint32_t invokestatic(Frame*);
     static uint32_t returnfunc(Frame*);
     static uint32_t ireturn(Frame*);
+    static uint32_t lreturn(Frame*);
+    static uint32_t dreturn(Frame*);
     static uint32_t ladd(Frame*);
     static uint32_t lsub(Frame*);
     static uint32_t lmul(Frame*);

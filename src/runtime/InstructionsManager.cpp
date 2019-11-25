@@ -30,6 +30,8 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("invokestatic")->second.exec = Instruction::invokestatic;
     this->instructionByName("return")->second.exec = Instruction::returnfunc;
     this->instructionByName("ireturn")->second.exec = Instruction::ireturn;
+    this->instructionByName("dreturn")->second.exec = Instruction::dreturn;
+    this->instructionByName("lreturn")->second.exec = Instruction::lreturn;
     this->instructionByName("ladd")->second.exec = Instruction::ladd;
     this->instructionByName("lsub")->second.exec = Instruction::lsub;
     this->instructionByName("lmul")->second.exec = Instruction::lmul;
