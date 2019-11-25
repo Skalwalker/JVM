@@ -108,6 +108,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 cout << frame->operandStack.top().type_float << endl;
                 frame->operandStack.pop();
             }  else if (descriptor.compare("()V") == 0){
+                cout << "ta aqui" << endl;
                 cout << unsigned(frame->operandStack.top().tag) << endl;
                 frame->operandStack.pop();
             }

@@ -204,12 +204,14 @@ uint32_t Instruction::dstore_3(Frame * frame){
 }
 
 uint32_t Instruction::iastore(Frame * frame) {
-    int32_t value = frame->operandStack.top();
+    int32_t value = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
+    
+    cout << index << " " << value << endl;
 
     // Type* arrayPointer = (Type*)(arrayref.type_reference);
     vector<Type>* arrayPointer = (vector<Type>*)arrayref.type_reference;

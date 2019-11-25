@@ -21,6 +21,7 @@ uint32_t Instruction::dup2(Frame* frame) {
     } else {
         frame->operandStack.pop();
         Type value2 = frame->operandStack.top();
+        frame->operandStack.push(value1);
         frame->operandStack.push(value2);
         frame->operandStack.push(value1);
     }
