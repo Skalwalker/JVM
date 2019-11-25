@@ -279,6 +279,9 @@ public:
     static uint32_t arraylength(Frame*);
     static uint32_t aaload(Frame *);
     static uint32_t aastore(Frame *);
+
+    static uint32_t areturn(Frame *);
+    static uint32_t freturn(Frame *);
 };
 
 
