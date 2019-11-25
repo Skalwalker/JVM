@@ -2,10 +2,20 @@
 
 // uint32_t Instruction::wide(Frame* frame){
 //     uint8_t* bytecode = frame->codeAttribute.code;
+//     uint8_t opcode = bytecode[++frame->local_pc];
 //     uint8_t byte1 = bytecode[++frame->local_pc];
 //     uint8_t byte2 = bytecode[++frame->local_pc];
-// }
+//     uint16_t index = (byte1 << 8) | byte2;
 //
+//     if (opcode == 0x84) {
+//         uint8_t constByte1 = bytecode[++frame->local_pc];
+//         uint8_t constByte2 = bytecode[++frame->local_pc];
+//         uint16_t constByte = (byte1 << 8) | byte2;
+//     } else {
+//
+//     }
+// }
+
 // uint32_t Instruction::multianewarray(Frame* frame){
 //     uint8_t* bytecode = frame->codeAttribute.code;
 //     uint8_t byte1 = bytecode[++frame->local_pc];

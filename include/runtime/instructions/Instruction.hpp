@@ -278,6 +278,7 @@ public:
     static uint32_t anewarray(Frame*);
     static uint32_t arraylength(Frame*);
     static uint32_t aaload(Frame *);
+    static uint32_t aastore(Frame *);
 };
 
 
