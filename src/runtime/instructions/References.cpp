@@ -70,6 +70,7 @@ uint32_t Instruction::getstatic(Frame* frame){
 
 
 uint32_t Instruction::invokevirtual(Frame* frame) {
+    tuple<string, string, string> methodInfo;
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];
     uint8_t byte2 = bytecode[++frame->local_pc];
@@ -77,20 +78,10 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
 
     string method = frame->constantPool[index-1].getInfo(frame->constantPool);
-    int j = 0;
-    int w = 0;
-
-
-    while (w < method.size() && method[w+1] != '#') {
-        w++;
-    }
-    string className = method.substr(0,w+1);
-    string nameAndType = method.substr(w+2, method.size());
-    while (j < nameAndType.size() && nameAndType[j+1] != '$') {
-        j++;
-    }
-    string methodName = nameAndType.substr(0,j+1);
-    string descriptor = nameAndType.substr(j+2,nameAndType.size());
+    methodInfo = methodInfoSplit(method);
+    string className = get<0>(methodInfo);
+    string methodName = get<1>(methodInfo);
+    string descriptor = get<2>(methodInfo);
 
     if (className.compare("java/io/PrintStream") == 0) {
         if (methodName.compare("println") == 0) {
@@ -104,6 +95,9 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
             } else if (descriptor.compare("(J)V") == 0){
                 cout << frame->operandStack.top().type_long << endl;
                 frame->operandStack.pop();
+            } else if (descriptor.compare("(D)V") == 0){
+                cout << frame->operandStack.top().type_double << endl;
+                frame->operandStack.pop();
             }
         }
     }
@@ -112,7 +106,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
 
 
 uint32_t Instruction::invokestatic(Frame* frame){
-
+    tuple<string, string, string> methodInfo;
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];
     uint8_t byte2 = bytecode[++frame->local_pc];
@@ -120,27 +114,16 @@ uint32_t Instruction::invokestatic(Frame* frame){
     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
 
     string method = frame->constantPool[index-1].getInfo(frame->constantPool);
-
-    int j = 0;
-    int w = 0;
-
-    while (w < method.size() && method[w+1] != '#') {
-        w++;
-    }
-    string className = method.substr(0,w+1);
-    string nameAndType = method.substr(w+2, method.size());
-    while (j < nameAndType.size() && nameAndType[j+1] != '$') {
-        j++;
-    }
-    string methodName = nameAndType.substr(0,j+1);
-    string descriptor = nameAndType.substr(j+2,nameAndType.size());
+    methodInfo = methodInfoSplit(method);
+    string className = get<0>(methodInfo);
+    string methodName = get<1>(methodInfo);
+    string descriptor = get<2>(methodInfo);
 
     ClassFile classfile = classLoader->methodArea->getClassFile(className);
     vector<MethodInfo> methods = classfile.getMethods();
     int i;
     for (i = 0; i < classfile.getMethodsCount(); i++) {
-        if(methods[i].name == methodName) {
-            cout << methods[i].name << endl;
+        if(methods[i].name == methodName && methods[i].descriptor == descriptor) {
             break;
         }
     }
@@ -170,8 +153,8 @@ uint32_t Instruction::invokestatic(Frame* frame){
     for (i = 0; i < narg; i++) {
         newFrame.localVariables[i] = auxstack.top();
         if (auxstack.top().tag == TAG_LONG || auxstack.top().tag == TAG_DOUBLE) {
-            newFrame.localVariables[i] = auxstack.top();
             i += 1;
+            newFrame.localVariables[i] = auxstack.top();
         }
         auxstack.pop();
     }

@@ -12,7 +12,7 @@ uint32_t Instruction::iadd(Frame * frame) {
     res.tag = TAG_INT;
     res.type_int = val1 + val2;
     frame->operandStack.push(res);
-    
+
     return ++frame->local_pc;
 }
 
@@ -446,6 +446,7 @@ uint32_t Instruction::fneg(Frame * frame) {
 
 uint32_t Instruction::dadd(Frame * frame) {
     double val1, val2;
+    cout << val1 << " " << val2 << endl;
     Type res;
     val2 = frame->operandStack.top().type_double;
     frame->operandStack.pop();

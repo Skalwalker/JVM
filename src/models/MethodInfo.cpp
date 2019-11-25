@@ -14,6 +14,7 @@ MethodInfo::MethodInfo(vector<CPInfo> cp, FILE * fp) {
   this->name_index = twoBytes.readBytes(fp);
   this->name = cp[this->name_index-1].getInfo(cp);
   this->descriptor_index =  twoBytes.readBytes(fp);
+  this->descriptor = cp[this->descriptor_index-1].getInfo(cp);
   this->attributes_count =  twoBytes.readBytes(fp);
   this->setAttributes(cp, fp);
   this->setAccessFlagsNames();

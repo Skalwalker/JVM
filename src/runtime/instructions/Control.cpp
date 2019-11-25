@@ -143,6 +143,26 @@ uint32_t Instruction::ireturn(Frame * frame){
     caller->operandStack.push(value);
     return caller->local_pc;
 }
+
+uint32_t Instruction::dreturn(Frame * frame){
+    Type value = frame->operandStack.top();
+    frame->operandStack.pop();
+    frame->jvmStack->pop();
+
+    Frame* caller = &(frame->jvmStack->top());
+    caller->operandStack.push(value);
+    return caller->local_pc;
+}
+
+uint32_t Instruction::lreturn(Frame * frame){
+    Type value = frame->operandStack.top();
+    frame->operandStack.pop();
+    frame->jvmStack->pop();
+
+    Frame* caller = &(frame->jvmStack->top());
+    caller->operandStack.push(value);
+    return caller->local_pc;
+}
 //
 // uint32_t Instruction::lreturn(Frame * frame){
 //     int64_t val1;
