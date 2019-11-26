@@ -44,6 +44,7 @@ uint32_t Instruction::ldc(Frame* frame){
     uint8_t index = byte;
     Type value;
 
+
     CPInfo cpInfo = frame->constantPool[index-1];
     if(cpInfo.tag == CONSTANT_STRING) {
         value.tag = TAG_REFERENCE;
@@ -61,6 +62,8 @@ uint32_t Instruction::ldc(Frame* frame){
         value.type_float = f;
         frame->operandStack.push(value);
     }
+
+
     return ++frame->local_pc;
 }
 
@@ -216,6 +219,7 @@ uint32_t Instruction::ldc2_w(Frame* frame){
         memcpy(&res, vec, sizeof(double));
         value.type_double = res;
         frame->operandStack.push(value);
+        cout << value.type_double << endl;
     }
     return ++frame->local_pc;
 }

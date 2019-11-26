@@ -174,6 +174,9 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("if_acmpeq")->second.exec = Instruction::if_acmpeq;
     this->instructionByName("if_acmpne")->second.exec = Instruction::if_acmpne;
 
+    this->instructionByName("areturn")->second.exec = Instruction::areturn;
+    this->instructionByName("freturn")->second.exec = Instruction::freturn;
+
     this->instructionByName("goto")->second.exec = Instruction::goto_func;
 
     this->instructionByName("d2f")->second.exec = Instruction::d2f;

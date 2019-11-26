@@ -6,7 +6,7 @@ uint32_t Instruction::lcmp(Frame * frame) {
     val2 = frame->operandStack.top().type_long;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     res.tag = TAG_INT;
     if (val1 > val2) {
         res.type_int = 1;

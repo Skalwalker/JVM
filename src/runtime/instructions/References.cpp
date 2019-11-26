@@ -108,6 +108,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 cout << frame->operandStack.top().type_float << endl;
                 frame->operandStack.pop();
             }  else if (descriptor.compare("()V") == 0){
+                cout << "ta aqui" << endl;
                 cout << unsigned(frame->operandStack.top().tag) << endl;
                 frame->operandStack.pop();
             }
@@ -165,8 +166,7 @@ uint32_t Instruction::invokestatic(Frame* frame){
     for (i = 0; i < narg; i++) {
         newFrame.localVariables[i] = auxstack.top();
         if (auxstack.top().tag == TAG_LONG || auxstack.top().tag == TAG_DOUBLE) {
-            i += 1;
-            newFrame.localVariables[i] = auxstack.top();
+            newFrame.localVariables[i+1] = auxstack.top();
         }
         auxstack.pop();
     }
