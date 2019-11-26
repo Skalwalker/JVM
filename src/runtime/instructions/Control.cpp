@@ -163,16 +163,7 @@ uint32_t Instruction::lreturn(Frame * frame){
     caller->operandStack.push(value);
     return caller->local_pc;
 }
-//
-// uint32_t Instruction::lreturn(Frame * frame){
-//     int64_t val1;
-//     val1 = frame->operandStack.top();
-//     frame->operandStack.pop();
-//
-//     return res.type_returnAddress;
-//
-// }
-//
+
 // uint32_t Instruction::freturn(Frame * frame){
 //     float val1;
 //     val1 = frame->operandStack.top();
@@ -180,14 +171,7 @@ uint32_t Instruction::lreturn(Frame * frame){
 //
 //     return res.type_returnAddress;
 // }
-//
-// uint32_t Instruction::dreturn(Frame * frame){
-//     double val1;
-//     val1 = frame->operandStack.top();
-//     frame->operandStack.pop();
-//
-//     return res.type_returnAddress;
-// }
+
 //
 // uint32_t Instruction::areturn(Frame * frame){
 //     uint64_t val1;

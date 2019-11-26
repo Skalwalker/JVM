@@ -95,7 +95,6 @@ void CodeAttribute::create(vector<CPInfo> cp, FILE * fp) {
     attributes = (AttributeInfo *) calloc(attributesCount, sizeof(AttributeInfo));
 
     for (int attr = 0; attr < attributesCount; attr++) {
-        cout << attr << endl;
         AttributeInfo attrInfo(cp, fp);
         attributes[attr] = attrInfo;
     }
@@ -140,10 +139,7 @@ AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
        constantValue.create(fp);
 
     } else {
-        cout << "NANIIII" << endl;
-        void *trash;
-        fread(trash, attributeLength, 1, fp);
-        // ClassFileReader<uint8_t>::advanceBytes(attributeLength, fp);
-        // attributeName += " (Atributo não implementado)";
+        ClassFileReader<uint8_t>::advanceBytes(attributeLength, fp);
+        attributeName += " (Atributo não implementado)";
     }
 }

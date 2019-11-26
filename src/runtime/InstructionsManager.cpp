@@ -223,6 +223,9 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("arraylength")->second.exec = Instruction::arraylength;
     this->instructionByName("aaload")->second.exec = Instruction::aaload;
     this->instructionByName("aastore")->second.exec = Instruction::aastore;
+
+    this->instructionByName("multianewarray")->second.exec = Instruction::multianewarray;
+    
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {

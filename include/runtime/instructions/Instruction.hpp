@@ -279,6 +279,7 @@ public:
     static uint32_t arraylength(Frame*);
     static uint32_t aaload(Frame *);
     static uint32_t aastore(Frame *);
+    static uint32_t multianewarray(Frame*);
 };
 
 

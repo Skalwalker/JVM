@@ -16,13 +16,33 @@
 //     }
 // }
 
-// uint32_t Instruction::multianewarray(Frame* frame){
-//     uint8_t* bytecode = frame->codeAttribute.code;
-//     uint8_t byte1 = bytecode[++frame->local_pc];
-//     uint8_t byte2 = bytecode[++frame->local_pc];
-//     uint8_t dimensions = bytecode[++frame->local_pc];
-//
-// }
+uint32_t Instruction::multianewarray(Frame* frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+    uint8_t dimensions = bytecode[++frame->local_pc];
+
+    int16_t index = (byte1 << 8) | byte2;
+
+    vector<int32_t> dim_arr;
+    // vector<Type>* arr_type = new vector<Type>(count);
+
+    for (int i = 0; i < dimensions; i++){
+        int32_t dim = frame->operandStack.top().type_int;
+        frame->operandStack.pop();
+        if (dim != 0){
+            break;
+        }
+        dim_arr[i] = dim;
+    }
+
+    // Type res;
+    // res.tag = TAG_RETURN;
+    // res.type_returnAddress = (uint64_t)arrayref;
+    // frame->operandStack.push(res);
+
+    return ++frame->local_pc;
+}
 
 uint32_t Instruction::ifnull(Frame* frame){
     uint8_t* bytecode = frame->codeAttribute.code;
@@ -60,7 +80,6 @@ uint32_t Instruction::ifnonnull(Frame* frame){
     }
 
     return ++frame->local_pc;
-
 }
 
 uint32_t Instruction::goto_w(Frame* frame){
