@@ -179,6 +179,12 @@ public:
     static uint32_t aload_2(Frame *);
     static uint32_t aload_3(Frame *);
     static uint32_t iaload(Frame *);
+    static uint32_t faload(Frame *);
+    static uint32_t laload(Frame *);
+    static uint32_t daload(Frame *);
+    static uint32_t baload(Frame *);
+    static uint32_t caload(Frame *);
+
 
     static uint32_t fload(Frame *);
     static uint32_t fload_0(Frame *);
@@ -282,6 +288,7 @@ public:
     static uint32_t multianewarray(Frame*);
     static uint32_t areturn(Frame *);
     static uint32_t freturn(Frame *);
+    static vector<Type>* buildArray(vector<int32_t> dim, int index, char type);
 
 };
 

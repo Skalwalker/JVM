@@ -182,7 +182,6 @@ uint32_t Instruction::aload_3(Frame * frame){
 uint32_t Instruction::iaload(Frame * frame){
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
-    // Type* array = (Type*)frame->operandStack.top().type_reference;
     vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
 
     frame->operandStack.pop();
@@ -196,6 +195,82 @@ uint32_t Instruction::iaload(Frame * frame){
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::faload(Frame * frame){
+    int32_t index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
+
+    frame->operandStack.pop();
+
+    Type value;
+    value.tag = TAG_FLOAT;
+    value.type_float = array->at(index).type_float;
+
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::daload(Frame * frame){
+    int32_t index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
+
+    frame->operandStack.pop();
+
+    Type value;
+    value.tag = TAG_DOUBLE;
+    value.type_double = array->at(index).type_double;
+
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::laload(Frame * frame){
+    int32_t index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
+
+    frame->operandStack.pop();
+
+    Type value;
+    value.tag = TAG_LONG;
+    value.type_long = array->at(index).type_long;
+
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::baload(Frame * frame){
+    int32_t index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
+
+    frame->operandStack.pop();
+
+    Type value = array->at(index);
+
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::caload(Frame * frame){
+    int32_t index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
+
+    frame->operandStack.pop();
+
+    Type value = array->at(index);
+
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::aaload(Frame * frame){
     Type index, array_ref;
     index = frame->operandStack.top();
@@ -203,8 +278,8 @@ uint32_t Instruction::aaload(Frame * frame){
     array_ref = frame->operandStack.top();
     frame->operandStack.pop();
 
+
     vector<Type>* arr = (vector<Type>*)array_ref.type_reference;
-    // Type *arr = (Type*)array_ref.type_reference;
     Type res = arr->at(index.type_int);
 
     frame->operandStack.push(res);

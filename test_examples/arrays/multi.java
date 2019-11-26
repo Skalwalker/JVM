@@ -1,4 +1,3 @@
-
 class multi{
 	public static void main(String argv[]){
 		int vetor_int[][] = new int[5][5];
@@ -6,7 +5,7 @@ class multi{
 		double vetor_double[][] = new double[4][3];
 		int k;
 		double k_aux;
-		
+
 		k = 0;
 		/*Seta a matriz de ints*/
 		for (int i = 0; i < 5; i++){
@@ -35,7 +34,7 @@ class multi{
 				System.out.println(vetor_double[i][j]);
 			}
 		}
-		
+
 		/*Três dimensões!*/
 		for (int i = 0; i < 5; i++){
 			for (int j = 0; j < 4; j++){

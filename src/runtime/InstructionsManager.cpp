@@ -127,6 +127,11 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("aload_2")->second.exec = Instruction::aload_2;
     this->instructionByName("aload_3")->second.exec = Instruction::aload_3;
     this->instructionByName("iaload")->second.exec = Instruction::iaload;
+    this->instructionByName("faload")->second.exec = Instruction::faload;
+    this->instructionByName("laload")->second.exec = Instruction::laload;
+    this->instructionByName("daload")->second.exec = Instruction::daload;
+    this->instructionByName("baload")->second.exec = Instruction::laload;
+    this->instructionByName("caload")->second.exec = Instruction::daload;
 
     this->instructionByName("fload")->second.exec = Instruction::fload;
     this->instructionByName("fload_0")->second.exec = Instruction::fload_0;
@@ -228,7 +233,7 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("aastore")->second.exec = Instruction::aastore;
 
     this->instructionByName("multianewarray")->second.exec = Instruction::multianewarray;
-    
+
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {
