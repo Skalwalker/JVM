@@ -11,8 +11,8 @@ uint32_t ClassFileReader<uint32_t>::littleEndianToBigEndian(uint32_t val) {
     return (val << 16) | (val >> 16);
 }
 
-template <>
-void ClassFileReader<uint8_t>::advanceBytes(int size, FILE * fp) {
-    void * trash;
-    fread(&trash, size, 1, fp);
-}
+// template <>
+// void ClassFileReader<uint8_t>::advanceBytes(int size, FILE * fp) {
+//     void * trash;
+//     fread(&trash, size, 1, fp);
+// }
