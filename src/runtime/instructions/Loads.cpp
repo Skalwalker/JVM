@@ -151,6 +151,16 @@ uint32_t Instruction::dload_3(Frame * frame){
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::aload(Frame * frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t index = bytecode[++frame->local_pc];
+
+    Type val = frame->localVariables[index];
+    frame->operandStack.push(val);
+
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::aload_0(Frame * frame){
     Type val = frame->localVariables[0];
     frame->operandStack.push(val);

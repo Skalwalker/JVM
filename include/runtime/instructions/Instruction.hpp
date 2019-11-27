@@ -288,6 +288,7 @@ public:
     static uint32_t multianewarray(Frame*);
     static uint32_t areturn(Frame *);
     static uint32_t freturn(Frame *);
+    static uint32_t aload(Frame *);
     static vector<Type>* buildArray(vector<int32_t> dim, int index, char type);
 
 };
