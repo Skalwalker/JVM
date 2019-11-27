@@ -28,6 +28,13 @@ T ClassFileReader<T>::readBytes(FILE * fp) {
     return (readBytes);
 }
 
+template <class T>
+void ClassFileReader<T>::advanceBytes(int size, FILE * fp) {
+    void * trash = (void*)malloc(size*sizeof(uint8_t));
+    fread(trash, size, 1, fp);
+    free(trash);
+}
+
 template<class T>
 T ClassFileReader<T>::littleEndianToBigEndian(T val) {
   return val;

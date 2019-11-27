@@ -92,8 +92,8 @@ void CodeAttribute::create(vector<CPInfo> cp, FILE * fp) {
         exceptionTable[i].catch_type = twoBytes.readBytes(fp);
     }
     attributesCount = twoBytes.readBytes(fp);
-
     attributes = (AttributeInfo *) calloc(attributesCount, sizeof(AttributeInfo));
+
     for (int attr = 0; attr < attributesCount; attr++) {
         AttributeInfo attrInfo(cp, fp);
         attributes[attr] = attrInfo;

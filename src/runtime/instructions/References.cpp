@@ -6,10 +6,15 @@ uint32_t Instruction::newarray(Frame *frame){
     int count = frame->operandStack.top().type_int;
     frame->operandStack.pop();
 
-    Type *arr_type = (Type*)malloc(count*(sizeof(Type)));
+
+    // Type *arr_type = (Type*)malloc(count*(sizeof(Type)));
+    // vector<Type>* arr = (vector<Type>*)array_ref.type_reference;
+    // vector<Type> arr_type(count);
+    vector<Type>* arr_type = new vector<Type>(count);
 
     Type *value;
     value = (Type*)malloc(sizeof(Type));
+
 
     if (atype == T_BOOLEAN) {
         value->tag = TAG_BOOL;
@@ -38,7 +43,7 @@ uint32_t Instruction::newarray(Frame *frame){
     }
 
     for (int i = 0; i < count; i++) {
-        arr_type[i] = *value;
+        arr_type->at(i) = *value;
     }
 
     Type arrayReference;
@@ -47,7 +52,8 @@ uint32_t Instruction::newarray(Frame *frame){
     frame->operandStack.push(arrayReference);
 
     Type res = frame->operandStack.top();
-    Type* arrayPointer = (Type*)(res.type_reference);
+    // Type* arrayPointer = (Type*)(res.type_reference);
+    vector<Type>* arrayPointer = (vector<Type>*)res.type_reference;
 
     return ++frame->local_pc;
 }
@@ -70,6 +76,7 @@ uint32_t Instruction::getstatic(Frame* frame){
 
 
 uint32_t Instruction::invokevirtual(Frame* frame) {
+    tuple<string, string, string> methodInfo;
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];
     uint8_t byte2 = bytecode[++frame->local_pc];
@@ -77,20 +84,10 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
 
     string method = frame->constantPool[index-1].getInfo(frame->constantPool);
-    int j = 0;
-    int w = 0;
-
-
-    while (w < method.size() && method[w+1] != '#') {
-        w++;
-    }
-    string className = method.substr(0,w+1);
-    string nameAndType = method.substr(w+2, method.size());
-    while (j < nameAndType.size() && nameAndType[j+1] != '$') {
-        j++;
-    }
-    string methodName = nameAndType.substr(0,j+1);
-    string descriptor = nameAndType.substr(j+2,nameAndType.size());
+    methodInfo = methodInfoSplit(method);
+    string className = get<0>(methodInfo);
+    string methodName = get<1>(methodInfo);
+    string descriptor = get<2>(methodInfo);
 
     if (className.compare("java/io/PrintStream") == 0) {
         if (methodName.compare("println") == 0) {
@@ -104,6 +101,16 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
             } else if (descriptor.compare("(J)V") == 0){
                 cout << frame->operandStack.top().type_long << endl;
                 frame->operandStack.pop();
+            } else if (descriptor.compare("(D)V") == 0){
+                cout << frame->operandStack.top().type_double << endl;
+                frame->operandStack.pop();
+            }  else if (descriptor.compare("(F)V") == 0){
+                cout << frame->operandStack.top().type_float << endl;
+                frame->operandStack.pop();
+            }  else if (descriptor.compare("()V") == 0){
+                cout << "ta aqui" << endl;
+                cout << unsigned(frame->operandStack.top().tag) << endl;
+                frame->operandStack.pop();
             }
         }
     }
@@ -112,7 +119,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
 
 
 uint32_t Instruction::invokestatic(Frame* frame){
-
+    tuple<string, string, string> methodInfo;
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];
     uint8_t byte2 = bytecode[++frame->local_pc];
@@ -120,27 +127,16 @@ uint32_t Instruction::invokestatic(Frame* frame){
     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
 
     string method = frame->constantPool[index-1].getInfo(frame->constantPool);
-
-    int j = 0;
-    int w = 0;
-
-    while (w < method.size() && method[w+1] != '#') {
-        w++;
-    }
-    string className = method.substr(0,w+1);
-    string nameAndType = method.substr(w+2, method.size());
-    while (j < nameAndType.size() && nameAndType[j+1] != '$') {
-        j++;
-    }
-    string methodName = nameAndType.substr(0,j+1);
-    string descriptor = nameAndType.substr(j+2,nameAndType.size());
+    methodInfo = methodInfoSplit(method);
+    string className = get<0>(methodInfo);
+    string methodName = get<1>(methodInfo);
+    string descriptor = get<2>(methodInfo);
 
     ClassFile classfile = classLoader->methodArea->getClassFile(className);
     vector<MethodInfo> methods = classfile.getMethods();
     int i;
     for (i = 0; i < classfile.getMethodsCount(); i++) {
-        if(methods[i].name == methodName) {
-            cout << methods[i].name << endl;
+        if(methods[i].name == methodName && methods[i].descriptor == descriptor) {
             break;
         }
     }
@@ -170,8 +166,7 @@ uint32_t Instruction::invokestatic(Frame* frame){
     for (i = 0; i < narg; i++) {
         newFrame.localVariables[i] = auxstack.top();
         if (auxstack.top().tag == TAG_LONG || auxstack.top().tag == TAG_DOUBLE) {
-            newFrame.localVariables[i] = auxstack.top();
-            i += 1;
+            newFrame.localVariables[i+1] = auxstack.top();
         }
         auxstack.pop();
     }
@@ -225,16 +220,16 @@ uint32_t Instruction::anewarray(Frame* frame){
     int count = frame->operandStack.top().type_int;
     frame->operandStack.pop();
 
-    Type *arr_vec = (Type*)malloc(count*(sizeof(Type)));
+    vector<Type>* arr_type = new vector<Type>(count);
 
     for(int i = 0; i < count; i++){
-        arr_vec[i].tag = TAG_REFERENCE;
-        arr_vec[i].type_reference = (uint64_t)NULL;
+        arr_type->at(i).tag = TAG_REFERENCE;
+        arr_type->at(i).type_reference = (uint64_t)NULL;
     }
 
     Type res;
     res.tag = TAG_REFERENCE;
-    res.type_reference = (uint64_t)arr_vec;
+    res.type_reference = (uint64_t)arr_type;
 
     frame->operandStack.push(res);
 
@@ -255,7 +250,7 @@ uint32_t Instruction::arraylength(Frame* frame){
 
     return ++frame->local_pc;
 }
-//
+
 // uint32_t Instruction::athrow(Frame* frame){
 // }
 //

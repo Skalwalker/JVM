@@ -66,6 +66,7 @@ uint32_t Instruction::istore_0(Frame * frame){
     frame->operandStack.pop();
     frame->localVariables[0] = val;
 
+
     return ++frame->local_pc;
 }
 
@@ -204,16 +205,16 @@ uint32_t Instruction::dstore_3(Frame * frame){
 }
 
 uint32_t Instruction::iastore(Frame * frame) {
-    int32_t value = frame->operandStack.top().type_int;
+    Type value = frame->operandStack.top();
     frame->operandStack.pop();
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
-    Type* arrayPointer = (Type*)(arrayref.type_reference);
-
-    (arrayPointer[index]).type_int = value;
+    // Type* arrayPointer = (Type*)(arrayref.type_reference);
+    vector<Type>* arrayPointer = (vector<Type>*)arrayref.type_reference;
+    arrayPointer->at(index) = value;
 
     return ++frame->local_pc;
 }
@@ -226,8 +227,10 @@ uint32_t Instruction::lastore(Frame * frame) {
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
-    Type* arrayPointer = (Type*)(arrayref.type_reference);
-    (arrayPointer[index]).type_long = value;
+    // Type* arrayPointer = (Type*)(arrayref.type_reference);
+    vector<Type>* arrayPointer = (vector<Type>*)arrayref.type_reference;
+
+    arrayPointer->at(index).type_long = value;
 
     return ++frame->local_pc;
 }
@@ -240,8 +243,9 @@ uint32_t Instruction::dastore(Frame * frame) {
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
-    Type* arrayPointer = (Type*)(arrayref.type_reference);
-    (arrayPointer[index]).type_double = value;
+    // Type* arrayPointer = (Type*)(arrayref.type_reference);
+    vector<Type>* arrayPointer = (vector<Type>*)arrayref.type_reference;
+    arrayPointer->at(index).type_double = value;
 
     return ++frame->local_pc;
 }
@@ -254,8 +258,9 @@ uint32_t Instruction::fastore(Frame * frame) {
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
-    Type* arrayPointer = (Type*)(arrayref.type_reference);
-    (arrayPointer[index]).type_float = value;
+    // Type* arrayPointer = (Type*)(arrayref.type_reference);
+    vector<Type>* arrayPointer = (vector<Type>*)arrayref.type_reference;
+    arrayPointer->at(index).type_float = value;
 
     return ++frame->local_pc;
 }
@@ -268,8 +273,9 @@ uint32_t Instruction::sastore(Frame * frame) {
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
-    Type* arrayPointer = (Type*)(arrayref.type_reference);
-    (arrayPointer[index]).type_short = value;
+    // Type* arrayPointer = (Type*)(arrayref.type_reference);
+    vector<Type>* arrayPointer = (vector<Type>*)arrayref.type_reference;
+    arrayPointer->at(index).type_short = value;
 
     return ++frame->local_pc;
 }
@@ -282,8 +288,9 @@ uint32_t Instruction::bastore(Frame * frame) {
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
-    Type* arrayPointer = (Type*)(arrayref.type_reference);
-    (arrayPointer[index]).type_byte = value;
+    vector<Type>* arrayPointer = (vector<Type>*)arrayref.type_reference;
+    // Type* arrayPointer = (Type*)(arrayref.type_reference);
+    arrayPointer->at(index).type_byte = value;
 
     return ++frame->local_pc;
 }
@@ -296,8 +303,9 @@ uint32_t Instruction::castore(Frame * frame) {
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
-    Type* arrayPointer = (Type*)(arrayref.type_reference);
-    (arrayPointer[index]).type_char = value;
+    vector<Type>* arrayPointer = (vector<Type>*)arrayref.type_reference;
+    // Type* arrayPointer = (Type*)(arrayref.type_reference);
+    arrayPointer->at(index).type_char = value;
 
     return ++frame->local_pc;
 }
@@ -345,6 +353,20 @@ uint32_t Instruction::astore_3(Frame * frame) {
     frame->operandStack.pop();
 
     frame->localVariables[3] = value;
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::aastore(Frame * frame) {
+    Type value = frame->operandStack.top();
+    frame->operandStack.pop();
+    Type index = frame->operandStack.top();
+    frame->operandStack.pop();
+    Type arrayref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    vector<Type>* arrayPointer = (vector<Type>*)arrayref.type_reference;
+    arrayPointer->at(index.type_int) = value;
 
     return ++frame->local_pc;
 }

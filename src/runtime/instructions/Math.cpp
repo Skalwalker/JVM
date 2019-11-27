@@ -10,9 +10,10 @@ uint32_t Instruction::iadd(Frame * frame) {
     val1 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     res.tag = TAG_INT;
+    // cout << val1 << " " << val2 << endl;
     res.type_int = val1 + val2;
     frame->operandStack.push(res);
-    
+
     return ++frame->local_pc;
 }
 
@@ -88,7 +89,7 @@ uint32_t Instruction::ineg(Frame * frame) {
     int32_t val1;
     Type res;
     val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     res.tag = TAG_INT;
     res.type_int = -val1;
     frame->operandStack.push(res);
@@ -102,7 +103,7 @@ uint32_t Instruction::ishl(Frame * frame) {
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     val2 = val2 & 0x0000001F;
     res.tag = TAG_INT;
     res.type_int = val1 << val2;
@@ -117,7 +118,7 @@ uint32_t Instruction::ishr(Frame * frame) {
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     val2 = val2 & 0x0000001F;
     res.tag = TAG_INT;
     res.type_int = val1 >> val2;
@@ -132,7 +133,7 @@ uint32_t Instruction::iushr(Frame * frame) {
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     val2 = val2 & 0x0000001F;
     res.tag = TAG_INT;
     res.type_int = val1 >> val2;
@@ -147,7 +148,7 @@ uint32_t Instruction::iand(Frame * frame) {
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     res.tag = TAG_INT;
     res.type_int = val1 & val2;
     frame->operandStack.push(res);
@@ -161,7 +162,7 @@ uint32_t Instruction::ior(Frame * frame) {
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     res.tag = TAG_INT;
     res.type_int = val1 | val2;
     frame->operandStack.push(res);
@@ -175,7 +176,7 @@ uint32_t Instruction::ixor(Frame * frame) {
     val2 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_int;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     res.tag = TAG_INT;
     res.type_int = val1 ^ val2;
     frame->operandStack.push(res);
@@ -267,7 +268,7 @@ uint32_t Instruction::lneg(Frame * frame) {
     int64_t val1;
     Type res;
     val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     res.tag = TAG_LONG;
     res.type_long = -val1;
     frame->operandStack.push(res);
@@ -281,7 +282,7 @@ uint32_t Instruction::land(Frame * frame) {
     val2 = frame->operandStack.top().type_long;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     res.tag = TAG_LONG;
     res.type_long = val1 & val2;
     frame->operandStack.push(res);
@@ -295,7 +296,7 @@ uint32_t Instruction::lshl(Frame * frame) {
     val2 = frame->operandStack.top().type_long;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     val2 = val2 & 0x0000003F;
     res.tag = TAG_LONG;
     res.type_long = val1 << val2;
@@ -310,7 +311,7 @@ uint32_t Instruction::lshr(Frame * frame) {
     val2 = frame->operandStack.top().type_long;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     val2 = val2 & 0x0000003F;
     res.tag = TAG_LONG;
     res.type_long = val1 >> val2;
@@ -325,7 +326,7 @@ uint32_t Instruction::lor(Frame * frame) {
     val2 = frame->operandStack.top().type_long;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     res.tag = TAG_LONG;
     res.type_long = val1 | val2;
     frame->operandStack.push(res);
@@ -339,7 +340,7 @@ uint32_t Instruction::lxor(Frame * frame) {
     val2 = frame->operandStack.top().type_long;
     frame->operandStack.pop();
     val1 = frame->operandStack.top().type_long;
-    frame->operandStack.top();
+    frame->operandStack.pop();
     res.tag = TAG_LONG;
     res.type_long = val1 ^ val2;
     frame->operandStack.push(res);

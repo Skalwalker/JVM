@@ -30,6 +30,8 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("invokestatic")->second.exec = Instruction::invokestatic;
     this->instructionByName("return")->second.exec = Instruction::returnfunc;
     this->instructionByName("ireturn")->second.exec = Instruction::ireturn;
+    this->instructionByName("dreturn")->second.exec = Instruction::dreturn;
+    this->instructionByName("lreturn")->second.exec = Instruction::lreturn;
     this->instructionByName("ladd")->second.exec = Instruction::ladd;
     this->instructionByName("lsub")->second.exec = Instruction::lsub;
     this->instructionByName("lmul")->second.exec = Instruction::lmul;
@@ -125,6 +127,11 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("aload_2")->second.exec = Instruction::aload_2;
     this->instructionByName("aload_3")->second.exec = Instruction::aload_3;
     this->instructionByName("iaload")->second.exec = Instruction::iaload;
+    this->instructionByName("faload")->second.exec = Instruction::faload;
+    this->instructionByName("laload")->second.exec = Instruction::laload;
+    this->instructionByName("daload")->second.exec = Instruction::daload;
+    this->instructionByName("baload")->second.exec = Instruction::laload;
+    this->instructionByName("caload")->second.exec = Instruction::daload;
 
     this->instructionByName("fload")->second.exec = Instruction::fload;
     this->instructionByName("fload_0")->second.exec = Instruction::fload_0;
@@ -171,6 +178,9 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("if_icmple")->second.exec = Instruction::if_icmple;
     this->instructionByName("if_acmpeq")->second.exec = Instruction::if_acmpeq;
     this->instructionByName("if_acmpne")->second.exec = Instruction::if_acmpne;
+
+    this->instructionByName("areturn")->second.exec = Instruction::areturn;
+    this->instructionByName("freturn")->second.exec = Instruction::freturn;
 
     this->instructionByName("goto")->second.exec = Instruction::goto_func;
 
@@ -220,6 +230,11 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("anewarray")->second.exec = Instruction::anewarray;
     this->instructionByName("arraylength")->second.exec = Instruction::arraylength;
     this->instructionByName("aaload")->second.exec = Instruction::aaload;
+    this->instructionByName("aastore")->second.exec = Instruction::aastore;
+    this->instructionByName("aload")->second.exec = Instruction::aload;
+    this->instructionByName("multianewarray")->second.exec = Instruction::multianewarray;
+    this->instructionByName("wide")->second.exec = Instruction::wide;
+
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {
