@@ -232,8 +232,8 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("aaload")->second.exec = Instruction::aaload;
     this->instructionByName("aastore")->second.exec = Instruction::aastore;
     this->instructionByName("aload")->second.exec = Instruction::aload;
-
     this->instructionByName("multianewarray")->second.exec = Instruction::multianewarray;
+    this->instructionByName("wide")->second.exec = Instruction::wide;
 
 }
 

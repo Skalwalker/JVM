@@ -290,6 +290,7 @@ public:
     static uint32_t freturn(Frame *);
     static uint32_t aload(Frame *);
     static vector<Type>* buildArray(vector<int32_t> dim, int index, char type);
+    static uint32_t wide(Frame*);
 
 };
 

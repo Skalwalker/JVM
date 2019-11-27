@@ -1,20 +1,53 @@
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
-// uint32_t Instruction::wide(Frame* frame){
-//     uint8_t* bytecode = frame->codeAttribute.code;
-//     uint8_t opcode = bytecode[++frame->local_pc];
-//     uint8_t byte1 = bytecode[++frame->local_pc];
-//     uint8_t byte2 = bytecode[++frame->local_pc];
-//     uint16_t index = (byte1 << 8) | byte2;
-//
-//     if (opcode == 0x84) {
-//         uint8_t constByte1 = bytecode[++frame->local_pc];
-//         uint8_t constByte2 = bytecode[++frame->local_pc];
-//         uint16_t constByte = (byte1 << 8) | byte2;
-//     } else {
-//
-//     }
-// }
+uint32_t Instruction::wide(Frame* frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t opcode = bytecode[++frame->local_pc];
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+    uint16_t index = (byte1 << 8) | byte2;
+    Type value;
+
+    if (opcode == 0x84) {
+        uint8_t constByte1 = bytecode[++frame->local_pc];
+        uint8_t constByte2 = bytecode[++frame->local_pc];
+        uint16_t imm_const = (constByte1 << 8) | constByte2;
+
+        int32_t temp, sign_ext;
+
+        sign_ext = imm_const;
+        temp = frame->localVariables[index].type_int;
+        temp += sign_ext;
+
+        frame->localVariables[index].type_int = temp;
+
+    } else {
+        //0x15 iload 0x16 lload 0x17 fload 0x18 dload 0x19 aload
+        if (opcode == 0x15 || opcode == 0x16 || opcode == 0x17 || opcode == 0x18 || opcode == 0x19) {
+            value = frame->localVariables[index];
+            frame->operandStack.push(value);
+
+        //0x36 istore 0x37 dstore 0x3a astore
+        } else if(opcode == 0x36 || opcode == 0x39) {
+            value = frame->operandStack.top();
+            frame->operandStack.pop();
+            frame->localVariables[index] = value;
+
+        //lstore 0x38 fstore 0x39
+        } else if(opcode == 0x37 || opcode == 0x38) {
+            value = frame->operandStack.top();
+            frame->operandStack.pop();
+            frame->localVariables[index] = value;
+            frame->localVariables[index+1] = value;
+        //0xa9 ret
+        } else if(opcode == 0xa9) {
+            value = frame->localVariables[index];
+            return value.type_returnAddress;
+        }
+    }
+
+    return ++frame->local_pc;
+}
 
 
 vector<Type>* Instruction::buildArray(vector<int32_t> dim, int index, char type) {
