@@ -234,6 +234,7 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("aload")->second.exec = Instruction::aload;
     this->instructionByName("multianewarray")->second.exec = Instruction::multianewarray;
     this->instructionByName("wide")->second.exec = Instruction::wide;
+    this->instructionByName("saload")->second.exec = Instruction::saload;
 
 }
 

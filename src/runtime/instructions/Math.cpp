@@ -56,7 +56,7 @@ uint32_t Instruction::idiv(Frame * frame) {
     frame->operandStack.pop();
 
     if(val2 == 0) {
-        printf("TODO\n");
+        ExceptionThrower::arithmeticException(0);
     } else {
         res.tag = TAG_INT;
         res.type_int = val1 / val2;
@@ -75,7 +75,7 @@ uint32_t Instruction::irem(Frame * frame) {
     frame->operandStack.pop();
 
     if(val2 == 0) {
-        printf("TODO\n");
+        ExceptionThrower::arithmeticException(0);
     } else {
         res.tag = TAG_INT;
         res.type_int = val1 % val2;
@@ -235,7 +235,7 @@ uint32_t Instruction::ldiv(Frame * frame) {
     frame->operandStack.pop();
 
     if(val2 == 0) {
-        printf("TODO\n");
+        ExceptionThrower::arithmeticException(0);
     } else {
         res.tag = TAG_LONG;
         res.type_long = val1 / val2;
@@ -254,7 +254,7 @@ uint32_t Instruction::lrem(Frame * frame) {
     frame->operandStack.pop();
 
     if(val2 == 0) {
-        printf("TODO\n");
+        ExceptionThrower::arithmeticException(0);
     } else {
         res.tag = TAG_INT;
         res.type_long = val1 % val2;
@@ -414,6 +414,7 @@ uint32_t Instruction::fdiv(Frame * frame) {
     frame->operandStack.pop();
     res.tag = TAG_FLOAT;
     res.type_float = val1 / val2;
+    cout << val1 / val2 << endl;
     frame->operandStack.push(res);
 
     return ++frame->local_pc;

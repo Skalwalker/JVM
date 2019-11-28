@@ -151,6 +151,32 @@ uint32_t Instruction::dload_3(Frame * frame){
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::saload(Frame * frame){
+    int32_t index = frame->operandStack.top().type_int;
+    frame->operandStack.pop();
+    Type arrayref = frame->operandStack.top();
+
+    frame->operandStack.pop();
+
+    if (arrayref.type_reference == (uint64_t)NULL) {
+        ExceptionThrower::nullPointerException();
+    }
+
+    vector<Type>* arr = (vector<Type>*)arrayref.type_reference;
+
+    if(index > arr->size() || index < 0) {
+        ExceptionThrower::arrayIndexOutOfBounds(index);
+    }
+
+    Type value;
+    value.tag = TAG_INT;
+    value.type_int = arr->at(index).type_int;
+
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::aload(Frame * frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t index = bytecode[++frame->local_pc];
@@ -192,9 +218,18 @@ uint32_t Instruction::aload_3(Frame * frame){
 uint32_t Instruction::iaload(Frame * frame){
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
-    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
-
+    Type arr_ref = frame->operandStack.top();
     frame->operandStack.pop();
+
+    if (arr_ref.type_reference == (uint64_t)NULL) {
+        ExceptionThrower::nullPointerException();
+    }
+
+    vector<Type>* array = (vector<Type>*)arr_ref.type_reference;
+
+    if(index > array->size() || index < 0) {
+        ExceptionThrower::arrayIndexOutOfBounds(index);
+    }
 
     Type value;
     value.tag = TAG_INT;
@@ -208,13 +243,23 @@ uint32_t Instruction::iaload(Frame * frame){
 uint32_t Instruction::faload(Frame * frame){
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
-    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
+    Type arrayref = frame->operandStack.top();
 
     frame->operandStack.pop();
 
+    if (arrayref.type_reference == (uint64_t)NULL) {
+        ExceptionThrower::nullPointerException();
+    }
+
+    vector<Type>* arr = (vector<Type>*)arrayref.type_reference;
+
+    if(index > arr->size() || index < 0) {
+        ExceptionThrower::arrayIndexOutOfBounds(index);
+    }
+
     Type value;
     value.tag = TAG_FLOAT;
-    value.type_float = array->at(index).type_float;
+    value.type_float = arr->at(index).type_float;
 
     frame->operandStack.push(value);
 
@@ -224,13 +269,22 @@ uint32_t Instruction::faload(Frame * frame){
 uint32_t Instruction::daload(Frame * frame){
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
-    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
-
+    Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
+
+    if (arrayref.type_reference == (uint64_t)NULL) {
+        ExceptionThrower::nullPointerException();
+    }
+
+    vector<Type>* arr = (vector<Type>*)arrayref.type_reference;
+
+    if(index > arr->size() || index < 0) {
+        ExceptionThrower::arrayIndexOutOfBounds(index);
+    }
 
     Type value;
     value.tag = TAG_DOUBLE;
-    value.type_double = array->at(index).type_double;
+    value.type_double = arr->at(index).type_double;
 
     frame->operandStack.push(value);
 
@@ -240,13 +294,22 @@ uint32_t Instruction::daload(Frame * frame){
 uint32_t Instruction::laload(Frame * frame){
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
-    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
-
+    Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
+
+    if (arrayref.type_reference == (uint64_t)NULL) {
+        ExceptionThrower::nullPointerException();
+    }
+
+    vector<Type>* arr = (vector<Type>*)arrayref.type_reference;
+
+    if(index > arr->size() || index < 0) {
+        ExceptionThrower::arrayIndexOutOfBounds(index);
+    }
 
     Type value;
     value.tag = TAG_LONG;
-    value.type_long = array->at(index).type_long;
+    value.type_long = arr->at(index).type_long;
 
     frame->operandStack.push(value);
 
@@ -256,11 +319,20 @@ uint32_t Instruction::laload(Frame * frame){
 uint32_t Instruction::baload(Frame * frame){
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
-    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
-
+    Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
-    Type value = array->at(index);
+    if (arrayref.type_reference == (uint64_t)NULL) {
+        ExceptionThrower::nullPointerException();
+    }
+
+    vector<Type>* arr = (vector<Type>*)arrayref.type_reference;
+
+    if(index > arr->size() || index < 0) {
+        ExceptionThrower::arrayIndexOutOfBounds(index);
+    }
+
+    Type value = arr->at(index);
 
     frame->operandStack.push(value);
 
@@ -270,11 +342,20 @@ uint32_t Instruction::baload(Frame * frame){
 uint32_t Instruction::caload(Frame * frame){
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
-    vector<Type>* array = (vector<Type>*)frame->operandStack.top().type_reference;
-
+    Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
-    Type value = array->at(index);
+    if (arrayref.type_reference == (uint64_t)NULL) {
+        ExceptionThrower::nullPointerException();
+    }
+
+    vector<Type>* arr = (vector<Type>*)arrayref.type_reference;
+
+    if(index > arr->size() || index < 0) {
+        ExceptionThrower::arrayIndexOutOfBounds(index);
+    }
+
+    Type value = arr->at(index);
 
     frame->operandStack.push(value);
 
@@ -282,15 +363,24 @@ uint32_t Instruction::caload(Frame * frame){
 }
 
 uint32_t Instruction::aaload(Frame * frame){
-    Type index, array_ref;
-    index = frame->operandStack.top();
+    Type array_ref;
+    int32_t index;
+    index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     array_ref = frame->operandStack.top();
     frame->operandStack.pop();
 
+    if (array_ref.type_reference == (uint64_t)NULL) {
+        ExceptionThrower::nullPointerException();
+    }
 
     vector<Type>* arr = (vector<Type>*)array_ref.type_reference;
-    Type res = arr->at(index.type_int);
+
+    if(index > arr->size() || index < 0) {
+        ExceptionThrower::arrayIndexOutOfBounds(index);
+    }
+
+    Type res = arr->at(index);
 
     frame->operandStack.push(res);
 

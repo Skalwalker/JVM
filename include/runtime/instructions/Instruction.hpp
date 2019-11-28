@@ -5,6 +5,7 @@
 #include <string>
 #include <math.h>
 #include <tuple>
+#include "../../execution/ExceptionThrower.hpp"
 #include "../Frame.hpp"
 #include "../../loader/ClassLoader.hpp"
 #include "../../models/CPInfo.hpp"
@@ -291,6 +292,7 @@ public:
     static uint32_t aload(Frame *);
     static vector<Type>* buildArray(vector<int32_t> dim, int index, char type);
     static uint32_t wide(Frame*);
+    static uint32_t saload(Frame *);
 
 };
 

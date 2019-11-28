@@ -7,9 +7,6 @@ uint32_t Instruction::newarray(Frame *frame){
     frame->operandStack.pop();
 
 
-    // Type *arr_type = (Type*)malloc(count*(sizeof(Type)));
-    // vector<Type>* arr = (vector<Type>*)array_ref.type_reference;
-    // vector<Type> arr_type(count);
     vector<Type>* arr_type = new vector<Type>(count);
 
     Type *value;
@@ -52,7 +49,6 @@ uint32_t Instruction::newarray(Frame *frame){
     frame->operandStack.push(arrayReference);
 
     Type res = frame->operandStack.top();
-    // Type* arrayPointer = (Type*)(res.type_reference);
     vector<Type>* arrayPointer = (vector<Type>*)res.type_reference;
 
     return ++frame->local_pc;
@@ -227,6 +223,8 @@ uint32_t Instruction::anewarray(Frame* frame){
         arr_type->at(i).type_reference = (uint64_t)NULL;
     }
 
+
+
     Type res;
     res.tag = TAG_REFERENCE;
     res.type_reference = (uint64_t)arr_type;
@@ -240,6 +238,10 @@ uint32_t Instruction::anewarray(Frame* frame){
 uint32_t Instruction::arraylength(Frame* frame){
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
+
+    if (arrayref.type_reference == (uint64_t)NULL) {
+        ExceptionThrower::nullPointerException();
+    }
 
     vector<Type>* type_vec = (vector<Type>*)arrayref.type_reference;
     Type len;
