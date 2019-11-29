@@ -1,49 +1,55 @@
 #include "../include/main.hpp"
 
-using namespace std;
-void list_dir(string path) {
-   struct dirent *entry;
-   DIR *dir = opendir(path);
+string get_path(string arg){
+    int i = arg.size();
+    while (i >= 0 && arg[i] != '/') {
+        i--;
+    }
+    return arg.substr(0, i);
+}
 
-   if (dir == NULL) {
-      return;
-   }
-   while ((entry = readdir(dir)) != NULL) {
-       cout << entry->d_name << endl;
-   }
-   closedir(dir);
+string get_mainfile(string arg){
+    int i = arg.size();
+    while (i >= 0 && arg[i] != '/') {
+        i--;
+    }
+    return arg.substr(i, (arg.size()-i));
 }
 
 int main(int argc, char* argv[]) {
     string file_name;
-    string path = "test_examples/";
     bool print = false;
-    // Check the number of parameters
-    if (argc == 1) {
-      file_name = path + "HelloWorld.class";
-    } else if (argc == 2) {
-      file_name = path + argv[1];
-    } else if (argc == 3) {
-        print = true;
-    }
-
+    string mainfile;
+    string path;
     FILE * fp;
 
-    fp = fopen(file_name.c_str(), "rb");
-    if (fp != NULL) {
-        if (print) {
+    // Check the number of parameters
+    if (argc == 1) {
+        cout << "Número errado de argumentos ./bin/jvm path -e(Ativa exibidor)" << endl;
+        exit(0);
+    } else if (argc == 3) {
+        print = true;
+    } else {
+        path = get_path(argv[1]);
+        mainfile = get_mainfile(argv[1]);
+    }
+
+
+    if (print) {
+        fp = fopen((path + mainfile).c_str(), "rb");
+        if (fp != NULL) {
             ClassFile classFile(fp);
             Printer printer(classFile);
-        } else {
-            list_dir(path);
-            MethodArea methodArea;
-            ClassLoader classLoader;
-            classLoader.methodArea = &methodArea;
-            classLoader.loadClassFile(classFile);
-            InstructionsManager instructionsManager(&classLoader);
-            ExecutionEngine executionEngine(classFile, &methodArea, &instructionsManager);
-            executionEngine.run();
         }
+    } else {
+        ClassFile classFile;
+        MethodArea methodArea;
+        ClassLoader classLoader(path);
+        classLoader.methodArea = &methodArea;
+        classFile = classLoader.loadClassFile(mainfile);
+        InstructionsManager instructionsManager(&classLoader);
+        ExecutionEngine executionEngine(classFile, &methodArea, &instructionsManager);
+        executionEngine.run();
 
     }
     return 0;

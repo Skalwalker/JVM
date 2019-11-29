@@ -93,6 +93,7 @@ void CodeAttribute::create(vector<CPInfo> cp, FILE * fp) {
     }
     attributesCount = twoBytes.readBytes(fp);
     attributes = (AttributeInfo *) calloc(attributesCount, sizeof(AttributeInfo));
+
     for (int attr = 0; attr < attributesCount; attr++) {
         AttributeInfo attrInfo(cp, fp);
         attributes[attr] = attrInfo;

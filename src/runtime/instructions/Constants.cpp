@@ -219,7 +219,6 @@ uint32_t Instruction::ldc2_w(Frame* frame){
         memcpy(&res, vec, sizeof(double));
         value.type_double = res;
         frame->operandStack.push(value);
-        cout << value.type_double << endl;
     }
     return ++frame->local_pc;
 }

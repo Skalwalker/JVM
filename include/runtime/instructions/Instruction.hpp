@@ -81,12 +81,15 @@ public:
     Instruction(string, uint32_t);
     Instruction();
     static tuple<string, string, string> methodInfoSplit(string);
+    static tuple<string, string, string> fieldInfoSplit(string);
+    static map<string, Type>* instantiateFields(ClassFile);
 
     static uint32_t getstatic(Frame*);
     static uint32_t ldc(Frame*);
     static uint32_t ldc2_w(Frame*);
     static uint32_t invokevirtual(Frame*);
     static uint32_t invokestatic(Frame*);
+    static uint32_t invokespecial(Frame*);
     static uint32_t returnfunc(Frame*);
     static uint32_t ireturn(Frame*);
     static uint32_t lreturn(Frame*);
@@ -179,6 +182,12 @@ public:
     static uint32_t aload_2(Frame *);
     static uint32_t aload_3(Frame *);
     static uint32_t iaload(Frame *);
+    static uint32_t faload(Frame *);
+    static uint32_t laload(Frame *);
+    static uint32_t daload(Frame *);
+    static uint32_t baload(Frame *);
+    static uint32_t caload(Frame *);
+
 
     static uint32_t fload(Frame *);
     static uint32_t fload_0(Frame *);
@@ -265,7 +274,7 @@ public:
     static uint32_t dup2_x2(Frame *);
     static uint32_t swap(Frame *);
 
-    // static uint32_t new_func(Frame*);
+    static uint32_t new_func(Frame*);
 
     static uint32_t ifnonnull(Frame*);
     static uint32_t ifnull(Frame*);
@@ -279,9 +288,13 @@ public:
     static uint32_t arraylength(Frame*);
     static uint32_t aaload(Frame *);
     static uint32_t aastore(Frame *);
-
+    static uint32_t multianewarray(Frame*);
     static uint32_t areturn(Frame *);
     static uint32_t freturn(Frame *);
+    static uint32_t aload(Frame *);
+    static vector<Type>* buildArray(vector<int32_t> dim, int index, char type);
+    static uint32_t wide(Frame*);
+
 };
 
 

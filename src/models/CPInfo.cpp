@@ -116,6 +116,13 @@ string CPInfo::getInfo(vector<CPInfo> constantPool) {
         string className = cn.getInfo(constantPool);
         string nameAndTypeName = nt.getInfo(constantPool);
         return className + "#" + nameAndTypeName;
+
+    } else if (tag == CONSTANT_FIELD_REF) {
+        CPInfo cn = constantPool[fieldRefInfo.class_index-1];
+        CPInfo nt = constantPool[fieldRefInfo.name_and_type_index-1];
+        string className = cn.getInfo(constantPool);
+        string nameAndTypeName = nt.getInfo(constantPool);
+        return className + "#" + nameAndTypeName;
     }
 
     return "";
