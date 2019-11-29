@@ -48,7 +48,6 @@ int main(int argc, char* argv[]) {
     fp = fopen(file_name.c_str(), "rb");
     if (fp != NULL) {
         ClassFile classFile(fp);
-
         MethodArea methodArea;
         ClassLoader classLoader;
         classLoader.methodArea = &methodArea;
