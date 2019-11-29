@@ -13,6 +13,7 @@
 class Printer {
 private:
     ClassFile cls_file;
+    InstructionsManager* instructionsManager;
     vector<CPInfo> cp_vec;
     void printGeneralInfo();
     void printConstantPool();
@@ -29,7 +30,7 @@ private:
     void printCPBody(CPInfo cp);
     void printAttributesBody(AttributeInfo atr, string starter);
 public:
-    Printer(ClassFile classFile);
+    Printer(ClassFile classFile, InstructionsManager* instructionsManager);
 };
 
 #endif

@@ -1,6 +1,13 @@
-#include "../../../include/runtime/instructions/Instruction.hpp"
+/** \file Math.cpp
+ * \brief Definições das instruções de Math declaradas em Instruction.
+ *
+ * Referente às instruções definidas em Instruction.hpp do tipo Math da Java SE 8 Edition.
+ * Instruções do tipo Math realizam operações aritméticas de tipos definidos.
+ *
+ * \date Date: 29/11/2019
+ */
 
-/* MAAAAAAATH */
+#include "../../../include/runtime/instructions/Instruction.hpp"
 
 uint32_t Instruction::iadd(Frame * frame) {
     int32_t val1, val2;
@@ -31,7 +38,6 @@ uint32_t Instruction::isub(Frame * frame) {
     return ++frame->local_pc;
 }
 
-
 uint32_t Instruction::imul(Frame * frame) {
     int32_t val1, val2;
     Type res;
@@ -46,7 +52,6 @@ uint32_t Instruction::imul(Frame * frame) {
     return ++frame->local_pc;
 }
 
-
 uint32_t Instruction::idiv(Frame * frame) {
     int32_t val1, val2;
     Type res;
@@ -56,7 +61,7 @@ uint32_t Instruction::idiv(Frame * frame) {
     frame->operandStack.pop();
 
     if(val2 == 0) {
-        printf("TODO\n");
+        ExceptionThrower::arithmeticException(0);
     } else {
         res.tag = TAG_INT;
         res.type_int = val1 / val2;
@@ -75,7 +80,7 @@ uint32_t Instruction::irem(Frame * frame) {
     frame->operandStack.pop();
 
     if(val2 == 0) {
-        printf("TODO\n");
+        ExceptionThrower::arithmeticException(0);
     } else {
         res.tag = TAG_INT;
         res.type_int = val1 % val2;
@@ -235,7 +240,7 @@ uint32_t Instruction::ldiv(Frame * frame) {
     frame->operandStack.pop();
 
     if(val2 == 0) {
-        printf("TODO\n");
+        ExceptionThrower::arithmeticException(0);
     } else {
         res.tag = TAG_LONG;
         res.type_long = val1 / val2;
@@ -254,7 +259,7 @@ uint32_t Instruction::lrem(Frame * frame) {
     frame->operandStack.pop();
 
     if(val2 == 0) {
-        printf("TODO\n");
+        ExceptionThrower::arithmeticException(0);
     } else {
         res.tag = TAG_INT;
         res.type_long = val1 % val2;
@@ -414,6 +419,7 @@ uint32_t Instruction::fdiv(Frame * frame) {
     frame->operandStack.pop();
     res.tag = TAG_FLOAT;
     res.type_float = val1 / val2;
+    cout << val1 / val2 << endl;
     frame->operandStack.push(res);
 
     return ++frame->local_pc;

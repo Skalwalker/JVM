@@ -1,6 +1,7 @@
 #include "../include/Printer.hpp"
 
-Printer::Printer(ClassFile classFile) : cls_file{ classFile }  {
+Printer::Printer(ClassFile classFile, InstructionsManager* instructionsManager) : cls_file{ classFile }  {
+    this->instructionsManager = instructionsManager;
     this->cp_vec = cls_file.getConstantPool();
     this->printGeneralInfo();
     this->printConstantPool();
@@ -442,18 +443,21 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec, 
 
 void Printer::printAttributesBody(AttributeInfo atr, string starter) {
     uint16_t index;
-    InstructionsManager instructionsManager;
 
     if (atr.attributeName == "Code"){
 
         cout << starter << "| ----- Bytecode -----" << endl;
 
         cout << starter << "| " << endl;
-        for (int i = 0; i < atr.code.codeLength; i++) {
-            cout << starter<< "| " << instructionsManager.opcode[atr.code.code[i]].mnemonic << endl;
-            i += instructionsManager.opcode[atr.code.code[i]].bytecount;
-            cout << starter << "| " << endl;
+
+        int i = 0;
+        while (i < atr.code.codeLength){
+            cout << starter << "| " << i << " ";
+            cout << instructionsManager->opcode[atr.code.code[i]].mnemonic << endl;
+            i += instructionsManager->opcode[atr.code.code[i]].bytecount;
+            i++;
         }
+        cout << starter << "| " << endl;
 
         cout << starter << "| ----- Exception Table -----" << endl;
         cout << starter << "| " << endl;
