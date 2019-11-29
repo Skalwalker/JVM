@@ -90,6 +90,7 @@ public:
     static uint32_t invokevirtual(Frame*);
     static uint32_t invokestatic(Frame*);
     static uint32_t invokespecial(Frame*);
+    static uint32_t putfield(Frame*);
     static uint32_t returnfunc(Frame*);
     static uint32_t ireturn(Frame*);
     static uint32_t lreturn(Frame*);
