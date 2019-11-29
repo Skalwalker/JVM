@@ -12,47 +12,37 @@
 
 /** \file Instruction.hpp
  * Definição das instruções de acordo com a Java SE 8 Edition.
- * São divididas em 10 tipos:
- * -# Instruções de Load e Store
- *      - iload, iload_<n>, lload, lload_<n>, fload, fload_<n>, dload, dload_<n>, aload, aload_<n> - Loads.cpp
- *      - istore, istore_<n>, lstore, lstore_<n>, fstore, fstore_<n>, dstore, dstore_<n>, astore, astore_<n> - Stores.Cpp
- *      - bipush, sipush, ldc, ldc_w, ldc2_w, aconst_null, iconst_m1, iconst_<i>, lconst_<l>, fconst_<f>, dconst_<d> - Constants.cpp
- *      - wide  ???
- * -# Instruções Aritméticas - Math.cpp
- *      - Add: iadd, ladd, fadd, dadd.
- *      - Subtract: isub, lsub, fsub, dsub.
- *      - Multiply: imul, lmul, fmul, dmul.
- *      - Divide: idiv, ldiv, fdiv, ddiv.
- *      - Remainder: irem, lrem, frem, drem.
- *      - Negate: ineg, lneg, fneg, dneg.
- *      - Shift: ishl, ishr, iushr, lshl, lshr, lushr.
- *      - Bitwise OR: ior, lor.
- *      - Bitwise AND: iand, land.
- *      - Bitwise exclusive OR: ixor, lxor.
- *      - Local variable increment: iinc
- *      - Comparison: dcmpg, dcmpl, fcmpg, fcmpl, lcmp - Comparison.cpp
- * -# Instruções de Conversão de Tipo - Conversions.cpp
- *      - i2l, i2f, i2d, l2f, l2d, e f2d.
- *      - i2l, i2f, i2d, l2f, l2d, e f2d.
- * -# Instruções de Criação e Manipulação de Objetos - Reference.cpp
- *      - new
- *      - newarray, anewarray, multianewarray
- *      - getstatic, putstatic, getfield, putfield
- *      - baload, caload, saload, iaload, laload, faload, daload, aaload
- *      - bastore, castore, sastore, iastore, lastore, fastore, dastore, aastore
- *      - arraylength
- *      - instanceof, checkcast
- * -# Instruções de Gerenciamento da Pilha de Operandos - Stack.cpp
- *      - pop, pop2, dup, dup2, dup_x1, dup2_x1, dup_x2, dup2_x2, swap
- * -# Instruções de Transferência de Controle
- *      - ifeq, ifne, iflt, ifle, ifgt, ifge, ifnull*, ifnonnull*, if_icmpeq, if_icmpne, if_icmplt, if_icmple, if_icmpgt, if_icmpge, if_acmpeq, if_acmpne. - Comparisons.cpp
- *      - tableswitch, lookupswitch - Control.cpp
- *      - goto, goto_w*, jsr, jsr_w, ret - Control.cpp
- * -# Instruções de Invocação de Método e Retorno - References.cpp
- *      - invokevirtual, invokeinterface, invokespecial, invokestatic, invokedynamic
- * -# Instruções de Exceções - ?
- *      - athrow
- * -# Instruções de Sincronização - ?
+ * São divididas nos tipos:
+ * -# Conversions: \n
+ * nop, aconst_null, iconst_m1, iconst_0, iconst_1, iconst_2, iconst_3, iconst_4, iconst_5, lconst_0,
+ * lconst_1, fconst_0, fconst_1, fconst_2, dconst_0, dconst_1, bipush, sipush, ldc, ldc_w, ldc2_w
+ * -# Loads: \n
+ * iload, lload, fload, dload, aload, iload_0, iload_1, iload_2, iload_3, lload_0, lload_1, lload_2,
+ * lload_3, fload_0, fload_1, fload_2, fload_3, dload_0, dload_1, dload_2, dload_3, aload_0, aload_1,
+ * aload_2, aload_3, iaload, laload, faload, daload, aaload, baload, caload, saload
+ * -# Stores: \n
+ * istore, lstore, fstore, dstore, astore, istore_0, istore_1, istore_2, istore_3, lstore_0, lstore_1,
+ * lstore_2, lstore_3, fstore_0, fstore_1, fstore_2, fstore_3, dstore_0, dstore_1, dstore_2, dstore_3, astore_0,
+ * astore_1, astore_2, astore_3, iastore, lastore, fastore, dastore, aastore, bastore, castore, sastore
+ * -# Stack: \n
+ * pop, pop2, dup, dup_x1, dup_x2, dup2, dup2_x1, dup2_x2, swap
+ * -# Math: \n
+ * iadd, ladd, fadd, dadd, isub, lsub, fsub, dsub, imul, lmul, fmul, dmul, idiv, ldiv, fdiv, ddiv, irem, lrem,
+ * frem, drem, ineg, lneg, fneg, dneg, ishl, lshl, ishr, lshr, iushr, lushr, iand, land, ior, lor, ixor, lxor, iinc
+ * -# Conversions: \n
+ * i2l, i2f, i2d, l2i, l2f, l2d, f2i, f2l, f2d, d2i, d2l, d2f, i2b, i2c, i2s
+ * -# Comparisons: \n
+ * lcmp, fcmpl, fcmpg, dcmpl, dcmpg, ifeq, ifne, iflt, ifge, ifgt, ifle, if_icmpeq, if_icmpne, if_icmplt, if_icmpge,
+ * if_icmpgt, if_icmple, if_acmpeq, if_acmpne
+ * -# References: \n
+ * getstatic, putstatic, getfield, putfield, invokevirtual, invokespecial, invokestatic, invokeinterface, invokedynamic,
+ * new, newarray, anewarray, arraylength, athrow, checkcast, instanceof, monitorenter, monitorexit
+ * -# Control: \n
+ * goto, jsr, ret, tableswitch, lookupswitch, ireturn, lreturn, freturn, dreturn, areturn, return
+ * -# Extended: \n
+ * wide, multianewarray, ifnull, ifnonnull, goto_w, jsr_w
+ * -# Reserved: \n
+ * breakpoint, impdep1, impdep2
  */
 
 #define CONSTANT_STRING 8
