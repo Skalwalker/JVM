@@ -584,7 +584,7 @@ Instrução iinc: Incrementa por uma constante uma variável local.
 
 Recupera o valor a ser incrementado (que deve ser um inteiro) do vetor de variáveis locais na posição index (que deve ser inteiro).
 O valor da constante (imm_const, que deve ser um inteiro) é recuperado do atributo code de codeAttribute.  
-O número deslocado é empilhado no vetor de variáveis .
+O resultado volta para o vetor de variáveis na posição index.
 
 
 @param frame Frame correspondente ao método sendo executado.
