@@ -5,6 +5,7 @@
  * Instruções do tipo Math realizam operações aritméticas de tipos definidos.
  */
 
+
 /**
 Instrução iadd: Soma inteiros.
 
@@ -583,8 +584,9 @@ uint32_t Instruction::lxor(Frame * frame) {
 Instrução iinc: Incrementa por uma constante uma variável local.
 
 Recupera o valor a ser incrementado (que deve ser um inteiro) do vetor de variáveis locais na posição index (que deve ser inteiro).
-O valor da constante (imm_const, que deve ser um inteiro) é recuperado do atributo code de codeAttribute.  
-O resultado volta para o vetor de variáveis na posição index.
+Index é recuperado do atributo code de codeAttribute definido em AttributeInfo.cpp.
+O valor da constante (imm_const, que deve ser um inteiro) também recuperado do atributo code de codeAttribute.  
+O resultado volta para o vetor de variáveis locais na posição index.
 
 
 @param frame Frame correspondente ao método sendo executado.
