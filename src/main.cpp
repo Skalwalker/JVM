@@ -48,14 +48,15 @@ int main(int argc, char* argv[]) {
     fp = fopen(file_name.c_str(), "rb");
     if (fp != NULL) {
         ClassFile classFile(fp);
-        if (printFlag == true){
-            Printer printer(classFile);
-        }
+
         MethodArea methodArea;
         ClassLoader classLoader;
         classLoader.methodArea = &methodArea;
         classLoader.loadClassFile(classFile);
         InstructionsManager instructionsManager(&classLoader);
+        if (printFlag == true){
+            Printer printer(classFile, &instructionsManager);
+        }
         ExecutionEngine executionEngine(classFile, &methodArea, &instructionsManager);
         executionEngine.run();
 

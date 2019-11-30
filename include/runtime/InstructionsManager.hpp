@@ -17,6 +17,8 @@ public:
     InstructionsManager(ClassLoader*);
     pair<uint8_t, Instruction>* instructionByName(string);
     void setInstructions();
+private:
+    void construct();
 };
 
 
