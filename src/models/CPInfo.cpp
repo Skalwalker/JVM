@@ -95,10 +95,6 @@ string CPInfo::getInfo(vector<CPInfo> constantPool) {
     } else if (tag == CONSTANT_UTF8) {
         return getUTF8(constantPool);
 
-    } else if (tag == CONSTANT_FIELD_REF) {
-        CPInfo classInfo = constantPool[fieldRefInfo.class_index-1];
-        return classInfo.getInfo(constantPool);
-
     } else if (tag == CONSTANT_STRING) {
         CPInfo classInfo = constantPool[stringInfo.string_index-1];
         return classInfo.getUTF8(constantPool);

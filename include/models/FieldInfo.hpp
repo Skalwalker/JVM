@@ -7,13 +7,16 @@
 #include "../loader/ClassFileReader.hpp"
 #include "AttributeInfo.hpp"
 #include "CPInfo.hpp"
+#include "../runtime/Frame.hpp"
 
 class FieldInfo {
 private:
     void setAccessFlagsNames();
 public:
     FieldInfo(vector<CPInfo> cp, FILE * fp);
+    FieldInfo();
     string access_flags_names;
+    Type static_value;
     uint16_t access_flags;
     uint16_t name_index;
     uint16_t descriptor_index;
