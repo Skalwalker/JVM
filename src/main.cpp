@@ -18,7 +18,7 @@ string get_mainfile(string arg){
 
 void helpScreen(){
     cout << "====================JVM Grupo 1====================" << endl;
-    cout << "Yes LAWD!" << endl << "Coloque o nome do .class que quer rodar, precisa estar dentro da pasta test_examples." << endl;
+    cout << "Yes LAWD!" << endl << "Coloque o caminho e o nome do .class que quer rodar" << endl;
     cout << "-p Ativa o Exibidor!" << endl;
     cout << "--help Mostra este menu" << endl;
     exit(0);
@@ -70,21 +70,16 @@ int main(int argc, char* argv[]) {
         }
     }
 
-
-    fp = fopen((path + mainfile).c_str(), "rb");
-    if (fp != NULL) {
-        ClassFile classFile(fp);
-        MethodArea methodArea;
-        ClassLoader classLoader(path);
-        classLoader.methodArea = &methodArea;
-        classFile = classLoader.loadClassFile(mainfile);
-        InstructionsManager instructionsManager(&classLoader);
-        if (printFlag == true){
-            Printer printer(classFile, &instructionsManager);
-        }
-        ExecutionEngine executionEngine(classFile, &methodArea, &instructionsManager);
-        executionEngine.run();
-
+    MethodArea methodArea;
+    ClassLoader classLoader(path);
+    classLoader.methodArea = &methodArea;
+    classLoader.loadClassFile(mainfile);
+    InstructionsManager instructionsManager(&classLoader);
+    ExecutionEngine executionEngine(classLoader.loadClassFile(mainfile), &methodArea, &instructionsManager);
+    if (printFlag == true){
+        Printer printer(classLoader.loadClassFile(mainfile), &instructionsManager);
     }
+    executionEngine.run();
+
     return 0;
 }

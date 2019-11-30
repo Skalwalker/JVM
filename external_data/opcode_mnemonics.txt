@@ -185,7 +185,7 @@ invokespecial 0xb7 2
 invokestatic 0xb8 2
 invokeinterface 0xb9 4
 invokedynamic 0xba 4
-newOp 0xbb 2
+new 0xbb 2
 newarray 0xbc 1
 anewarray 0xbd 2
 arraylength 0xbe 0

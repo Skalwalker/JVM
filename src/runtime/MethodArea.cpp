@@ -8,6 +8,5 @@ void MethodArea::insertClass(ClassFile classFile) {
 
 
 ClassFile MethodArea::getClassFile(string name) {
-    
     return classes[name];
 }

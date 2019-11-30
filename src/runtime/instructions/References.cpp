@@ -184,9 +184,6 @@ uint32_t Instruction::invokestatic(Frame* frame){
 // uint32_t Instruction::getfield(Frame* frame){
 // }
 //
-// uint32_t Instruction::invokespecial(Frame* frame){
-// }
-//
 // uint32_t Instruction::invokeinterface(Frame* frame){
 // }
 //
@@ -363,27 +360,23 @@ uint32_t Instruction::invokespecial(Frame * frame) {
     return staticMethodFrame.local_pc;
 }
 
-// uint32_t Instruction::putfield(Frame * frame) {
-//     uint8_t* bytecode = frame->getCode();
-//     uint8_t byte1 = bytecode[++frame->localPC];
-//     uint8_t byte2 = bytecode[++frame->localPC];
-//     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
-//     MethodArea * methodArea = classLoader->getMethodArea();
-//
-//
-//
-//     //Falta resolver o field!
-//
-//     Type value = frame->operandStack.top();
-//     frame->operandStack.pop();
-//     Type objectref = frame->operandStack.top();
-//     frame->operandStack.pop();
-//
-//     map<string, JavaType>* object = (map<string, JavaType>*)objectref.type_reference;
-//     object->at(fieldName) = value;
-//
-//     return ++frame->localPC;
-// }
+uint32_t Instruction::putfield(Frame * frame) {
+    uint8_t* bytecode = frame->getCode();
+    uint8_t byte1 = bytecode[++frame->localPC];
+    uint8_t byte2 = bytecode[++frame->localPC];
+    uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+    MethodArea * methodArea = classLoader->getMethodArea();
+
+    Type value = frame->operandStack.top();
+    frame->operandStack.pop();
+    Type objectref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    map<string, Type>* object = (map<string, Type>*)objectref.type_reference;
+    object->at(fieldName) = value;
+
+    return ++frame->localPC;
+}
 
 uint32_t Instruction::anewarray(Frame* frame){
     uint8_t* bytecode = frame->codeAttribute.code;
