@@ -2,6 +2,10 @@
 
 using namespace std;
 
+FieldInfo::FieldInfo() {
+    
+}
+
 FieldInfo::FieldInfo(vector<CPInfo> cp, FILE * fp) {
   ClassFileReader<uint16_t> twoBytes;
   ClassFileReader<uint32_t> fourBytes;

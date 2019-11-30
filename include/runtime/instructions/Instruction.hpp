@@ -142,6 +142,16 @@ public:
      */
     static uint32_t invokespecial(Frame*);
 
+    /**
+     * \brief
+     *
+     * \param frame Frame sendo executado na ExecutionEngine.
+     * \return Inteiro uint32_t indicando qual o contador de programa da proxima instrucao.
+     *
+     * \date Date: 29/11/2019
+     */
+
+    static uint32_t putfield(Frame*);
 
     /**
      * \brief
@@ -151,6 +161,7 @@ public:
      *
      * \date Date: 29/11/2019
      */
+
     static uint32_t returnfunc(Frame*);
 
     /**

@@ -38,7 +38,6 @@ tuple<string, string, string>Instruction::methodInfoSplit(string methodinfo) {
 tuple<string, string, string>Instruction::fieldInfoSplit(string fieldInfo) {
     int j = 0;
     int w = 0;
-    cout << fieldInfo << endl;
     while (w < fieldInfo.size() && fieldInfo[w+1] != '#') {
         w++;
     }
@@ -61,12 +60,10 @@ map<string, Type>* Instruction::instantiateFields(ClassFile classFile) {
         vector<FieldInfo> fields = classFile.getFields();
         for (int i = 0; i < classFile.getFieldsCount(); i++) {
 
-            cout << i << endl;
             CPInfo fieldInfo = constantPool[fields[i].name_index-1];
             CPInfo descriptorInfo = constantPool[fields[i].descriptor_index-1];
             string fieldName = fieldInfo.getInfo(constantPool);
             string descriptor = descriptorInfo.getInfo(constantPool);
-            cout << fields[i].name_index-1 << endl;
 
             Type fieldContent;
 
@@ -112,7 +109,6 @@ map<string, Type>* Instruction::instantiateFields(ClassFile classFile) {
 
         string superClassName = constantPool[classFile.getSuperClass()-1].getInfo(constantPool);
         classLoader->loadClassFile(superClassName);
-        cout << superClassName << endl;
         classFile = classLoader->methodArea->classes[superClassName];
     }
 
@@ -120,6 +116,7 @@ map<string, Type>* Instruction::instantiateFields(ClassFile classFile) {
     uint16_t thisClassIndex = objectClassFile.getThisClass();
     CPInfo thisClassInfo = objectClassFile.getConstantPool()[thisClassIndex-1];
     string thisClassName = thisClassInfo.getInfo(objectClassFile.getConstantPool());
+    thisClass.tag = TAG_REFERENCE;
     thisClass.type_reference = (uint64_t)new string(thisClassName);
     object->insert(make_pair("<this_class>", thisClass));
     return object;
