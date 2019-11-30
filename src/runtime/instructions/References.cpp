@@ -595,7 +595,7 @@ uint32_t Instruction::putfield(Frame * frame) {
     map<string, Type>* object = (map<string, Type>*)objectref.type_reference;
     object->at(fieldName) = value;
 
-    return ++frame->localPC;
+    return ++frame->local_pc;
 }
 
 uint32_t Instruction::anewarray(Frame* frame){
