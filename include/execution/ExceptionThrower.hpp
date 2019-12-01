@@ -77,6 +77,8 @@ public:
      * \date $Date: 29/11/2019
      */
     static void arithmeticException(uint32_t type);
+
+    static void instructionNotImplemented(uint32_t type);
 };
 
 
