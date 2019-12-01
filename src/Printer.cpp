@@ -441,6 +441,60 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec, 
     }
 }
 
+
+void Printer::getValue(Instruction instr, AttributeInfo atr, int i) {
+    int16_t value;
+    uint8_t b1, b2;
+    int begin = i;
+    string m = instr.mnemonic;
+    //Tipo Index de 16
+    if (m == s("getstatic") || m == s("anewarray") || m == s("checkcast") || m == s("getfield") || m == s("instanceof") || m == s("invokespecial") || m == s("invokestatic") || m == s("invokevirtual") || m == s("ldc_w") || m == s("ldc2_w") || m == s("new") || m == s("putfield") || m == s("putstatic") || m == s("sipush")){
+        b1 = atr.code.code[++i];
+        b2 = atr.code.code[++i];
+        value = (int16_t)((b1 << 8) | b2);
+        if (m == s("sipush")){
+            cout << " " << signed(value);
+        } else {
+            cout << " #" << signed(value);
+            CPInfo cp_ref = this->cp_vec[value-1];
+            cout << " <" << this->printCPString(cp_ref) << ">";
+        }
+    } else if(m == s("aload") || m == s("astore") || m == s("bipush") || m == s("dload") || m == s("dstore") || m == s("fload") || m == s("fstore") || m == s("iload") || m == s("istore")  || m == s("lload") || m == s("lstore") || m == s("newarray") || m == s("ret")){
+        value = atr.code.code[++i];
+        cout << " " << value;
+    } else if (m == s("ldc")) {
+        value = atr.code.code[++i];
+        cout << " #" << value;
+        CPInfo cp_ref = this->cp_vec[value-1];
+        cout << " <" << this->printCPString(cp_ref) << ">";
+    } else if (m.substr(0,2) == s("if") || m == s("goto") || m == s("jsr")) {
+        b1 = atr.code.code[++i];
+        b2 = atr.code.code[++i];
+        value = ((b1 << 8) | b2);
+        cout << " " << begin + value << " (" << value << ")";
+    } else if (m == s("goto_w") || m == s("jsr_w")){
+
+    } else if (m == s("iinc")) {
+        int8_t index = atr.code.code[++i];
+        int8_t val = atr.code.code[++i];
+        cout << " " << signed(index) << " by " << signed(val);
+    } else if (m == s("invokedynamic")) {
+
+    } else if (m == s("invokeinterface")) {
+
+    } else if (m == s("lookupswitch")) {
+
+    } else if (m == s("multianewarray")) {
+
+    } else if (m == s("tableswitch")) {
+
+    } else if (m == s("wide")) {
+
+    }
+
+    cout << endl;
+}
+
 void Printer::printAttributesBody(AttributeInfo atr, string starter) {
     uint16_t index;
 
@@ -450,12 +504,14 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
 
         cout << starter << "| " << endl;
 
-        int i = 0;
-        while (i < atr.code.codeLength){
+        // int i = 0;
+        for (int i = 0; i < atr.code.codeLength; i++){
+            uint8_t opcode = atr.code.code[i];
+            Instruction instr = instructionsManager->opcode[opcode];
             cout << starter << "| " << i << " ";
-            cout << instructionsManager->opcode[atr.code.code[i]].mnemonic << endl;
-            i += instructionsManager->opcode[atr.code.code[i]].bytecount;
-            i++;
+            cout << instr.mnemonic;
+            getValue(instr, atr, i);
+            i += instr.bytecount;
         }
         cout << starter << "| " << endl;
 
