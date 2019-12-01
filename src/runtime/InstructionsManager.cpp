@@ -19,6 +19,7 @@ InstructionsManager::InstructionsManager(ClassLoader * classLoader) {
         opcode[numb] = Instruction(opcode_name, bytecount);
     }
 
+
     this->setInstructions();
 }
 

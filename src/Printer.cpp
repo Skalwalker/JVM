@@ -442,38 +442,45 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec, 
 }
 
 
-void Printer::getValue(Instruction instr, AttributeInfo atr, int i) {
-    int16_t value;
-    uint8_t b1, b2;
+void Printer::getValue(Instruction instr, AttributeInfo atr, int i, int *jump, string starter) {
+    int16_t value16;
+    int8_t value8;
+    int32_t value32;
+    uint8_t b1, b2, b3, b4;
     int begin = i;
     string m = instr.mnemonic;
     //Tipo Index de 16
     if (m == s("getstatic") || m == s("anewarray") || m == s("checkcast") || m == s("getfield") || m == s("instanceof") || m == s("invokespecial") || m == s("invokestatic") || m == s("invokevirtual") || m == s("ldc_w") || m == s("ldc2_w") || m == s("new") || m == s("putfield") || m == s("putstatic") || m == s("sipush")){
         b1 = atr.code.code[++i];
         b2 = atr.code.code[++i];
-        value = (int16_t)((b1 << 8) | b2);
+        value16 = (int16_t)((b1 << 8) | b2);
         if (m == s("sipush")){
-            cout << " " << signed(value);
+            cout << " " << signed(value16);
         } else {
-            cout << " #" << signed(value);
-            CPInfo cp_ref = this->cp_vec[value-1];
+            cout << " #" << unsigned(value16);
+            CPInfo cp_ref = this->cp_vec[value16-1];
             cout << " <" << this->printCPString(cp_ref) << ">";
         }
-    } else if(m == s("aload") || m == s("astore") || m == s("bipush") || m == s("dload") || m == s("dstore") || m == s("fload") || m == s("fstore") || m == s("iload") || m == s("istore")  || m == s("lload") || m == s("lstore") || m == s("newarray") || m == s("ret")){
-        value = atr.code.code[++i];
-        cout << " " << value;
+    } else if(m == s("aload") || m == s("astore") || m == s("bipush") || m == s("dload") || m == s("dstore") || m == s("fload") || m == s("fstore") || m == s("iload") || m == s("istore")  || m == s("lload") || m == s("lstore") || m == s("ret")){
+        value8 = (int8_t)atr.code.code[++i];
+        cout << " " << signed(value8);
     } else if (m == s("ldc")) {
-        value = atr.code.code[++i];
-        cout << " #" << value;
-        CPInfo cp_ref = this->cp_vec[value-1];
+        value8 = atr.code.code[++i];
+        cout << " #" << unsigned(value8);
+        CPInfo cp_ref = this->cp_vec[value8-1];
         cout << " <" << this->printCPString(cp_ref) << ">";
     } else if (m.substr(0,2) == s("if") || m == s("goto") || m == s("jsr")) {
         b1 = atr.code.code[++i];
         b2 = atr.code.code[++i];
-        value = ((b1 << 8) | b2);
-        cout << " " << begin + value << " (" << value << ")";
+        value16 = ((b1 << 8) | b2);
+        cout << " " << begin + value16 << " (" << value16 << ")";
     } else if (m == s("goto_w") || m == s("jsr_w")){
-
+        b1 = atr.code.code[++i];
+        b2 = atr.code.code[++i];
+        b3 = atr.code.code[++i];
+        b4 = atr.code.code[++i];
+        value32 = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+        cout << " " << begin + value32 << " (" << value32 << ")";
     } else if (m == s("iinc")) {
         int8_t index = atr.code.code[++i];
         int8_t val = atr.code.code[++i];
@@ -483,13 +490,125 @@ void Printer::getValue(Instruction instr, AttributeInfo atr, int i) {
     } else if (m == s("invokeinterface")) {
 
     } else if (m == s("lookupswitch")) {
+        *jump = 0;
+        while ((atr.code.code[++i])%4 != 0){
+            *jump += 1;
+        }
+        i--;
+        b1 = atr.code.code[++i];
+        b2 = atr.code.code[++i];
+        b3 = atr.code.code[++i];
+        b4 = atr.code.code[++i];
+        int32_t def = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+        b1 = atr.code.code[++i];
+        b2 = atr.code.code[++i];
+        b3 = atr.code.code[++i];
+        b4 = atr.code.code[++i];
+        int32_t npairs = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+        *jump += 8;
+        *jump += 8*npairs;
+        cout << " " << npairs << endl;
+        for (int j = 0; j < npairs; j++){
+            b1 = atr.code.code[++i];
+            b2 = atr.code.code[++i];
+            b3 = atr.code.code[++i];
+            b4 = atr.code.code[++i];
+            int32_t match = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+            b1 = atr.code.code[++i];
+            b2 = atr.code.code[++i];
+            b3 = atr.code.code[++i];
+            b4 = atr.code.code[++i];
+            int32_t offset = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+            cout << starter <<  "| \t" << match << ": " << begin + offset << " (" << offset << ")" << endl;
+        }
+        cout << starter <<  "| \tdefault: " << begin + def << " (" << def << ")";
 
-    } else if (m == s("multianewarray")) {
 
     } else if (m == s("tableswitch")) {
+        *jump = 0;
+        while ((atr.code.code[++i])%4 != 0){
+            *jump += 1;
+        }
+        i--;
+        b1 = atr.code.code[++i];
+        b2 = atr.code.code[++i];
+        b3 = atr.code.code[++i];
+        b4 = atr.code.code[++i];
+        int32_t def = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+        b1 = atr.code.code[++i];
+        b2 = atr.code.code[++i];
+        b3 = atr.code.code[++i];
+        b4 = atr.code.code[++i];
+        int32_t low = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+        b1 = atr.code.code[++i];
+        b2 = atr.code.code[++i];
+        b3 = atr.code.code[++i];
+        b4 = atr.code.code[++i];
+        int32_t high = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+        cout << " " << low << " to " << high << endl;
+        for (int j = low; j <= high; j++) {
+            b1 = atr.code.code[++i];
+            b2 = atr.code.code[++i];
+            b3 = atr.code.code[++i];
+            b4 = atr.code.code[++i];
+            int32_t offset = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+            cout << starter <<  "| \t" << j << ": " << begin + offset << " (" << offset << ")" << endl;
+        }
+        cout << starter <<  "| \tdefault: " << begin + def << " (" << def << ")";
+        *jump += 12;
+        *jump += 4*(high+1-low);
 
-    } else if (m == s("wide")) {
-
+    } else if (m == s("multianewarray")) {
+        b1 = atr.code.code[++i];
+        b2 = atr.code.code[++i];
+        b3 = atr.code.code[++i];
+        value16 = (int16_t)((b1 << 8) | b2);
+        cout << " #" << value16;
+        CPInfo cp_ref = this->cp_vec[value16-1];
+        cout << " <" << this->printCPString(cp_ref) << ">";
+        cout << " dim " << unsigned(b3);
+    }else if (m == s("wide")) {
+        b1 = atr.code.code[++i];
+        Instruction instr = instructionsManager->opcode[b1];
+        cout << endl << starter << "| " << i << " ";
+        cout << instr.mnemonic;
+        if (b1 == 0x84) {
+            b2 = atr.code.code[++i];
+            b3 = atr.code.code[++i];
+            b4 = atr.code.code[++i];
+            uint8_t b5 = atr.code.code[++i];
+            int16_t index = ((b2 << 8) | b3);
+            int16_t val = ((b4 << 8) | b5);
+            cout << " " << unsigned(index) << " by " << signed(val);
+            *jump = 5;
+        } else {
+            b2 = atr.code.code[++i];
+            b3 = atr.code.code[++i];
+            int16_t index = ((b2 << 8) | b3);
+            cout << " " << unsigned(index);
+            *jump = 3;
+        }
+    } else if (m == s("newarray")) {
+        b1 = atr.code.code[++i];
+        string type;
+        if (b1 == 4) {
+            type = "bool";
+        } else if (b1 == 5) {
+            type = "char";
+        } else if (b1 == 6) {
+            type = "float";
+        } else if (b1 == 7) {
+            type = "double";
+        } else if (b1 == 8) {
+            type = "byte";
+        } else if (b1 == 9) {
+            type = "short";
+        } else if (b1 == 10) {
+            type = "int";
+        } else if (b1 == 11) {
+            type = "long";
+        }
+        cout << unsigned(b1) << " (" << type << ")";
     }
 
     cout << endl;
@@ -507,11 +626,16 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         // int i = 0;
         for (int i = 0; i < atr.code.codeLength; i++){
             uint8_t opcode = atr.code.code[i];
+            int jump;
             Instruction instr = instructionsManager->opcode[opcode];
             cout << starter << "| " << i << " ";
             cout << instr.mnemonic;
-            getValue(instr, atr, i);
-            i += instr.bytecount;
+            getValue(instr, atr, i, &jump, starter);
+            if (instr.mnemonic == s("wide") || instr.mnemonic == s("tableswitch") || instr.mnemonic == s("lookupswitch")) {
+                i += jump;
+            } else {
+                i += instr.bytecount;
+            }
         }
         cout << starter << "| " << endl;
 
