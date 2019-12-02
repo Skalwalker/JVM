@@ -95,10 +95,6 @@ string CPInfo::getInfo(vector<CPInfo> constantPool) {
     } else if (tag == CONSTANT_UTF8) {
         return getUTF8(constantPool);
 
-    } else if (tag == CONSTANT_FIELD_REF) {
-        CPInfo classInfo = constantPool[fieldRefInfo.class_index-1];
-        return classInfo.getInfo(constantPool);
-
     } else if (tag == CONSTANT_STRING) {
         CPInfo classInfo = constantPool[stringInfo.string_index-1];
         return classInfo.getUTF8(constantPool);
@@ -113,6 +109,13 @@ string CPInfo::getInfo(vector<CPInfo> constantPool) {
     } else if (tag == CONSTANT_METHOD_REF) {
         CPInfo cn = constantPool[methodRefInfo.class_index-1];
         CPInfo nt = constantPool[methodRefInfo.name_and_type_index-1];
+        string className = cn.getInfo(constantPool);
+        string nameAndTypeName = nt.getInfo(constantPool);
+        return className + "#" + nameAndTypeName;
+
+    } else if (tag == CONSTANT_FIELD_REF) {
+        CPInfo cn = constantPool[fieldRefInfo.class_index-1];
+        CPInfo nt = constantPool[fieldRefInfo.name_and_type_index-1];
         string className = cn.getInfo(constantPool);
         string nameAndTypeName = nt.getInfo(constantPool);
         return className + "#" + nameAndTypeName;

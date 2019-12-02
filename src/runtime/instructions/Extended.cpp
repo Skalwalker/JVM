@@ -113,10 +113,8 @@ uint32_t Instruction::multianewarray(Frame* frame){
         dim_arr.push_back(dim);
     }
 
-
     string cls_name = frame->constantPool[index-1].getInfo(frame->constantPool);
     vector<Type>* arr_type = buildArray(dim_arr, dimensions-1, cls_name[cls_name.size()-1]);
-
 
     Type res;
     res.tag = TAG_REFERENCE;

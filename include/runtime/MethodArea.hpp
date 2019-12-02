@@ -8,9 +8,8 @@
 using namespace std;
 
 class MethodArea {
-private:
-    map<string, ClassFile> classes;
 public:
+    map<string, ClassFile> classes;
     ClassFile getClassFile(string);
     void insertClass(ClassFile);
 };

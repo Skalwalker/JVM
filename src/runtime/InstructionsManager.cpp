@@ -19,6 +19,7 @@ InstructionsManager::InstructionsManager(ClassLoader * classLoader) {
         opcode[numb] = Instruction(opcode_name, bytecount);
     }
 
+
     this->setInstructions();
 }
 
@@ -28,6 +29,10 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("ldc2_w")->second.exec = Instruction::ldc2_w;
     this->instructionByName("invokevirtual")->second.exec = Instruction::invokevirtual;
     this->instructionByName("invokestatic")->second.exec = Instruction::invokestatic;
+    this->instructionByName("invokespecial")->second.exec = Instruction::invokespecial;
+    this->instructionByName("putfield")->second.exec = Instruction::putfield;
+    this->instructionByName("putstatic")->second.exec = Instruction::putstatic;
+    this->instructionByName("getfield")->second.exec = Instruction::getfield;
     this->instructionByName("return")->second.exec = Instruction::returnfunc;
     this->instructionByName("ireturn")->second.exec = Instruction::ireturn;
     this->instructionByName("dreturn")->second.exec = Instruction::dreturn;
@@ -215,7 +220,7 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("dup2_x2")->second.exec = Instruction::dup2_x2;
     this->instructionByName("swap")->second.exec = Instruction::swap;
 
-    // this->instructionByName("new")->second.exec = Instruction::new_func;
+    this->instructionByName("new")->second.exec = Instruction::new_func;
 
     this->instructionByName("goto_w")->second.exec = Instruction::goto_w;
     this->instructionByName("jsr_w")->second.exec = Instruction::jsr_w;
@@ -234,6 +239,9 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("aload")->second.exec = Instruction::aload;
     this->instructionByName("multianewarray")->second.exec = Instruction::multianewarray;
     this->instructionByName("wide")->second.exec = Instruction::wide;
+    this->instructionByName("saload")->second.exec = Instruction::saload;
+    this->instructionByName("monitorenter")->second.exec = Instruction::monitorenter;
+    this->instructionByName("monitorexit")->second.exec = Instruction::monitorexit;
 
 }
 

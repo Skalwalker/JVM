@@ -1,6 +1,8 @@
 #ifndef __PRINTER_H__
 #define __PRINTER_H__
 
+#define s(x) string(x)
+
 #include "./models/ClassFile.hpp"
 #include "./runtime/InstructionsManager.hpp"
 #include <iostream>
@@ -13,6 +15,7 @@
 class Printer {
 private:
     ClassFile cls_file;
+    InstructionsManager* instructionsManager;
     vector<CPInfo> cp_vec;
     void printGeneralInfo();
     void printConstantPool();
@@ -28,8 +31,9 @@ private:
     string printCPString(uint16_t cp_num);
     void printCPBody(CPInfo cp);
     void printAttributesBody(AttributeInfo atr, string starter);
+    void getValue(Instruction instr, AttributeInfo atr, int i, int *jump, string starter);
 public:
-    Printer(ClassFile classFile);
+    Printer(ClassFile classFile, InstructionsManager* instructionsManager);
 };
 
 #endif
