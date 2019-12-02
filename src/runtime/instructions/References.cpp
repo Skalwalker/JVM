@@ -65,6 +65,31 @@ uint32_t Instruction::getstatic(Frame* frame){
 
     if (className.compare("java/lang/System") != 0) {
         return ++frame->local_pc;
+    } else {
+        ClassFile aux = classLoader->loadClassFile(className);
+        ClassFile classFile = classLoader->loadClassFile(className);
+        vector<CPInfo> constantPool = classFile.getConstantPool();
+        vector<MethodInfo> methods = classFile.getMethods();
+        MethodInfo method;
+
+        bool foundClinit = false;
+        for (int i = 0; i < classFile.getMethodsCount() && !foundClinit; i++) {
+            method = methods[i];
+            uint16_t nameIndex = method.name_index;
+            uint16_t descriptorIndex = method.descriptor_index;
+            string name = constantPool[nameIndex-1].getInfo(constantPool);
+            string classDescriptor = constantPool[descriptorIndex-1].getInfo(constantPool);
+            if (name.compare("<clinit>") == 0 && classDescriptor.compare("()V") == 0) {
+                foundClinit = true;
+            }
+        }
+
+        if (foundClinit) {
+            Frame clinitMethodFrame(constantPool, method, frame->jvmStack);
+            frame->jvmStack->push(clinitMethodFrame);
+            frame->local_pc -= 2;
+            return clinitMethodFrame.local_pc;
+        }
     }
 
     classLoader->loadClassFile(className);
@@ -144,15 +169,13 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
             }
             if (descriptor.compare("(Ljava/lang/String;)V") == 0) {
                 string* stringReference = (string*)(frame->operandStack.top().type_reference);
-                frame->operandStack.pop();
                 cout << *stringReference << isendl;
+                frame->operandStack.pop();
             } else if (descriptor.compare("(I)V") == 0){
                 if (frame->operandStack.top().tag == TAG_INT) {
                     cout << frame->operandStack.top().type_int << isendl;
-
                 } else if (frame->operandStack.top().tag == TAG_SHORT) {
                     cout << frame->operandStack.top().type_short << isendl;
-
                 }  else if (frame->operandStack.top().tag == TAG_BYTE) {
                     cout << frame->operandStack.top().type_byte << isendl;
                 }
@@ -318,11 +341,31 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
         return staticMethodFrame.local_pc;
     }
 
-
-
     return ++frame->local_pc;
 }
 
+uint32_t Instruction::getfield(Frame * frame) {
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+    uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+
+    string fieldInfo = frame->constantPool[index-1].getInfo(frame->constantPool);
+    tuple<string, string, string> fieldtuple;
+    fieldtuple = fieldInfoSplit(fieldInfo);
+    string className = get<0>(fieldtuple);
+    string fieldName = get<1>(fieldtuple);
+    string descriptor = get<2>(fieldtuple);
+
+    Type objectref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    map<string, Type>* object = (map<string, Type>*)objectref.type_reference;
+    Type value = object->at(fieldName);
+    frame->operandStack.push(value);
+
+    return ++frame->local_pc;
+}
 
 
 uint32_t Instruction::invokestatic(Frame* frame){
@@ -340,8 +383,7 @@ uint32_t Instruction::invokestatic(Frame* frame){
     string descriptor = get<2>(methodInfo);
 
     ClassFile classfile = classLoader->methodArea->getClassFile(className);
-    vector<MethodInfo
-    > methods = classfile.getMethods();
+    vector<MethodInfo> methods = classfile.getMethods();
     int i;
     for (i = 0; i < classfile.getMethodsCount(); i++) {
         if(methods[i].name == methodName && methods[i].descriptor == descriptor) {
@@ -384,8 +426,106 @@ uint32_t Instruction::invokestatic(Frame* frame){
     return newFrame.local_pc;
 }
 
-// uint32_t Instruction::putstatic(Frame* frame){
-// }
+uint32_t Instruction::putstatic(Frame* frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+    uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+
+    string fieldstring = frame->constantPool[index-1].getInfo(frame->constantPool);
+    tuple<string, string, string>fieldtuple = fieldInfoSplit(fieldstring);
+    string className = get<0>(fieldtuple);
+    string methodName = get<1>(fieldtuple);
+    string descriptor = get<2>(fieldtuple);
+
+    ClassFile classFile = classLoader->loadClassFile(className);
+    vector<CPInfo> constantPool = classFile.getConstantPool();
+    vector<MethodInfo> methods = classFile.getMethods();
+    MethodInfo method;
+
+    bool foundClinit = false;
+    for (int i = 0; i < classFile.getMethodsCount() && !foundClinit; i++) {
+        method = methods[i];
+        uint16_t nameIndex = method.name_index;
+        uint16_t descriptorIndex = method.descriptor_index;
+        string name = constantPool[nameIndex-1].getInfo(constantPool);
+        string classDescriptor = constantPool[descriptorIndex-1].getInfo(constantPool);
+        if (name.compare("<clinit>") == 0 && classDescriptor.compare("()V") == 0) {
+            foundClinit = true;
+        }
+    }
+
+    if (foundClinit) {
+        Frame clinitMethodFrame(constantPool, method, frame->jvmStack);
+        frame->jvmStack->push(clinitMethodFrame);
+        frame->local_pc-=2;
+        return clinitMethodFrame.local_pc;
+    }
+
+    classFile = classLoader->loadClassFile(className);
+    constantPool = classFile.getConstantPool();
+    vector<FieldInfo> fields = classFile.getFields();
+    FieldInfo field;
+    bool foundField = false;
+
+    for (int i = 0; i < classFile.getFieldsCount() && !foundField; i++) {
+        field = fields[i];
+        uint16_t nameIndex = field.name_index;
+        uint16_t descriptorIndex = field.descriptor_index;
+        string name = constantPool[nameIndex-1].getInfo(constantPool);
+        string descriptor = constantPool[descriptorIndex-1].getInfo(constantPool);
+        if (name.compare(name) == 0 && descriptor.compare(descriptor) == 0) {
+            foundField = true;
+        }
+    }
+
+    if (!foundField) {
+        printf("putstatic: o field especificado nao pode ser resolvido! Deve estar em uma superclasse ou superinterface! Falta implementar!\n");
+        exit(0);
+    }
+
+    if (descriptor.compare("C") == 0) {
+        field.static_value.tag = TAG_CHAR;
+        field.static_value.type_char = frame->operandStack.top().type_char;
+        frame->operandStack.pop();
+    }
+    else if (descriptor.compare("I") == 0) {
+        field.static_value.tag = TAG_INT;
+        field.static_value.type_int = frame->operandStack.top().type_int;
+        frame->operandStack.pop();
+    }
+    else if (descriptor.compare("F") == 0) {
+        field.static_value.tag = TAG_FLOAT;
+        field.static_value.type_float = frame->operandStack.top().type_float;
+        frame->operandStack.pop();
+    }
+    else if (descriptor.compare("D") == 0) {
+        field.static_value.tag = TAG_DOUBLE;
+        field.static_value.type_double = frame->operandStack.top().type_double;
+        frame->operandStack.pop();
+    }
+    else if (descriptor.compare("J") == 0) {
+        field.static_value.tag = TAG_LONG;
+        field.static_value.type_long = frame->operandStack.top().type_long;
+        frame->operandStack.pop();
+    }
+    else if (descriptor.compare("Z") == 0) {
+        field.static_value.tag = TAG_BOOL;
+        field.static_value.type_boolean = frame->operandStack.top().type_boolean;
+        frame->operandStack.pop();
+    }
+    else if (descriptor[0] == '[') {
+        field.static_value.tag = TAG_REFERENCE;
+        field.static_value.type_reference = frame->operandStack.top().type_reference;
+        frame->operandStack.pop();
+    }
+    else {
+        printf("putstatic: tipo do descritor nao reconhecido: %s\n", descriptor.c_str());
+        exit(0);
+    }
+
+    return ++frame->local_pc;
+}
 //
 // uint32_t Instruction::getfield(Frame* frame){
 // }
@@ -414,9 +554,32 @@ uint32_t Instruction::new_func(Frame* frame){
         object.tag = TAG_REFERENCE;
         frame->operandStack.push(object);
     } else {
-        classLoader->loadClassFile(className);
-        MethodArea * methodArea = classLoader->methodArea;
-        ClassFile classFile = methodArea->getClassFile(className);
+
+        ClassFile classFile = classLoader->loadClassFile(className);
+        vector<CPInfo> constantPool = classFile.getConstantPool();
+        vector<MethodInfo> methods = classFile.getMethods();
+        MethodInfo method;
+
+        bool foundClinit = false;
+        for (int i = 0; i < classFile.getMethodsCount() && !foundClinit; i++) {
+            method = methods[i];
+            uint16_t nameIndex = method.name_index;
+            uint16_t descriptorIndex = method.descriptor_index;
+            string name = constantPool[nameIndex-1].getInfo(constantPool);
+            string classDescriptor = constantPool[descriptorIndex-1].getInfo(constantPool);
+            if (name.compare("<clinit>") == 0 && classDescriptor.compare("()V") == 0) {
+                foundClinit = true;
+            }
+        }
+
+        if (foundClinit) {
+            Frame clinitMethodFrame(constantPool, method, frame->jvmStack);
+            frame->jvmStack->push(clinitMethodFrame);
+            frame->local_pc -= 2;
+            return clinitMethodFrame.local_pc;
+        }
+
+        classFile = classLoader->loadClassFile(className);
         Type object;
         object.tag = TAG_REFERENCE;
         object.type_reference = (uint64_t)instantiateFields(classFile);
@@ -613,8 +776,6 @@ uint32_t Instruction::anewarray(Frame* frame){
         arr_type->at(i).tag = TAG_REFERENCE;
         arr_type->at(i).type_reference = (uint64_t)NULL;
     }
-
-
 
     Type res;
     res.tag = TAG_REFERENCE;

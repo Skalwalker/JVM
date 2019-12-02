@@ -201,7 +201,6 @@ uint32_t Instruction::ldc2_w(Frame* frame){
     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
     Type value;
 
-
     CPInfo cpInfo = frame->constantPool[index-1];
     if(cpInfo.tag == CONSTANT_LONG) {
         value.tag = TAG_LONG;
