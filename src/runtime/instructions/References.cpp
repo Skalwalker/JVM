@@ -187,8 +187,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 cout << frame->operandStack.top().type_float << isendl;
                 frame->operandStack.pop();
             } else if (descriptor.compare("()V") == 0){
-                cout << unsigned(frame->operandStack.top().tag) << isendl;
-                frame->operandStack.pop();
+                cout << endl;
             } else if (descriptor.compare("(Z)V") == 0){
                 cout << frame->operandStack.top().type_boolean << isendl;
                 frame->operandStack.pop();
