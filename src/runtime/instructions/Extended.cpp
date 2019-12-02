@@ -68,16 +68,17 @@ vector<Type>* Instruction::buildArray(vector<int32_t> dim, int index, char type)
                 arr_type->at(i).tag = TAG_CHAR;
                 arr_type->at(i).type_char = 0;
             } else if (type == 'S') {
-                arr_type->at(i).tag = TAG_SHORT;
-                arr_type->at(i).type_short = 0;
+                arr_type->at(i).tag = TAG_INT;
+                arr_type->at(i).type_int = 0;
             } else if (type == 'Z') {
-
+                arr_type->at(i).tag = TAG_BOOL;
+                arr_type->at(i).type_boolean = false;
             } else if (type == ';') {
 
 
             } else if (type == 'B') {
-                // arr_type->at(i).tag = TAG_BOOL;
-                // arr_type->at(i).type_int = false;
+                arr_type->at(i).tag = TAG_INT;
+                arr_type->at(i).type_int = 0;
             } else if (type == 'J') {
                 arr_type->at(i).tag = TAG_LONG;
                 arr_type->at(i).type_long = 0;

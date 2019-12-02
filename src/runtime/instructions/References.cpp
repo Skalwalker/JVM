@@ -26,11 +26,11 @@ uint32_t Instruction::newarray(Frame *frame){
         value->tag = TAG_DOUBLE;
         value->type_double = 0.0;
     }  else if (atype == T_BYTE) {
-        value->tag = TAG_BYTE;
-        value->type_byte = 0;
+        value->tag = TAG_INT;
+        value->type_int = 0;
     }  else if (atype == T_SHORT) {
-        value->tag = TAG_SHORT;
-        value->type_short = 0;
+        value->tag = TAG_INT;
+        value->type_int = 0;
     }  else if (atype == T_INT) {
         value->tag = TAG_INT;
         value->type_int = 0;
@@ -172,13 +172,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 cout << *stringReference << isendl;
                 frame->operandStack.pop();
             } else if (descriptor.compare("(I)V") == 0){
-                if (frame->operandStack.top().tag == TAG_INT) {
-                    cout << frame->operandStack.top().type_int << isendl;
-                } else if (frame->operandStack.top().tag == TAG_SHORT) {
-                    cout << frame->operandStack.top().type_short << isendl;
-                }  else if (frame->operandStack.top().tag == TAG_BYTE) {
-                    cout << frame->operandStack.top().type_byte << isendl;
-                }
+                cout << frame->operandStack.top().type_int << isendl;
                 frame->operandStack.pop();
             } else if (descriptor.compare("(J)V") == 0){
                 cout << frame->operandStack.top().type_long << isendl;
