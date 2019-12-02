@@ -59,8 +59,8 @@ uint32_t Instruction::i2b(Frame* frame) {
     frame->operandStack.pop();
 
     Type res;
-    res.tag = TAG_BYTE;
-    res.type_byte = (int8_t)value;
+    res.tag = TAG_INT;
+    res.type_int = (int32_t)((int8_t)value);
 
     frame->operandStack.push(res);
 
@@ -72,8 +72,8 @@ uint32_t Instruction::i2s(Frame* frame) {
     frame->operandStack.pop();
 
     Type res;
-    res.tag = TAG_SHORT;
-    res.type_short = (int16_t)value;
+    res.tag = TAG_INT;
+    res.type_int = (int32_t)((int16_t)value);
 
     frame->operandStack.push(res);
 
