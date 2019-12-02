@@ -814,8 +814,12 @@ uint32_t Instruction::arraylength(Frame* frame){
 // uint32_t Instruction::instanceof(Frame* frame){
 // }
 //
-// uint32_t Instruction::monitorenter(Frame* frame){
-// }
-//
-// uint32_t Instruction::monitorexit(Frame* frame){
-// }
+uint32_t Instruction::monitorenter(Frame* frame){
+    ExceptionThrower::instructionNotImplemented(0);
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::monitorexit(Frame* frame){
+    ExceptionThrower::instructionNotImplemented(0);
+    return ++frame->local_pc;
+}

@@ -19,6 +19,7 @@ InstructionsManager::InstructionsManager(ClassLoader * classLoader) {
         opcode[numb] = Instruction(opcode_name, bytecount);
     }
 
+
     this->setInstructions();
 }
 
@@ -239,6 +240,8 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("multianewarray")->second.exec = Instruction::multianewarray;
     this->instructionByName("wide")->second.exec = Instruction::wide;
     this->instructionByName("saload")->second.exec = Instruction::saload;
+    this->instructionByName("monitorenter")->second.exec = Instruction::monitorenter;
+    this->instructionByName("monitorexit")->second.exec = Instruction::monitorexit;
 
 }
 

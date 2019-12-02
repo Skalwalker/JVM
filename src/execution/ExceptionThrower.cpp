@@ -26,3 +26,11 @@ void ExceptionThrower::arithmeticException(uint32_t type) {
     }
     exit(0);
 }
+
+void ExceptionThrower::instructionNotImplemented(uint32_t type) {
+    cout << "Exception in thread 'main' no.lawd.instructionNotImplemented:" << endl;
+    if (type == 0) {
+        cout << "\tThread Related Instruction" << endl;
+    }
+    exit(0);
+}
