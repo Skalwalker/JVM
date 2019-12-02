@@ -11,8 +11,8 @@ public class ExcepTest {
     }
 
     public static void arraystore() {
-        Number[] a = new Double[2];
-        a[0] = new Integer(4);
+        Object[] s = new Puppy[2];
+        s[0] = new Catto();
     }
 
     public static void arithmetic() {
@@ -20,6 +20,6 @@ public class ExcepTest {
     }
 
    public static void main(String[] args) {
-       arithmetic();
+       arraystore();
    }
 }

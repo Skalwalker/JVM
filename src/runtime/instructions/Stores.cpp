@@ -429,7 +429,12 @@ uint32_t Instruction::aastore(Frame * frame) {
         ExceptionThrower::arrayIndexOutOfBounds(index);
     }
 
-    arr->at(index) = value;
+    try {
+        arr->at(index) = value;
+    } catch(...) {
+         ExceptionThrower::arrayStoreException(0);
+    }
+
 
     return ++frame->local_pc;
 }
