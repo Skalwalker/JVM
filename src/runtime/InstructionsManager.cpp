@@ -243,6 +243,12 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("monitorenter")->second.exec = Instruction::monitorenter;
     this->instructionByName("monitorexit")->second.exec = Instruction::monitorexit;
 
+    this->instructionByName("athrow")->second.exec = Instruction::athrow;
+    this->instructionByName("instanceof")->second.exec = Instruction::instanceof;
+    this->instructionByName("checkcast")->second.exec = Instruction::checkcast;
+    this->instructionByName("invokedynamic")->second.exec = Instruction::invokedynamic;
+    this->instructionByName("invokeinterface")->second.exec = Instruction::invokeinterface;
+
 }
 
 pair<uint8_t, Instruction>* InstructionsManager::instructionByName(string name) {
