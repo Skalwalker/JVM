@@ -413,8 +413,6 @@ uint32_t Instruction::aaload(Frame * frame){
     }
 
     Type res = arr->at(index);
-
     frame->operandStack.push(res);
-
     return ++frame->local_pc;
 }

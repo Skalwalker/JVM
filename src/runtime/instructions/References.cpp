@@ -190,8 +190,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 cout << frame->operandStack.top().type_float << isendl;
                 frame->operandStack.pop();
             } else if (descriptor.compare("()V") == 0){
-                // cout << unsigned(frame->operandStack.top().tag) << isendl;
-                // frame->operandStack.pop();
+                cout << endl;
             } else if (descriptor.compare("(Z)V") == 0){
                 cout << frame->operandStack.top().type_int << isendl;
                 frame->operandStack.pop();
@@ -673,22 +672,7 @@ uint32_t Instruction::putstatic(Frame* frame){
 
     return ++frame->local_pc;
 }
-//
-// uint32_t Instruction::getfield(Frame* frame){
-// }
-//
-// uint32_t Instruction::putfield(Frame* frame){
-// }
-//
-// uint32_t Instruction::getfield(Frame* frame){
-// }
-//
-// uint32_t Instruction::invokeinterface(Frame* frame){
-// }
-//
-// uint32_t Instruction::invokedynamic(Frame* frame){
-// }
-//
+
 uint32_t Instruction::new_func(Frame* frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];
@@ -932,7 +916,6 @@ uint32_t Instruction::anewarray(Frame* frame){
     Type res;
     res.tag = TAG_REFERENCE;
     res.type_reference = (uint64_t)arr_type;
-
     frame->operandStack.push(res);
 
     return ++frame->local_pc;
@@ -958,15 +941,33 @@ uint32_t Instruction::arraylength(Frame* frame){
     return ++frame->local_pc;
 }
 
-// uint32_t Instruction::athrow(Frame* frame){
-// }
-//
-// uint32_t Instruction::checkcast(Frame* frame){
-// }
-//
-// uint32_t Instruction::instanceof(Frame* frame){
-// }
-//
+uint32_t Instruction::athrow(Frame* frame){
+    Type objectref = frame->operandStack.top();
+    frame->operandStack.pop();
+
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::invokeinterface(Frame* frame){
+    ExceptionThrower::instructionNotImplemented(0);
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::invokedynamic(Frame* frame){
+    ExceptionThrower::instructionNotImplemented(0);
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::checkcast(Frame* frame){
+    ExceptionThrower::instructionNotImplemented(0);
+    return ++frame->local_pc;
+}
+
+uint32_t Instruction::instanceof(Frame* frame){
+    ExceptionThrower::instructionNotImplemented(0);
+    return ++frame->local_pc;
+}
+
 uint32_t Instruction::monitorenter(Frame* frame){
     ExceptionThrower::instructionNotImplemented(0);
     return ++frame->local_pc;

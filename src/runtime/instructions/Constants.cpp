@@ -19,6 +19,7 @@ uint32_t Instruction::bipush(Frame * frame){
     Type res;
     res.tag = TAG_INT;
     res.type_int = (int32_t)byte1;
+    cout << res.type_int << endl;
     frame->operandStack.push(res);
 
     return ++frame->local_pc;
