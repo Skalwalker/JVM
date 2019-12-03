@@ -70,13 +70,13 @@ uint32_t Instruction::getstatic(Frame* frame){
     if (className.compare("java/lang/System") == 0) {
         return ++frame->local_pc;
     } else {
-        ClassFile classFile = classLoader->loadClassFile(className);
-        vector<CPInfo> constantPool = classFile.getConstantPool();
-        vector<MethodInfo> methods = classFile.getMethods();
+        ClassFile * classFile = classLoader->methodArea->getClassFile(className);
+        vector<CPInfo> constantPool = classFile->getConstantPool();
+        vector<MethodInfo> methods = classFile->getMethods();
         MethodInfo method;
 
         bool foundClinit = false;
-        for (int i = 0; i < classFile.getMethodsCount() && !foundClinit; i++) {
+        for (int i = 0; i < classFile->getMethodsCount() && !foundClinit; i++) {
             method = methods[i];
             uint16_t nameIndex = method.name_index;
             uint16_t descriptorIndex = method.descriptor_index;
@@ -95,14 +95,15 @@ uint32_t Instruction::getstatic(Frame* frame){
         }
     }
 
-    ClassFile classFile = classLoader->loadClassFile(className);
-    vector<CPInfo> constantPool = classFile.getConstantPool();
-    vector<FieldInfo*> fields = classFile.getFieldsPointer();
+    classLoader->loadClassFile(className);
+    ClassFile * classFile = classLoader->methodArea->getClassFile(className);
+    vector<CPInfo> constantPool = classFile->getConstantPool();
+    vector<FieldInfo*> fields = classFile->getFieldsPointer();
     FieldInfo* field;
     bool foundField = false;
     string descriptor;
 
-    for (int i = 0; i < classFile.getFieldsCount() && !foundField; i++) {
+    for (int i = 0; i < classFile->getFieldsCount() && !foundField; i++) {
         field = fields[i];
         uint16_t nameIndex = field->name_index;
         uint16_t descriptorIndex = field->descriptor_index;
@@ -235,14 +236,13 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
         string * objectClassName = (string*)object->at("<this_class>").type_reference;
 
         classLoader->loadClassFile(*objectClassName);
-        MethodArea* methodArea = classLoader->methodArea;
-        ClassFile objectClassFile = methodArea->getClassFile(*objectClassName);
+        ClassFile * objectClassFile = classLoader->methodArea->getClassFile(*objectClassName);
 
-        constantPool = objectClassFile.getConstantPool();
-        vector<MethodInfo> methods = objectClassFile.getMethods();
+        constantPool = objectClassFile->getConstantPool();
+        vector<MethodInfo> methods = objectClassFile->getMethods();
 
         MethodInfo method;
-        for (int i = 0; i < objectClassFile.getMethodsCount() && !foundMethod; i++) {
+        for (int i = 0; i < objectClassFile->getMethodsCount() && !foundMethod; i++) {
             method = methods[i];
             uint16_t nameIndex = method.name_index;
             uint16_t descriptorIndex = method.descriptor_index;
@@ -257,12 +257,12 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
             do {
                 classLoader->loadClassFile(*objectClassName);
                 MethodArea * methodArea = classLoader->methodArea;
-                ClassFile objectClassFile = methodArea->getClassFile(*objectClassName);
+                ClassFile * objectClassFile = methodArea->getClassFile(*objectClassName);
 
-                constantPool = objectClassFile.getConstantPool();
-                vector<MethodInfo> methods = objectClassFile.getMethods();
+                constantPool = objectClassFile->getConstantPool();
+                vector<MethodInfo> methods = objectClassFile->getMethods();
 
-                for (int i = 0; i < objectClassFile.getMethodsCount() && !foundMethod; i++) {
+                for (int i = 0; i < objectClassFile->getMethodsCount() && !foundMethod; i++) {
                     method = methods[i];
                     uint16_t nameIndex = method.name_index;
                     uint16_t descriptorIndex = method.descriptor_index;
@@ -274,11 +274,11 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 }
 
                 if (!foundMethod) {
-                    if (objectClassFile.getSuperClass() == 0) {
+                    if (objectClassFile->getSuperClass() == 0) {
                         printf("invokevirutal:  metodo nao foi encontrado em nenhuma superclasse! Talvez esteja em uma interface, falta Implementar!\n");
                         exit(0);
                     }
-                    className = constantPool[objectClassFile.getSuperClass()-1].getInfo(constantPool);
+                    className = constantPool[objectClassFile->getSuperClass()-1].getInfo(constantPool);
                 }
             } while(!foundMethod);
         }
@@ -378,10 +378,10 @@ uint32_t Instruction::invokestatic(Frame* frame){
     string methodName = get<1>(methodInfo);
     string descriptor = get<2>(methodInfo);
 
-    ClassFile classfile = classLoader->methodArea->getClassFile(className);
-    vector<MethodInfo> methods = classfile.getMethods();
+    ClassFile * classfile = classLoader->methodArea->getClassFile(className);
+    vector<MethodInfo> methods = classfile->getMethods();
     int i;
-    for (i = 0; i < classfile.getMethodsCount(); i++) {
+    for (i = 0; i < classfile->getMethodsCount(); i++) {
         if(methods[i].name == methodName && methods[i].descriptor == descriptor) {
             break;
         }
@@ -401,14 +401,13 @@ uint32_t Instruction::invokestatic(Frame* frame){
             while(descriptor[i] != ';') {
                 i++;
             }
-        } else if (descriptor[i] != ')') {
+        } else if (descriptor[i] == ')') {
             auxstack.push(frame->operandStack.top());
             frame->operandStack.pop();
             narg += 1;
         }
         i++;
     }
-
     for (i = 0; i < narg; i++) {
         newFrame.localVariables[i] = auxstack.top();
         if (auxstack.top().tag == TAG_LONG || auxstack.top().tag == TAG_DOUBLE) {
@@ -434,13 +433,14 @@ uint32_t Instruction::putstatic(Frame* frame){
     string fieldName = get<1>(fieldtuple);
     string descriptorAux = get<2>(fieldtuple);
 
-    ClassFile classFile = classLoader->loadClassFile(className);
-    vector<CPInfo> constantPool = classFile.getConstantPool();
-    vector<MethodInfo> methods = classFile.getMethods();
+    classLoader->loadClassFile(className);
+    ClassFile * classFile = classLoader->methodArea->getClassFile(className);
+    vector<CPInfo> constantPool = classFile->getConstantPool();
+    vector<MethodInfo> methods = classFile->getMethods();
     MethodInfo method;
 
     bool foundClinit = false;
-    for (int i = 0; i < classFile.getMethodsCount() && !foundClinit; i++) {
+    for (int i = 0; i < classFile->getMethodsCount() && !foundClinit; i++) {
         method = methods[i];
         uint16_t nameIndex = method.name_index;
         uint16_t descriptorIndex = method.descriptor_index;
@@ -458,13 +458,14 @@ uint32_t Instruction::putstatic(Frame* frame){
         return clinitMethodFrame.local_pc;
     }
 
-    classFile = classLoader->loadClassFile(className);
-    constantPool = classFile.getConstantPool();
-    vector<FieldInfo*> fields = classFile.getFieldsPointer();
+    classLoader->loadClassFile(className);
+    classFile = classLoader->methodArea->getClassFile(className);
+    constantPool = classFile->getConstantPool();
+    vector<FieldInfo*> fields = classFile->getFieldsPointer();
     FieldInfo* field;
     bool foundField = false;
 
-    for (int i = 0; i < classFile.getFieldsCount() && !foundField; i++) {
+    for (int i = 0; i < classFile->getFieldsCount() && !foundField; i++) {
         field = fields[i];
         uint16_t nameIndex = field->name_index;
         uint16_t descriptorIndex = field->descriptor_index;
@@ -551,13 +552,14 @@ uint32_t Instruction::new_func(Frame* frame){
         frame->operandStack.push(object);
     } else {
 
-        ClassFile classFile = classLoader->loadClassFile(className);
-        vector<CPInfo> constantPool = classFile.getConstantPool();
-        vector<MethodInfo> methods = classFile.getMethods();
+        classLoader->loadClassFile(className);
+        ClassFile * classFile = classLoader->methodArea->getClassFile(className);
+        vector<CPInfo> constantPool = classFile->getConstantPool();
+        vector<MethodInfo> methods = classFile->getMethods();
         MethodInfo method;
 
         bool foundClinit = false;
-        for (int i = 0; i < classFile.getMethodsCount() && !foundClinit; i++) {
+        for (int i = 0; i < classFile->getMethodsCount() && !foundClinit; i++) {
             method = methods[i];
             uint16_t nameIndex = method.name_index;
             uint16_t descriptorIndex = method.descriptor_index;
@@ -575,7 +577,8 @@ uint32_t Instruction::new_func(Frame* frame){
             return clinitMethodFrame.local_pc;
         }
 
-        classFile = classLoader->loadClassFile(className);
+        classLoader->loadClassFile(className);
+        classFile = classLoader->methodArea->getClassFile(className);
         Type object;
         object.tag = TAG_REFERENCE;
         object.type_reference = (uint64_t)instantiateFields(classFile);
@@ -624,11 +627,11 @@ uint32_t Instruction::invokespecial(Frame * frame) {
     MethodInfo method;
     while(!foundMethod) {
         MethodArea * methodArea = classLoader->methodArea;
-        ClassFile classFile = methodArea->getClassFile(className);
-        constantPool = classFile.getConstantPool();
-        vector<MethodInfo> methods = classFile.getMethods();
+        ClassFile * classFile = methodArea->getClassFile(className);
+        constantPool = classFile->getConstantPool();
+        vector<MethodInfo> methods = classFile->getMethods();
 
-        for (int i = 0; i < classFile.getMethodsCount() && !foundMethod; i++) {
+        for (int i = 0; i < classFile->getMethodsCount() && !foundMethod; i++) {
             method = methods[i];
             uint16_t nameIndex = method.name_index;
             uint16_t descriptorIndex = method.descriptor_index;
@@ -640,10 +643,10 @@ uint32_t Instruction::invokespecial(Frame * frame) {
         }
 
         if (!foundMethod) {
-            if (classFile.getSuperClass() == 0) {
+            if (classFile->getSuperClass() == 0) {
                 printf("invokespecial: metodo nao foi encontrado em nenhuma superclasse! Talvez esteja em uma interface, falta Implementar!\n");
             }
-            string className = constantPool[classFile.getSuperClass()-1].getInfo(constantPool);
+            string className = constantPool[classFile->getSuperClass()-1].getInfo(constantPool);
         }
     }
 
@@ -744,7 +747,10 @@ uint32_t Instruction::putfield(Frame * frame) {
     string fieldName = get<1>(fieldtuple);
     string descriptor = get<2>(fieldtuple);
 
+    cout << fieldName << endl;
+
     Type value = frame->operandStack.top();
+    cout << unsigned(value.tag) << endl;
     frame->operandStack.pop();
     Type objectref = frame->operandStack.top();
     frame->operandStack.pop();

@@ -80,7 +80,7 @@ public:
     Instruction();
     static tuple<string, string, string> methodInfoSplit(string);
     static tuple<string, string, string> fieldInfoSplit(string);
-    static map<string, Type>* instantiateFields(ClassFile);
+    static map<string, Type>* instantiateFields(ClassFile*);
 
     static uint32_t monitorenter(Frame*);
     static uint32_t monitorexit(Frame*);

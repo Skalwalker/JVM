@@ -13,7 +13,7 @@ string get_mainfile(string arg){
     while (i >= 0 && arg[i] != '/') {
         i--;
     }
-    return arg.substr(i, (arg.size()-i));
+    return arg.substr(i+1, (arg.size()-i));
 }
 
 void helpScreen(){
@@ -75,9 +75,9 @@ int main(int argc, char* argv[]) {
     classLoader.methodArea = &methodArea;
     classLoader.loadClassFile(mainfile);
     InstructionsManager instructionsManager(&classLoader);
-    ExecutionEngine executionEngine(classLoader.loadClassFile(mainfile), &methodArea, &instructionsManager);
+    ExecutionEngine executionEngine(methodArea.getClassFile(mainfile), &methodArea, &instructionsManager);
     if (printFlag == true){
-        Printer printer(classLoader.loadClassFile(mainfile), &instructionsManager);
+        Printer printer(*methodArea.getClassFile(mainfile), &instructionsManager);
     }
     executionEngine.run();
 

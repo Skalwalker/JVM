@@ -424,7 +424,6 @@ uint32_t Instruction::aastore(Frame * frame) {
     }
 
     vector<Type>* arr = (vector<Type>*)arrayref.type_reference;
-    cout << arrayref.type_reference << endl;
     if(index > arr->size() || index < 0) {
         ExceptionThrower::arrayIndexOutOfBounds(index);
     }

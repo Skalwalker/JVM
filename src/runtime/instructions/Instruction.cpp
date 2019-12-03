@@ -52,13 +52,13 @@ tuple<string, string, string>Instruction::fieldInfoSplit(string fieldInfo) {
     return make_tuple(className, fieldName, descriptor);
 }
 
-map<string, Type>* Instruction::instantiateFields(ClassFile classFile) {
+map<string, Type>* Instruction::instantiateFields(ClassFile * classFile) {
     map<string, Type>* object = new map<string, Type>;
-    ClassFile objectClassFile = classFile;
-    while (classFile.getSuperClass() != 0) {
-        vector<CPInfo> constantPool = classFile.getConstantPool();
-        vector<FieldInfo> fields = classFile.getFields();
-        for (int i = 0; i < classFile.getFieldsCount(); i++) {
+    ClassFile * objectClassFile = classFile;
+    do {
+        vector<CPInfo> constantPool = classFile->getConstantPool();
+        vector<FieldInfo> fields = classFile->getFields();
+        for (int i = 0; i < classFile->getFieldsCount(); i++) {
 
             CPInfo fieldInfo = constantPool[fields[i].name_index-1];
             CPInfo descriptorInfo = constantPool[fields[i].descriptor_index-1];
@@ -107,14 +107,15 @@ map<string, Type>* Instruction::instantiateFields(ClassFile classFile) {
             object->insert(make_pair(fieldName, fieldContent));
         }
 
-        string superClassName = constantPool[classFile.getSuperClass()-1].getInfo(constantPool);
-        classFile = classLoader->loadClassFile(superClassName);
-    }
+        string superClassName = constantPool[classFile->getSuperClass()-1].getInfo(constantPool);
+        classLoader->loadClassFile(superClassName);
+        classFile = classLoader->methodArea->getClassFile(superClassName);
+    } while (classFile->getSuperClass() != 0);
 
     Type thisClass;
-    uint16_t thisClassIndex = objectClassFile.getThisClass();
-    CPInfo thisClassInfo = objectClassFile.getConstantPool()[thisClassIndex-1];
-    string thisClassName = thisClassInfo.getInfo(objectClassFile.getConstantPool());
+    uint16_t thisClassIndex = objectClassFile->getThisClass();
+    CPInfo thisClassInfo = objectClassFile->getConstantPool()[thisClassIndex-1];
+    string thisClassName = thisClassInfo.getInfo(objectClassFile->getConstantPool());
     thisClass.tag = TAG_REFERENCE;
     thisClass.type_reference = (uint64_t)new string(thisClassName);
     object->insert(make_pair("<this_class>", thisClass));

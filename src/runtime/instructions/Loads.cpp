@@ -253,6 +253,8 @@ uint32_t Instruction::iaload(Frame * frame){
     Type arr_ref = frame->operandStack.top();
     frame->operandStack.pop();
 
+    cout << unsigned(arr_ref.tag) << endl;
+
     if (arr_ref.type_reference == (uint64_t)NULL) {
         ExceptionThrower::nullPointerException();
     }
@@ -411,8 +413,6 @@ uint32_t Instruction::aaload(Frame * frame){
     if(index > arr->size() || index < 0) {
         ExceptionThrower::arrayIndexOutOfBounds(index);
     }
-
-    cout << array_ref.type_reference << endl;
 
     Type res = arr->at(index);
 
