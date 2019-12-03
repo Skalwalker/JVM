@@ -109,7 +109,7 @@ uint32_t Instruction::getstatic(Frame* frame){
         uint16_t descriptorIndex = field->descriptor_index;
         string name = constantPool[nameIndex-1].getInfo(constantPool);
         descriptor = constantPool[descriptorIndex-1].getInfo(constantPool);
-        if (name.compare(name) == 0 && descriptor.compare(descriptor) == 0) {
+        if (name.compare(fieldName) == 0 && descriptor.compare(descriptorAux) == 0) {
             foundField = true;
         }
     }
@@ -234,7 +234,6 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
         frame->operandStack.pop();
         map<string, Type>* object = (map<string, Type>*)objectref.type_reference;
         string * objectClassName = (string*)object->at("<this_class>").type_reference;
-
         classLoader->loadClassFile(*objectClassName);
         ClassFile * objectClassFile = classLoader->methodArea->getClassFile(*objectClassName);
 
@@ -253,11 +252,12 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
             }
         }
 
+        string className = *objectClassName;
         if (!foundMethod) {
             do {
-                classLoader->loadClassFile(*objectClassName);
+                classLoader->loadClassFile(className);
                 MethodArea * methodArea = classLoader->methodArea;
-                ClassFile * objectClassFile = methodArea->getClassFile(*objectClassName);
+                ClassFile * objectClassFile = methodArea->getClassFile(className);
 
                 constantPool = objectClassFile->getConstantPool();
                 vector<MethodInfo> methods = objectClassFile->getMethods();
@@ -275,7 +275,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
 
                 if (!foundMethod) {
                     if (objectClassFile->getSuperClass() == 0) {
-                        printf("invokevirutal:  metodo nao foi encontrado em nenhuma superclasse! Talvez esteja em uma interface, falta Implementar!\n");
+                        printf("invokevirtual:  metodo nao foi encontrado\n");
                         exit(0);
                     }
                     className = constantPool[objectClassFile->getSuperClass()-1].getInfo(constantPool);
@@ -288,6 +288,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
         int argCnt = 1;
 
         for (int i = 1; descriptor[i] != ')'; i++) {
+
             if (descriptor[i] == 'I' || descriptor[i] == 'F') {
                 Type arg = auxstack.top();
                 auxstack.pop();
@@ -358,6 +359,7 @@ uint32_t Instruction::getfield(Frame * frame) {
 
     map<string, Type>* object = (map<string, Type>*)objectref.type_reference;
     Type value = object->at(fieldName);
+
     frame->operandStack.push(value);
 
     return ++frame->local_pc;
@@ -390,30 +392,75 @@ uint32_t Instruction::invokestatic(Frame* frame){
 
     // Empilha os argumentos para reverter a ordem
     stack<Type> auxstack;
-    i = 1;
-    int narg = 0;
-    while (descriptor[i] != ')') {
-        if (descriptor[i] == '[') {
-            while(descriptor[i] == '[') {
-                i++;
-            }
-        } else if (descriptor[i] == 'L') {
-            while(descriptor[i] != ';') {
-                i++;
-            }
-        } else if (descriptor[i] == ')') {
-            auxstack.push(frame->operandStack.top());
-            frame->operandStack.pop();
-            narg += 1;
+    for (int i = 1; descriptor[i] != ')'; i++) {
+        if (descriptor[i] == 'I' || descriptor[i] == 'F') {
         }
-        i++;
+        else if (descriptor[i] == 'J' || descriptor[i] == 'D') {
+        }
+        else if (descriptor[i] == 'L') {
+            while (descriptor[i] != ';') {
+                i++;
+            }
+        }
+        else if (descriptor[i] == '[') {
+            while (descriptor[i] == '[') {
+                i++;
+            }
+            if (descriptor[i] == 'L') {
+                while (descriptor[i] != ';') {
+                    i++;
+                }
+            }
+        }
+        else {
+            cout << "Tipo de descritor nao reconhecido na contagem: " << descriptor[i] << endl;
+            exit(0);
+        }
+        auxstack.push(frame->operandStack.top());
+        frame->operandStack.pop();
     }
-    for (i = 0; i < narg; i++) {
-        newFrame.localVariables[i] = auxstack.top();
-        if (auxstack.top().tag == TAG_LONG || auxstack.top().tag == TAG_DOUBLE) {
-            newFrame.localVariables[i+1] = auxstack.top();
+    int argCnt = 0;
+    for (int i = 1; descriptor[i] != ')'; i++) {
+        if (descriptor[i] == 'I' || descriptor[i] == 'F') {
+            Type arg = auxstack.top();
+            auxstack.pop();
+            newFrame.localVariables[argCnt] = arg;
+            argCnt++;
         }
-        auxstack.pop();
+        else if (descriptor[i] == 'J' || descriptor[i] == 'D') {
+            Type arg = auxstack.top();
+            auxstack.pop();
+            newFrame.localVariables[argCnt] = arg;
+            argCnt += 2;
+        }
+        else if (descriptor[i] == 'L') {
+            int j = i;
+            while (descriptor[i] != ';') {
+                i++;
+            }
+            Type arg = auxstack.top();
+            auxstack.pop();
+            newFrame.localVariables[argCnt] = arg;
+            argCnt++;
+        }
+        else if (descriptor[i] == '[') {
+            while (descriptor[i] == '[') {
+                i++;
+            }
+            if (descriptor[i] == 'L') {
+                while (descriptor[i] != ';') {
+                    i++;
+                }
+            }
+            Type arg = auxstack.top();
+            auxstack.pop();
+            newFrame.localVariables[argCnt] = arg;
+            argCnt++;
+        }
+        else {
+            cout << "Tipo de descritor nao reconhecido: " << descriptor[i] << endl;
+            exit(0);
+        }
     }
 
     frame->jvmStack->push(newFrame);
@@ -471,7 +518,7 @@ uint32_t Instruction::putstatic(Frame* frame){
         uint16_t descriptorIndex = field->descriptor_index;
         string name = constantPool[nameIndex-1].getInfo(constantPool);
         string descriptor = constantPool[descriptorIndex-1].getInfo(constantPool);
-        if (name.compare(name) == 0 && descriptor.compare(descriptor) == 0) {
+        if (name.compare(fieldName) == 0 && descriptor.compare(descriptorAux) == 0) {
             foundField = true;
         }
     }
@@ -747,10 +794,8 @@ uint32_t Instruction::putfield(Frame * frame) {
     string fieldName = get<1>(fieldtuple);
     string descriptor = get<2>(fieldtuple);
 
-    cout << fieldName << endl;
 
     Type value = frame->operandStack.top();
-    cout << unsigned(value.tag) << endl;
     frame->operandStack.pop();
     Type objectref = frame->operandStack.top();
     frame->operandStack.pop();
