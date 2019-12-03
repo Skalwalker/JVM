@@ -197,7 +197,110 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 frame->operandStack.pop();
             }
         }
-    } else {
+    } else if (className.compare("java/lang/StringBuilder") == 0 || className.compare("java/lang/StringBuffer") == 0) {
+        if (methodName.compare("append") == 0) {
+            if (descriptor.compare("(Ljava/lang/String;)Ljava/lang/StringBuilder;") == 0 ||
+                descriptor.compare("(Ljava/lang/String;)Ljava/lang/StringBuffer;") == 0) {
+
+                string* str1 = (string*)(frame->operandStack.top().type_reference);
+                frame->operandStack.pop();
+                string* str2 = (string*)(frame->operandStack.top().type_reference);
+                frame->operandStack.pop();
+
+                Type objectref;
+                objectref.tag = TAG_REFERENCE;
+                objectref.type_reference = (uint64_t)new string(*str2 + *str1);
+                frame->operandStack.push(objectref);
+            }
+            else if (descriptor.compare("(I)Ljava/lang/StringBuilder;") == 0 ||
+                     descriptor.compare("(I)Ljava/lang/StringBuffer;") == 0) {
+                int32_t integer = (int32_t)(frame->operandStack.top().type_int);
+                frame->operandStack.pop();
+                string* str = (string*)(frame->operandStack.top().type_reference);
+                frame->operandStack.pop();
+
+                Type objectref;
+                objectref.type_reference = (uint64_t)new string(*str + to_string(integer));
+                objectref.tag = TAG_REFERENCE;
+                frame->operandStack.push(objectref);
+            }
+            else if (descriptor.compare("(J)Ljava/lang/StringBuilder;") == 0 ||
+                     descriptor.compare("(J)Ljava/lang/StringBuffer;") == 0) {
+
+                int64_t longNumber = (int64_t)(frame->operandStack.top().type_long);
+                frame->operandStack.pop();
+                string* str = (string*)(frame->operandStack.top().type_reference);
+                frame->operandStack.pop();
+
+                Type objectref;
+                objectref.type_reference = (uint64_t)new string(*str + to_string(longNumber));
+                objectref.tag = TAG_REFERENCE;
+                frame->operandStack.push(objectref);
+            }
+            else if (descriptor.compare("(F)Ljava/lang/StringBuilder;") == 0 ||
+                     descriptor.compare("(F)Ljava/lang/StringBuffer;") == 0) {
+
+                uint32_t integer = (uint32_t)(frame->operandStack.top().type_int);
+                frame->operandStack.pop();
+                string* str = (string*)(frame->operandStack.top().type_reference);
+                frame->operandStack.pop();
+
+                float floatNumber;
+                memcpy(&floatNumber, &integer, sizeof(float));
+
+                Type objectref;
+                objectref.tag = TAG_REFERENCE;
+                objectref.type_reference = (uint64_t)new string(*str + to_string(floatNumber));
+                frame->operandStack.push(objectref);
+            }
+            else if (descriptor.compare("(D)Ljava/lang/StringBuilder;") == 0 ||
+                     descriptor.compare("(D)Ljava/lang/StringBuffer;") == 0) {
+
+                uint64_t longNumber = (uint64_t)(frame->operandStack.top().type_double);
+                frame->operandStack.pop();
+                string* str = (string*)(frame->operandStack.top().type_reference);
+                frame->operandStack.pop();
+
+                double doubleNumber;
+                memcpy(&doubleNumber, &longNumber, sizeof(double));
+
+                Type objectref;
+                objectref.type_reference = (uint64_t)new string(*str + to_string(doubleNumber));
+                objectref.tag = TAG_REFERENCE;
+                frame->operandStack.push(objectref);
+            }
+            else if (descriptor.compare("(Z)Ljava/lang/StringBuilder;") == 0 ||
+                     descriptor.compare("(Z)Ljava/lang/StringBuffer;") == 0) {
+
+                uint32_t integer = (uint32_t)(frame->operandStack.top().type_int);
+                frame->operandStack.pop();
+                string* str = (string*)(frame->operandStack.top().type_reference);
+                frame->operandStack.pop();
+
+                Type objectref;
+                if (integer == 1) {
+                    objectref.type_reference = (uint64_t)new string(*str + "true");
+                }
+                else if (integer == 0) {
+                    objectref.type_reference = (uint64_t)new string(*str + "false");
+                }
+                else {
+                    cout << "Erro no tipo booleano durante a concatenacao!";
+                    exit(0);
+                }
+                objectref.tag = TAG_REFERENCE;
+                frame->operandStack.push(objectref);
+            }
+            else {
+                printf("invokevirtual: descritor nao reconhecido: %s\n", descriptor.c_str());
+                exit(0);
+            }
+        } else if (methodName.compare("toString") == 0) {
+            } else {
+                printf("invokevirtualFunction: Metodo do StringBuilder nao reconhecido: %s\n", methodName.c_str());
+                exit(0);
+            }
+        } else {
         stack<Type> auxstack;
         for (int i = 1; descriptor[i] != ')'; i++) {
             if (descriptor[i] == 'I' || descriptor[i] == 'F') {
@@ -592,7 +695,10 @@ uint32_t Instruction::new_func(Frame* frame){
     uint8_t byte2 = bytecode[++frame->local_pc];
     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
     string className = frame->constantPool[index-1].getInfo(frame->constantPool);
-    if (className.compare("java/lang/String") == 0 || className.compare("java/lang/StringBuilder") == 0) {
+    if (className.compare("java/lang/String") == 0 ||
+        className.compare("java/lang/StringBuilder") == 0 ||
+        className.compare("java/lang/StringBuilder") == 0) {
+
         Type object;
         object.type_reference = (uint64_t)new string("");
         object.tag = TAG_REFERENCE;
@@ -648,6 +754,7 @@ uint32_t Instruction::invokespecial(Frame * frame) {
     string className = get<0>(methodtuple);
     string methodName = get<1>(methodtuple);
     string descriptor = get<2>(methodtuple);
+
     if (className.compare("java/lang/String") == 0) {
         if (methodName.compare("<init>") == 0) {
             string* stringReference = (string*)(frame->operandStack.top().type_reference);
@@ -662,7 +769,8 @@ uint32_t Instruction::invokespecial(Frame * frame) {
         }
         return ++frame->local_pc;
     }
-    if (className.compare("java/lang/StringBuilder") == 0) {
+    if (className.compare("java/lang/StringBuilder") == 0 ||
+        className.compare("java/lang/StringBuffer") == 0) {
         if (methodName.compare("<init>") == 0) {
             frame->operandStack.pop();
         }
