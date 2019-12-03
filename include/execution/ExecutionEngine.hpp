@@ -68,7 +68,7 @@ public:
      *
      * \date $Date: 29/11/2019
      */
-    ExecutionEngine(ClassFile, MethodArea*, InstructionsManager*);
+    ExecutionEngine(ClassFile*, MethodArea*, InstructionsManager*);
 
     /**
      * \fn findMainMethod

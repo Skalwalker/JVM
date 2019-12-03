@@ -16,7 +16,7 @@ public:
     MethodArea * methodArea;
     string classesPath;
     ClassLoader(string);
-    ClassFile loadClassFile(string);
+    ClassFile * loadClassFile(string);
 };
 
 #endif

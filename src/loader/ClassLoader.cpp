@@ -4,7 +4,7 @@ ClassLoader::ClassLoader(string path) {
     this->classesPath = path;
 }
 
-ClassFile ClassLoader::loadClassFile(string className) {
+ClassFile * ClassLoader::loadClassFile(string className) {
     FILE * fp;
 
     if (className.compare("java/lang/Object") == 0) {
@@ -14,7 +14,7 @@ ClassFile ClassLoader::loadClassFile(string className) {
     }
 
     if (fp != NULL) {
-        ClassFile classFile(fp);
+        ClassFile * classFile = new ClassFile(fp);
         methodArea->insertClass(classFile);
         fclose(fp);
         return classFile;

@@ -428,17 +428,10 @@ uint32_t Instruction::aastore(Frame * frame) {
     }
 
     vector<Type>* arr = (vector<Type>*)arrayref.type_reference;
-
     if(index > arr->size() || index < 0) {
         ExceptionThrower::arrayIndexOutOfBounds(index);
     }
-
-    try {
-        arr->at(index) = value;
-    } catch(...) {
-         ExceptionThrower::arrayStoreException(0);
-    }
-
+    arr->at(index) = value;
 
     return ++frame->local_pc;
 }

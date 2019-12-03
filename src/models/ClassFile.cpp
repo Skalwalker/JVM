@@ -33,9 +33,9 @@ ClassFile::ClassFile(FILE * fp) {
 }
 
 /**
-Seta o valor do magicNumber a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do magicNumber a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, o magicnumber é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, o magicnumber é do
 tipo uint32_t.
 
 @param fp Arquivo .class sendo lido.
@@ -46,9 +46,9 @@ void ClassFile::setMagicNumber(FILE * fp) {
 }
 
 /**
-Seta o valor do minorVersion a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do minorVersion a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, o minorVersion é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, o minorVersion é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -59,9 +59,9 @@ void ClassFile::setMinorVersion(FILE * fp) {
 }
 
 /**
-Seta o valor do majorVersion a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do majorVersion a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, o majorVersion é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, o majorVersion é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -72,9 +72,9 @@ void ClassFile::setMajorVersion(FILE * fp) {
 }
 
 /**
-Seta o valor do constantPoolCount a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do constantPoolCount a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, o constantPoolCount é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, o constantPoolCount é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -85,8 +85,8 @@ void ClassFile::setConstantPoolCount(FILE * fp) {
 }
 
 /**
-Seta os valores das estuturas (cp_info) que compõem a constantPool a partir da leitura do arquivo .class com a função readBytes definida em 
-ClassFileReader.hpp. Estrutura cp_info: \n 
+Seta os valores das estuturas (cp_info) que compõem a constantPool a partir da leitura do arquivo .class com a função readBytes definida em
+ClassFileReader.hpp. Estrutura cp_info: \n
 cp_info {
 <pre>
 u1 tag;
@@ -115,9 +115,9 @@ void ClassFile::setConstantPool(FILE * fp) {
 }
 
 /**
-Seta o valor do accessFlags a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do accessFlags a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a accessFlags é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a accessFlags é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -128,9 +128,9 @@ void ClassFile::setAccessFlags(FILE * fp) {
 }
 
 /**
-Seta o valor do thisClass a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do thisClass a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a thisClass é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a thisClass é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -141,9 +141,9 @@ void ClassFile::setThisClass(FILE * fp) {
 }
 
 /**
-Seta o valor do superClass a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do superClass a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a superClass é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a superClass é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -154,9 +154,9 @@ void ClassFile::setSuperClass(FILE * fp) {
 }
 
 /**
-Seta o valor do interfacesCount a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do interfacesCount a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a interfacesCount é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a interfacesCount é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -167,9 +167,9 @@ void ClassFile::setInterfacesCount(FILE * fp) {
 }
 
 /**
-Seta os valores do vetor interfaces a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta os valores do vetor interfaces a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, cada elemento do vetor é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, cada elemento do vetor é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -183,9 +183,9 @@ void ClassFile::setInterfaces(FILE * fp) {
 }
 
 /**
-Seta o valor do fieldsCount a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do fieldsCount a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a fieldsCount é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a fieldsCount é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -196,9 +196,9 @@ void ClassFile::setFieldsCount(FILE * fp) {
 }
 
 /**
-Seta os valores das estuturas (field_info) que compõem o fields a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta os valores das estuturas (field_info) que compõem o fields a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp. \n
-field_info { 
+field_info {
 <pre>
  u2 access_flags;
  u2 name_index;
@@ -206,7 +206,7 @@ field_info {
  u2 attributes_count;
  attribute_info attributes[attributes_count];
 </pre>
-} 
+}
 
 @param fp Arquivo .class sendo lido.
 */
@@ -220,9 +220,9 @@ void ClassFile::setFields(FILE * fp) {
 }
 
 /**
-Seta o valor do methodsCount a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do methodsCount a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a methodsCount é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a methodsCount é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -233,7 +233,7 @@ void ClassFile::setMethodsCount(FILE * fp) {
 }
 
 /**
-Seta os valores das estuturas (methods_info) que compõem o methods a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta os valores das estuturas (methods_info) que compõem o methods a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp. \n
 method_info {
 <pre>
@@ -257,9 +257,9 @@ void ClassFile::setMethods(FILE * fp) {
 }
 
 /**
-Seta o valor do attributesCount a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta o valor do attributesCount a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp.
-O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a attributesCount é do 
+O número de bytes lidos é definido pelo tamanho do tipo da informação sendo lida, a attributesCount é do
 tipo uint16_t.
 
 @param fp Arquivo .class sendo lido.
@@ -270,9 +270,9 @@ void ClassFile::setAttributesCount(FILE * fp) {
 }
 
 /**
-Seta os valores das estuturas (attribute_info) que compõem o methods a partir da leitura do arquivo .class com a função readBytes definida em 
+Seta os valores das estuturas (attribute_info) que compõem o methods a partir da leitura do arquivo .class com a função readBytes definida em
 ClassFileReader.hpp. \n
-attribute_info { 
+attribute_info {
 <pre>
  u2 attribute_name_index;
  u4 attribute_length;
@@ -337,6 +337,14 @@ uint16_t ClassFile::getFieldsCount() {
 
 vector<FieldInfo> ClassFile::getFields() {
     return fields;
+}
+
+vector<FieldInfo*> ClassFile::getFieldsPointer() {
+    vector<FieldInfo*> pointers;
+    for(int i = 0; i < fieldsCount; i++) {
+        pointers.push_back(&(fields[i]));
+    }
+    return pointers;
 }
 
 uint16_t ClassFile::getMethodsCount() {
