@@ -14,8 +14,8 @@ uint32_t Instruction::newarray(Frame *frame){
 
 
     if (atype == T_BOOLEAN) {
-        value->tag = TAG_BOOL;
-        value->type_boolean = false;
+        value->tag = TAG_INT;
+        value->type_int = 0;
     } else if (atype == T_CHAR) {
         value->tag = TAG_CHAR;
         value->type_char = 0;
@@ -61,12 +61,15 @@ uint32_t Instruction::getstatic(Frame* frame){
 
     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
 
-    string className = frame->constantPool[index-1].getInfo(frame->constantPool);
+    string fieldstring = frame->constantPool[index-1].getInfo(frame->constantPool);
+    tuple<string, string, string>fieldtuple = fieldInfoSplit(fieldstring);
+    string className = get<0>(fieldtuple);
+    string fieldName = get<1>(fieldtuple);
+    string descriptorAux = get<2>(fieldtuple);
 
-    if (className.compare("java/lang/System") != 0) {
+    if (className.compare("java/lang/System") == 0) {
         return ++frame->local_pc;
     } else {
-        ClassFile aux = classLoader->loadClassFile(className);
         ClassFile classFile = classLoader->loadClassFile(className);
         vector<CPInfo> constantPool = classFile.getConstantPool();
         vector<MethodInfo> methods = classFile.getMethods();
@@ -92,18 +95,17 @@ uint32_t Instruction::getstatic(Frame* frame){
         }
     }
 
-    classLoader->loadClassFile(className);
-    ClassFile classFile = classLoader->methodArea->getClassFile(className);
+    ClassFile classFile = classLoader->loadClassFile(className);
     vector<CPInfo> constantPool = classFile.getConstantPool();
-    vector<FieldInfo> fields = classFile.getFields();
-    FieldInfo field;
+    vector<FieldInfo*> fields = classFile.getFieldsPointer();
+    FieldInfo* field;
     bool foundField = false;
     string descriptor;
 
     for (int i = 0; i < classFile.getFieldsCount() && !foundField; i++) {
         field = fields[i];
-        uint16_t nameIndex = field.name_index;
-        uint16_t descriptorIndex = field.descriptor_index;
+        uint16_t nameIndex = field->name_index;
+        uint16_t descriptorIndex = field->descriptor_index;
         string name = constantPool[nameIndex-1].getInfo(constantPool);
         descriptor = constantPool[descriptorIndex-1].getInfo(constantPool);
         if (name.compare(name) == 0 && descriptor.compare(descriptor) == 0) {
@@ -117,25 +119,25 @@ uint32_t Instruction::getstatic(Frame* frame){
     }
 
     if (descriptor.compare("C") == 0) {
-        frame->operandStack.push(field.static_value);
+        frame->operandStack.push(field->static_value);
     }
     else if (descriptor.compare("I") == 0) {
-        frame->operandStack.push(field.static_value);
+        frame->operandStack.push(field->static_value);
     }
     else if (descriptor.compare("F") == 0) {
-        frame->operandStack.push(field.static_value);
+        frame->operandStack.push(field->static_value);
     }
     else if (descriptor.compare("D") == 0) {
-        frame->operandStack.push(field.static_value);
+        frame->operandStack.push(field->static_value);
     }
     else if (descriptor.compare("J") == 0) {
-        frame->operandStack.push(field.static_value);
+        frame->operandStack.push(field->static_value);
     }
     else if (descriptor.compare("Z") == 0) {
-        frame->operandStack.push(field.static_value);
+        frame->operandStack.push(field->static_value);
     }
     else if (descriptor[0] == '[') {
-        frame->operandStack.push(field.static_value);
+        frame->operandStack.push(field->static_value);
     }
     else {
         printf("getstatic: tipo do descritor nao reconhecido: %s\n", descriptor.c_str());
@@ -187,10 +189,10 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 cout << frame->operandStack.top().type_float << isendl;
                 frame->operandStack.pop();
             } else if (descriptor.compare("()V") == 0){
-                cout << unsigned(frame->operandStack.top().tag) << isendl;
-                frame->operandStack.pop();
+                // cout << unsigned(frame->operandStack.top().tag) << isendl;
+                // frame->operandStack.pop();
             } else if (descriptor.compare("(Z)V") == 0){
-                cout << frame->operandStack.top().type_boolean << isendl;
+                cout << frame->operandStack.top().type_int << isendl;
                 frame->operandStack.pop();
             }
         }
@@ -429,8 +431,8 @@ uint32_t Instruction::putstatic(Frame* frame){
     string fieldstring = frame->constantPool[index-1].getInfo(frame->constantPool);
     tuple<string, string, string>fieldtuple = fieldInfoSplit(fieldstring);
     string className = get<0>(fieldtuple);
-    string methodName = get<1>(fieldtuple);
-    string descriptor = get<2>(fieldtuple);
+    string fieldName = get<1>(fieldtuple);
+    string descriptorAux = get<2>(fieldtuple);
 
     ClassFile classFile = classLoader->loadClassFile(className);
     vector<CPInfo> constantPool = classFile.getConstantPool();
@@ -458,14 +460,14 @@ uint32_t Instruction::putstatic(Frame* frame){
 
     classFile = classLoader->loadClassFile(className);
     constantPool = classFile.getConstantPool();
-    vector<FieldInfo> fields = classFile.getFields();
-    FieldInfo field;
+    vector<FieldInfo*> fields = classFile.getFieldsPointer();
+    FieldInfo* field;
     bool foundField = false;
 
     for (int i = 0; i < classFile.getFieldsCount() && !foundField; i++) {
         field = fields[i];
-        uint16_t nameIndex = field.name_index;
-        uint16_t descriptorIndex = field.descriptor_index;
+        uint16_t nameIndex = field->name_index;
+        uint16_t descriptorIndex = field->descriptor_index;
         string name = constantPool[nameIndex-1].getInfo(constantPool);
         string descriptor = constantPool[descriptorIndex-1].getInfo(constantPool);
         if (name.compare(name) == 0 && descriptor.compare(descriptor) == 0) {
@@ -478,43 +480,43 @@ uint32_t Instruction::putstatic(Frame* frame){
         exit(0);
     }
 
-    if (descriptor.compare("C") == 0) {
-        field.static_value.tag = TAG_CHAR;
-        field.static_value.type_char = frame->operandStack.top().type_char;
+    if (descriptorAux.compare("C") == 0) {
+        field->static_value.tag = TAG_CHAR;
+        field->static_value.type_char = frame->operandStack.top().type_char;
         frame->operandStack.pop();
     }
-    else if (descriptor.compare("I") == 0) {
-        field.static_value.tag = TAG_INT;
-        field.static_value.type_int = frame->operandStack.top().type_int;
+    else if (descriptorAux.compare("I") == 0) {
+        field->static_value.tag = TAG_INT;
+        field->static_value.type_int = frame->operandStack.top().type_int;
         frame->operandStack.pop();
     }
-    else if (descriptor.compare("F") == 0) {
-        field.static_value.tag = TAG_FLOAT;
-        field.static_value.type_float = frame->operandStack.top().type_float;
+    else if (descriptorAux.compare("F") == 0) {
+        field->static_value.tag = TAG_FLOAT;
+        field->static_value.type_float = frame->operandStack.top().type_float;
         frame->operandStack.pop();
     }
-    else if (descriptor.compare("D") == 0) {
-        field.static_value.tag = TAG_DOUBLE;
-        field.static_value.type_double = frame->operandStack.top().type_double;
+    else if (descriptorAux.compare("D") == 0) {
+        field->static_value.tag = TAG_DOUBLE;
+        field->static_value.type_double = frame->operandStack.top().type_double;
         frame->operandStack.pop();
     }
-    else if (descriptor.compare("J") == 0) {
-        field.static_value.tag = TAG_LONG;
-        field.static_value.type_long = frame->operandStack.top().type_long;
+    else if (descriptorAux.compare("J") == 0) {
+        field->static_value.tag = TAG_LONG;
+        field->static_value.type_long = frame->operandStack.top().type_long;
         frame->operandStack.pop();
     }
-    else if (descriptor.compare("Z") == 0) {
-        field.static_value.tag = TAG_BOOL;
-        field.static_value.type_boolean = frame->operandStack.top().type_boolean;
+    else if (descriptorAux.compare("Z") == 0) {
+        field->static_value.tag = TAG_INT;
+        field->static_value.type_int = frame->operandStack.top().type_int;
         frame->operandStack.pop();
     }
-    else if (descriptor[0] == '[') {
-        field.static_value.tag = TAG_REFERENCE;
-        field.static_value.type_reference = frame->operandStack.top().type_reference;
+    else if (descriptorAux[0] == '[') {
+        field->static_value.tag = TAG_REFERENCE;
+        field->static_value.type_reference = frame->operandStack.top().type_reference;
         frame->operandStack.pop();
     }
     else {
-        printf("putstatic: tipo do descritor nao reconhecido: %s\n", descriptor.c_str());
+        printf("putstatic: tipo do descritor nao reconhecido: %s\n", descriptorAux.c_str());
         exit(0);
     }
 
@@ -584,8 +586,7 @@ uint32_t Instruction::new_func(Frame* frame){
 }
 
 uint32_t Instruction::invokespecial(Frame * frame) {
-    uint8_t* bytecode
-    = frame->codeAttribute.code;
+    uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];
     uint8_t byte2 = bytecode[++frame->local_pc];
 
@@ -597,7 +598,6 @@ uint32_t Instruction::invokespecial(Frame * frame) {
     string className = get<0>(methodtuple);
     string methodName = get<1>(methodtuple);
     string descriptor = get<2>(methodtuple);
-
     if (className.compare("java/lang/String") == 0) {
         if (methodName.compare("<init>") == 0) {
             string* stringReference = (string*)(frame->operandStack.top().type_reference);
@@ -691,7 +691,7 @@ uint32_t Instruction::invokespecial(Frame * frame) {
             Type arg = auxstack.top();
             auxstack.pop();
             staticMethodFrame.localVariables[argCnt] = arg;
-            argCnt += 1;
+            argCnt += 2;
         }
         else if (descriptor[i] == 'L') {
             int j = i;
@@ -748,7 +748,6 @@ uint32_t Instruction::putfield(Frame * frame) {
     frame->operandStack.pop();
     Type objectref = frame->operandStack.top();
     frame->operandStack.pop();
-
     map<string, Type>* object = (map<string, Type>*)objectref.type_reference;
     object->at(fieldName) = value;
 

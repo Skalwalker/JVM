@@ -412,6 +412,8 @@ uint32_t Instruction::aaload(Frame * frame){
         ExceptionThrower::arrayIndexOutOfBounds(index);
     }
 
+    cout << array_ref.type_reference << endl;
+
     Type res = arr->at(index);
 
     frame->operandStack.push(res);

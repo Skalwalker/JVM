@@ -109,6 +109,7 @@ class ClassFile {
     vector<uint16_t> getInterfaces();
     uint16_t getFieldsCount();
     vector<FieldInfo> getFields();
+    vector<FieldInfo*> getFieldsPointer();
     uint16_t getMethodsCount();
     vector<MethodInfo> getMethods();
     uint16_t getAttributesCount();

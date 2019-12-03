@@ -93,11 +93,11 @@ map<string, Type>* Instruction::instantiateFields(ClassFile classFile) {
             }
             else if (descriptor[0] == 'L') {
                 fieldContent.tag = TAG_REFERENCE;
-                fieldContent.type_reference = 0x0;
+                fieldContent.type_reference = (uint64_t)NULL;
             }
             else if (descriptor[0] == '[') {
                 fieldContent.tag = TAG_REFERENCE;
-                fieldContent.type_reference = 0x0;
+                fieldContent.type_reference = (uint64_t)NULL;
             }
             else {
                 printf("Sei que field é esse não: %s\n", descriptor.c_str());
@@ -108,8 +108,7 @@ map<string, Type>* Instruction::instantiateFields(ClassFile classFile) {
         }
 
         string superClassName = constantPool[classFile.getSuperClass()-1].getInfo(constantPool);
-        classLoader->loadClassFile(superClassName);
-        classFile = classLoader->methodArea->classes[superClassName];
+        classFile = classLoader->loadClassFile(superClassName);
     }
 
     Type thisClass;

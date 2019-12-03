@@ -412,11 +412,9 @@ uint32_t Instruction::astore_3(Frame * frame) {
 }
 
 uint32_t Instruction::aastore(Frame * frame) {
-    cout << "asdasdas" << endl;
     Type value = frame->operandStack.top();
     frame->operandStack.pop();
     int32_t index = frame->operandStack.top().type_int;
-    cout << index << endl;
     frame->operandStack.pop();
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
@@ -426,11 +424,10 @@ uint32_t Instruction::aastore(Frame * frame) {
     }
 
     vector<Type>* arr = (vector<Type>*)arrayref.type_reference;
-
+    cout << arrayref.type_reference << endl;
     if(index > arr->size() || index < 0) {
         ExceptionThrower::arrayIndexOutOfBounds(index);
     }
-
     arr->at(index) = value;
 
     return ++frame->local_pc;
