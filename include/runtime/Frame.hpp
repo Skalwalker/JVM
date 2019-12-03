@@ -47,6 +47,7 @@ public:
     uint32_t local_pc;
 
     Frame(vector<CPInfo>, MethodInfo, stack<Frame>*);
+    vector<Type> intializeLocalVariable(uint16_t);
 };
 
 #endif
