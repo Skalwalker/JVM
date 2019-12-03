@@ -6,6 +6,9 @@ uint32_t Instruction::newarray(Frame *frame){
     int count = frame->operandStack.top().type_int;
     frame->operandStack.pop();
 
+    if (count < 0) {
+        ExceptionThrower::negativeArraySizeException();
+    }
 
     vector<Type>* arr_type = new vector<Type>(count);
 
@@ -905,6 +908,10 @@ uint32_t Instruction::anewarray(Frame* frame){
 
     int count = frame->operandStack.top().type_int;
     frame->operandStack.pop();
+
+    if (count < 0) {
+        ExceptionThrower::negativeArraySizeException();
+    }
 
     vector<Type>* arr_type = new vector<Type>(count);
 
