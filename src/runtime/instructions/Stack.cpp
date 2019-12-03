@@ -99,7 +99,7 @@ uint32_t Instruction::pop(Frame * frame) {
 uint32_t Instruction::dup(Frame * frame) {
     Type res = frame->operandStack.top();
     frame->operandStack.push(res);
-    
+
     return ++frame->local_pc;
 }
 
