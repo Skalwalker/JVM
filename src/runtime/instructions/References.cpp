@@ -51,8 +51,8 @@ uint32_t Instruction::newarray(Frame *frame){
     arrayReference.type_reference = (uint64_t)&arr_type[0];
     frame->operandStack.push(arrayReference);
 
-    Type res = frame->operandStack.top();
-    vector<Type>* arrayPointer = (vector<Type>*)res.type_reference;
+    // Type res = frame->operandStack.top();
+    // vector<Type>* arrayPointer = (vector<Type>*)res.type_reference;
 
     return ++frame->local_pc;
 }
@@ -407,7 +407,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
                 argCnt+=2;
             }
             else if (descriptor[i] == 'L') {
-                int j = i;
+                // int j = i;
                 while (descriptor[i] != ';') {
                     i++;
                 }
@@ -542,7 +542,7 @@ uint32_t Instruction::invokestatic(Frame* frame){
             argCnt += 2;
         }
         else if (descriptor[i] == 'L') {
-            int j = i;
+            // int j = i;
             while (descriptor[i] != ';') {
                 i++;
             }
@@ -842,7 +842,7 @@ uint32_t Instruction::invokespecial(Frame * frame) {
             argCnt += 2;
         }
         else if (descriptor[i] == 'L') {
-            int j = i;
+            // int j = i;
             while (descriptor[i] != ';') {
                 i++;
             }
@@ -912,7 +912,7 @@ uint32_t Instruction::anewarray(Frame* frame){
     uint8_t* bytecode = frame->codeAttribute.code;
     uint8_t byte1 = bytecode[++frame->local_pc];
     uint8_t byte2 = bytecode[++frame->local_pc];
-    uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+    // uint16_t index = ((uint16_t)byte1 << 8) | byte2;
 
     int count = frame->operandStack.top().type_int;
     frame->operandStack.pop();
@@ -948,7 +948,6 @@ uint32_t Instruction::arraylength(Frame* frame){
     vector<Type>* type_vec = (vector<Type>*)arrayref.type_reference;
     Type len;
     len.tag = TAG_INT;
-    cout << type_vec->size() << endl;
     len.type_int = type_vec->size();
 
     frame->operandStack.push(len);

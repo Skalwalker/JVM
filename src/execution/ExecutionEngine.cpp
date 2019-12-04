@@ -48,7 +48,7 @@ void ExecutionEngine::run() {
     while(!thread.framesStack.empty()) {
         Frame* currentFrame = &(thread.framesStack.top());
         uint8_t* bytecode = currentFrame->codeAttribute.code;
-        uint32_t byteCodeLength = currentFrame->codeAttribute.codeLength;
+        // uint32_t byteCodeLength = currentFrame->codeAttribute.codeLength;
         uint8_t opcode = bytecode[thread.pc];
         Instruction currentInstruction = instructionsManager->opcode[opcode];
 

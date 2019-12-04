@@ -3,12 +3,12 @@
 using namespace std;
 
 FieldInfo::FieldInfo() {
-    
+
 }
 
 FieldInfo::FieldInfo(vector<CPInfo> cp, FILE * fp) {
   ClassFileReader<uint16_t> twoBytes;
-  ClassFileReader<uint32_t> fourBytes;
+  // ClassFileReader<uint32_t> fourBytes;
 
   this->access_flags = twoBytes.readBytes(fp);
   this->name_index =  twoBytes.readBytes(fp);
