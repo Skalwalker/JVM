@@ -160,6 +160,7 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("fcmpg")->second.exec = Instruction::fcmpg;
     this->instructionByName("dcmpl")->second.exec = Instruction::dcmpl;
     this->instructionByName("dcmpg")->second.exec = Instruction::dcmpg;
+    this->instructionByName("ldc_w")->second.exec = Instruction::dcmpg;
 
     this->instructionByName("iconst_m1")->second.exec = Instruction::iconst_m1;
     this->instructionByName("iconst_0")->second.exec = Instruction::iconst_0;
