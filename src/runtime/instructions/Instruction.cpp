@@ -100,7 +100,7 @@ map<string, Type>* Instruction::instantiateFields(ClassFile * classFile) {
                 fieldContent.type_reference = (uint64_t)NULL;
             }
             else {
-                printf("Sei que field é esse não: %s\n", descriptor.c_str());
+                printf("Sei que campo é esse não: %s\n", descriptor.c_str());
                 exit(0);
             }
 

@@ -106,11 +106,12 @@ uint32_t Instruction::getstatic(Frame* frame){
     bool foundField = false;
     string descriptor;
 
+    string name;
     for (int i = 0; i < classFile->getFieldsCount() && !foundField; i++) {
         field = fields[i];
         uint16_t nameIndex = field->name_index;
         uint16_t descriptorIndex = field->descriptor_index;
-        string name = constantPool[nameIndex-1].getInfo(constantPool);
+        name = constantPool[nameIndex-1].getInfo(constantPool);
         descriptor = constantPool[descriptorIndex-1].getInfo(constantPool);
         if (name.compare(fieldName) == 0 && descriptor.compare(descriptorAux) == 0) {
             foundField = true;
@@ -118,7 +119,7 @@ uint32_t Instruction::getstatic(Frame* frame){
     }
 
     if (!foundField) {
-        printf("getstatic: o field especificado nao pode ser resolvido! Deve estar em uma superclasse ou superinterface! Falta implementar!\n");
+        ExceptionThrower::noSuchFieldError(name);
         exit(0);
     }
 
@@ -299,7 +300,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
             }
         } else if (methodName.compare("toString") == 0) {
             } else {
-                printf("invokevirtualFunction: Metodo do StringBuilder nao reconhecido: %s\n", methodName.c_str());
+                ExceptionThrower::noSuchMethodError(methodName);
                 exit(0);
             }
         } else {
@@ -380,7 +381,7 @@ uint32_t Instruction::invokevirtual(Frame* frame) {
 
                 if (!foundMethod) {
                     if (objectClassFile->getSuperClass() == 0) {
-                        printf("invokevirtual:  metodo nao foi encontrado\n");
+                        ExceptionThrower::noSuchMethodError(methodName);
                         exit(0);
                     }
                     className = constantPool[objectClassFile->getSuperClass()-1].getInfo(constantPool);
@@ -466,6 +467,9 @@ uint32_t Instruction::getfield(Frame * frame) {
     }
 
     map<string, Type>* object = (map<string, Type>*)objectref.type_reference;
+    if (object->count(fieldName) == 0) {
+        ExceptionThrower::noSuchFieldError(fieldName);
+    }
     Type value = object->at(fieldName);
 
     frame->operandStack.push(value);
@@ -620,11 +624,12 @@ uint32_t Instruction::putstatic(Frame* frame){
     FieldInfo* field;
     bool foundField = false;
 
+    string name;
     for (int i = 0; i < classFile->getFieldsCount() && !foundField; i++) {
         field = fields[i];
         uint16_t nameIndex = field->name_index;
         uint16_t descriptorIndex = field->descriptor_index;
-        string name = constantPool[nameIndex-1].getInfo(constantPool);
+        name = constantPool[nameIndex-1].getInfo(constantPool);
         string descriptor = constantPool[descriptorIndex-1].getInfo(constantPool);
         if (name.compare(fieldName) == 0 && descriptor.compare(descriptorAux) == 0) {
             foundField = true;
@@ -632,7 +637,7 @@ uint32_t Instruction::putstatic(Frame* frame){
     }
 
     if (!foundField) {
-        printf("putstatic: o field especificado nao pode ser resolvido! Deve estar em uma superclasse ou superinterface! Falta implementar!\n");
+        ExceptionThrower::noSuchFieldError(name);
         exit(0);
     }
 
@@ -754,7 +759,7 @@ uint32_t Instruction::invokespecial(Frame * frame) {
             *initStringReference = *stringReference;
         }
         else {
-            printf("Encontrei esse método ai não %s\n", methodName.c_str());
+            ExceptionThrower::noSuchMethodError(methodName);
             exit(0);
         }
         return ++frame->local_pc;
@@ -789,7 +794,7 @@ uint32_t Instruction::invokespecial(Frame * frame) {
 
         if (!foundMethod) {
             if (classFile->getSuperClass() == 0) {
-                printf("invokespecial: metodo nao foi encontrado em nenhuma superclasse! Talvez esteja em uma interface, falta Implementar!\n");
+                ExceptionThrower::noSuchMethodError(methodName);
             }
             string className = constantPool[classFile->getSuperClass()-1].getInfo(constantPool);
         }
