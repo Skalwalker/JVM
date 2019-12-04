@@ -222,33 +222,30 @@ uint32_t Instruction::ldc2_w(Frame* frame){
     return ++frame->local_pc;
 }
 
-// uint32_t Instruction::ldc_w(Frame* frame){
-//     uint8_t* bytecode = frame->codeAttribute.code;
-//     uint8_t byte1 = bytecode[++frame->local_pc];
-//     uint8_t byte2 = bytecode[++frame->local_pc];
-//
-//     uint16_t index = ((uint16_t)byte1 << 8) | byte2;
-//
-//     Type value;
-//
-//
-//     CPInfo cpInfo = frame->constantPool[index-1];
-//     if(cpInfo.tag == CONSTANT_INTEGER) {
-//         value.tag = TAG_INT;
-//
-//
-//     } else if(cpInfo.tag == CONSTANT_FLOAT) {
-//         value.tag = TAG_FLOAT;
-//
-//     } else if(cpInfo.tag == CONSTANT_STRING) {
-//         value.tag = TAG_REFERENCE;
-//
-//     } else if(cpInfo.tag == CONSTANT_CLASS) {
-//
-//     } else if(cpInfo.tag == CONSTANT_METHOD_TYPE) {
-//
-//     } else if(cpInfo.tag == CONSTANT_METHOD_HANDLE) {
-//
-//     }
-//
-// }
+uint32_t Instruction::ldc_w(Frame* frame){
+    uint8_t* bytecode = frame->codeAttribute.code;
+    uint8_t byte1 = bytecode[++frame->local_pc];
+    uint8_t byte2 = bytecode[++frame->local_pc];
+
+    uint16_t index = ((uint16_t)byte1 << 8) | byte2;
+    Type value;
+
+    CPInfo cpInfo = frame->constantPool[index-1];
+    if(cpInfo.tag == CONSTANT_STRING) {
+        value.tag = TAG_REFERENCE;
+        value.type_reference = (uint64_t)new string(cpInfo.getInfo(frame->constantPool));
+        frame->operandStack.push(value);
+    } else if (cpInfo.tag == CONSTANT_INTEGER) {
+        value.tag = TAG_INT;
+        value.type_int = cpInfo.integerInfo.bytes;
+        frame->operandStack.push(value);
+    } else if (cpInfo.tag == CONSTANT_FLOAT) {
+        value.tag = TAG_FLOAT;
+        float f;
+        memcpy(&f, &(cpInfo.floatInfo.bytes), sizeof(float));
+        value.type_float = f;
+        frame->operandStack.push(value);
+    }
+
+    return ++frame->local_pc;
+}

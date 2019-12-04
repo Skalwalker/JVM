@@ -461,6 +461,7 @@ uint32_t Instruction::getfield(Frame * frame) {
 
     Type objectref = frame->operandStack.top();
     frame->operandStack.pop();
+
     if (objectref.type_reference == (uint64_t)NULL) {
         ExceptionThrower::nullPointerException();
     }

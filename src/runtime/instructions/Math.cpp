@@ -419,7 +419,6 @@ uint32_t Instruction::fdiv(Frame * frame) {
     frame->operandStack.pop();
     res.tag = TAG_FLOAT;
     res.type_float = val1 / val2;
-    cout << val1 / val2 << endl;
     frame->operandStack.push(res);
 
     return ++frame->local_pc;

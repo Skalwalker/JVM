@@ -84,6 +84,7 @@ public:
 
     static uint32_t monitorenter(Frame*);
     static uint32_t monitorexit(Frame*);
+    static uint32_t ldc_w(Frame*);
 
     /**
      * \brief
