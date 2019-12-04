@@ -461,6 +461,9 @@ uint32_t Instruction::getfield(Frame * frame) {
 
     Type objectref = frame->operandStack.top();
     frame->operandStack.pop();
+    if (objectref.type_reference == (uint64_t)NULL) {
+        ExceptionThrower::nullPointerException();
+    }
 
     map<string, Type>* object = (map<string, Type>*)objectref.type_reference;
     Type value = object->at(fieldName);
@@ -894,7 +897,7 @@ uint32_t Instruction::putfield(Frame * frame) {
     frame->operandStack.pop();
     Type objectref = frame->operandStack.top();
     frame->operandStack.pop();
-    
+
     if (objectref.type_reference == (uint64_t)NULL) {
         ExceptionThrower::nullPointerException();
     }

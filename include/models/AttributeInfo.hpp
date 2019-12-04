@@ -145,7 +145,6 @@ class MethodParameters {
 
 class AttributeInfo {
 public:
-    string attributeName;
     uint16_t attributeNameIndex;
     uint32_t attributeLength;
     uint16_t tag;

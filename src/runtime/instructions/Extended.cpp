@@ -103,6 +103,7 @@ uint32_t Instruction::multianewarray(Frame* frame){
 
     int16_t index = (byte1 << 8) | byte2;
 
+
     vector<int32_t> dim_arr;
 
     for (int i = 0; i < dimensions; i++){
@@ -110,6 +111,9 @@ uint32_t Instruction::multianewarray(Frame* frame){
         frame->operandStack.pop();
         if (dim == 0){
             break;
+        }
+        if (dim < 0) {
+            ExceptionThrower::negativeArraySizeException();
         }
         dim_arr.push_back(dim);
     }

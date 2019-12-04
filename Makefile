@@ -11,7 +11,7 @@ TARGET := bin/jvm
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -g -std=c++11 -fno-stack-protector # -Wall
+CFLAGS := -g -std=c++11# -Wall
 LIB :=
 INC := -I include
 

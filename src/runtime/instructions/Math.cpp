@@ -17,7 +17,6 @@ uint32_t Instruction::iadd(Frame * frame) {
     val1 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     res.tag = TAG_INT;
-    // cout << val1 << " " << val2 << endl;
     res.type_int = val1 + val2;
     frame->operandStack.push(res);
 

@@ -212,8 +212,6 @@ uint32_t Instruction::iastore(Frame * frame) {
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
 
-    cout << index << endl;
-
     if (arrayref.type_reference == (uint64_t)NULL) {
         ExceptionThrower::nullPointerException();
     }
@@ -420,8 +418,6 @@ uint32_t Instruction::aastore(Frame * frame) {
     frame->operandStack.pop();
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
-
-    cout << index << endl;
 
     if (arrayref.type_reference == (uint64_t)NULL) {
         ExceptionThrower::nullPointerException();
