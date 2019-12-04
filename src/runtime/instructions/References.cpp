@@ -6,6 +6,9 @@ uint32_t Instruction::newarray(Frame *frame){
     int count = frame->operandStack.top().type_int;
     frame->operandStack.pop();
 
+    if (count < 0) {
+        ExceptionThrower::negativeArraySizeException();
+    }
 
     vector<Type>* arr_type = new vector<Type>(count);
 
@@ -681,7 +684,7 @@ uint32_t Instruction::new_func(Frame* frame){
     string className = frame->constantPool[index-1].getInfo(frame->constantPool);
     if (className.compare("java/lang/String") == 0 ||
         className.compare("java/lang/StringBuilder") == 0 ||
-        className.compare("java/lang/StringBuilder") == 0) {
+        className.compare("java/lang/StringBuffer") == 0) {
 
         Type object;
         object.type_reference = (uint64_t)new string("");
@@ -911,6 +914,10 @@ uint32_t Instruction::anewarray(Frame* frame){
     int count = frame->operandStack.top().type_int;
     frame->operandStack.pop();
 
+    if (count < 0) {
+        ExceptionThrower::negativeArraySizeException();
+    }
+
     vector<Type>* arr_type = new vector<Type>(count);
 
     for(int i = 0; i < count; i++){
@@ -938,6 +945,7 @@ uint32_t Instruction::arraylength(Frame* frame){
     vector<Type>* type_vec = (vector<Type>*)arrayref.type_reference;
     Type len;
     len.tag = TAG_INT;
+    cout << type_vec->size() << endl;
     len.type_int = type_vec->size();
 
     frame->operandStack.push(len);

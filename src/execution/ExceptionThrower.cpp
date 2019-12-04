@@ -34,3 +34,8 @@ void ExceptionThrower::instructionNotImplemented(uint32_t type) {
     }
     exit(0);
 }
+
+void ExceptionThrower::negativeArraySizeException() {
+    cout << "Exception in thread 'main' java.lang.NegativeArraySizeException" << endl;
+    exit(0);
+}

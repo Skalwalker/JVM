@@ -35,7 +35,7 @@ public class method_renato {
   }
 
   public static String Soma(String x, String y) {
-    return "AAAAAAAAAHHHHHHHHHH EUAAAAAAAAAA AUIIMAWA";
+    return x + y;
   }
 
 }

@@ -58,6 +58,17 @@ public:
     static void arrayIndexOutOfBounds(uint32_t index);
 
     /**
+     * \brief Gera uma exceção do tipo ArrayIndexOutOfBoundsException.
+     *
+     * \warning Chamar essa função implica no encerramento do programa.
+     * \param index Index do vetor no qual o erro ocorre.
+     * \throw ArrayIndexOutOfBoundsException Acesso indevido ao indice do vetor.
+     *
+     * \date $Date: 29/11/2019
+     */
+    static void negativeArraySizeException();
+
+    /**
      * \brief Gera uma exceção do tipo NullPointerException.
      *
      * \warning Chamar essa função implica no encerramento do programa.

@@ -1,13 +1,25 @@
 public class ExcepTest {
     public static void arrayoutbounds() {
         int a[] = new int[2];
-        a[-1] = 0;
+        try {
+            a[-1] = 0;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
         // System.out.println(a[3]);
     }
 
     public static void arraynull() {
         int a[] = null;
-        a[3] = 7;
+        try {
+            a[3] = 7;
+        } catch (NullPointerException e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void negativeArraySize() {
+        int a[] = new int[-2];
     }
 
     public static void arraystore() {
@@ -20,6 +32,9 @@ public class ExcepTest {
     }
 
    public static void main(String[] args) {
-       arraystore();
+       // arraynull();
+       // arraystore();
+       negativeArraySize();
+       // arrayoutbounds();
    }
 }
