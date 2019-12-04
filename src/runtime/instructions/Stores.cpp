@@ -297,7 +297,7 @@ uint32_t Instruction::fastore(Frame * frame) {
 }
 
 uint32_t Instruction::sastore(Frame * frame) {
-    uint16_t value = frame->operandStack.top().type_int;
+    int16_t value = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     int index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
@@ -313,13 +313,13 @@ uint32_t Instruction::sastore(Frame * frame) {
     if(index > arr->size() || index < 0) {
         ExceptionThrower::arrayIndexOutOfBounds(index);
     }
-    arr->at(index).type_short = value;
+    arr->at(index).type_int = value;
 
     return ++frame->local_pc;
 }
 
 uint32_t Instruction::bastore(Frame * frame) {
-    uint8_t value = frame->operandStack.top().type_byte;
+    int32_t value = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
@@ -336,7 +336,7 @@ uint32_t Instruction::bastore(Frame * frame) {
         ExceptionThrower::arrayIndexOutOfBounds(index);
     }
 
-    arr->at(index).type_byte = value;
+    arr->at(index).type_int = (int32_t)((int8_t)value);
 
     return ++frame->local_pc;
 }
@@ -414,7 +414,7 @@ uint32_t Instruction::astore_3(Frame * frame) {
 uint32_t Instruction::aastore(Frame * frame) {
     Type value = frame->operandStack.top();
     frame->operandStack.pop();
-    uint32_t index = frame->operandStack.top().type_int;
+    int32_t index = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     Type arrayref = frame->operandStack.top();
     frame->operandStack.pop();
@@ -424,11 +424,9 @@ uint32_t Instruction::aastore(Frame * frame) {
     }
 
     vector<Type>* arr = (vector<Type>*)arrayref.type_reference;
-
     if(index > arr->size() || index < 0) {
         ExceptionThrower::arrayIndexOutOfBounds(index);
     }
-
     arr->at(index) = value;
 
     return ++frame->local_pc;

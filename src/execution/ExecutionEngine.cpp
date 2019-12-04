@@ -1,9 +1,9 @@
 #include "../../include/execution/ExecutionEngine.hpp"
 
-ExecutionEngine::ExecutionEngine(ClassFile classFile, MethodArea * methodArea, InstructionsManager * instructionsManager) {
-    vector<CPInfo>constantPool = classFile.getConstantPool();
+ExecutionEngine::ExecutionEngine(ClassFile * classFile, MethodArea * methodArea, InstructionsManager * instructionsManager) {
+    vector<CPInfo>constantPool = classFile->getConstantPool();
     //GetInfo aqui resgata o nome da classe
-    string mainName = constantPool[classFile.getThisClass()-1].getInfo(constantPool);
+    string mainName = constantPool[classFile->getThisClass()-1].getInfo(constantPool);
     this->methodArea = methodArea;
     this->instructionsManager = instructionsManager;
     this->mainClassFileName = mainName;
@@ -11,13 +11,13 @@ ExecutionEngine::ExecutionEngine(ClassFile classFile, MethodArea * methodArea, I
 }
 
 void ExecutionEngine::findMainMethod() {
-    ClassFile mainClassFile = methodArea->getClassFile(mainClassFileName);
-    vector<CPInfo> constantPool = mainClassFile.getConstantPool();
-    vector<MethodInfo> methods = mainClassFile.getMethods();
+    ClassFile * mainClassFile = methodArea->getClassFile(mainClassFileName);
+    vector<CPInfo> constantPool = mainClassFile->getConstantPool();
+    vector<MethodInfo> methods = mainClassFile->getMethods();
     int i;
     bool foundMain = false;
 
-    for (i = 0; i < mainClassFile.getMethodsCount() && !foundMain; i++) {
+    for (i = 0; i < mainClassFile->getMethodsCount() && !foundMain; i++) {
         MethodInfo method = methods[i];
         uint16_t nameIndex = method.name_index;
         uint16_t descriptorIndex = method.descriptor_index;
@@ -38,8 +38,8 @@ void ExecutionEngine::findMainMethod() {
 }
 
 void ExecutionEngine::run() {
-    ClassFile mainClassFile = methodArea->getClassFile(mainClassFileName);
-    vector<CPInfo> constantPool = mainClassFile.getConstantPool();
+    ClassFile * mainClassFile = methodArea->getClassFile(mainClassFileName);
+    vector<CPInfo> constantPool = mainClassFile->getConstantPool();
     Thread thread;
     Frame mainFrame(constantPool, this->mainMethod, &(thread.framesStack));
 
@@ -48,11 +48,11 @@ void ExecutionEngine::run() {
     while(!thread.framesStack.empty()) {
         Frame* currentFrame = &(thread.framesStack.top());
         uint8_t* bytecode = currentFrame->codeAttribute.code;
-        uint32_t byteCodeLength = currentFrame->codeAttribute.codeLength;
+        // uint32_t byteCodeLength = currentFrame->codeAttribute.codeLength;
         uint8_t opcode = bytecode[thread.pc];
         Instruction currentInstruction = instructionsManager->opcode[opcode];
 
-        cout << "Instrução: " << thread.pc << " " << currentInstruction.mnemonic << " frame: " << currentFrame->method.name << endl;
+        // cout << "Instrucao: " << thread.pc << " " << currentInstruction.mnemonic << " frame: " << currentFrame->method.name << endl;
         thread.pc = currentInstruction.exec(currentFrame);
 
         if (currentInstruction.mnemonic.compare("return") == 0) {

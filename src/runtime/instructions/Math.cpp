@@ -17,7 +17,6 @@ uint32_t Instruction::iadd(Frame * frame) {
     val1 = frame->operandStack.top().type_int;
     frame->operandStack.pop();
     res.tag = TAG_INT;
-    // cout << val1 << " " << val2 << endl;
     res.type_int = val1 + val2;
     frame->operandStack.push(res);
 
@@ -359,6 +358,7 @@ uint32_t Instruction::iinc(Frame * frame) {
     int8_t imm_const = bytecode[++frame->local_pc];
     int32_t temp, sign_ext;
 
+
     sign_ext = imm_const;
     temp = frame->localVariables[index].type_int;
     temp += sign_ext;
@@ -419,7 +419,6 @@ uint32_t Instruction::fdiv(Frame * frame) {
     frame->operandStack.pop();
     res.tag = TAG_FLOAT;
     res.type_float = val1 / val2;
-    cout << val1 / val2 << endl;
     frame->operandStack.push(res);
 
     return ++frame->local_pc;

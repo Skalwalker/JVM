@@ -80,10 +80,11 @@ public:
     Instruction();
     static tuple<string, string, string> methodInfoSplit(string);
     static tuple<string, string, string> fieldInfoSplit(string);
-    static map<string, Type>* instantiateFields(ClassFile);
+    static map<string, Type>* instantiateFields(ClassFile*);
 
     static uint32_t monitorenter(Frame*);
     static uint32_t monitorexit(Frame*);
+    static uint32_t ldc_w(Frame*);
 
     /**
      * \brief
@@ -2335,16 +2336,11 @@ public:
      */
     static uint32_t saload(Frame *);
 
-    /**
-     * \brief
-     *
-     * \param frame Frame sendo executado na ExecutionEngine.
-     * \return Inteiro uint32_t indicando qual o contador de programa da proxima instrucao.
-     *
-     * \date Date: 29/11/2019
-     */
-    // static uint32_t putfield(Frame * );
-
+    static uint32_t athrow(Frame*);
+    static uint32_t instanceof(Frame*);
+    static uint32_t checkcast(Frame*);
+    static uint32_t invokedynamic(Frame*);
+    static uint32_t invokeinterface(Frame*);
 };
 
 

@@ -89,8 +89,8 @@ public:
 };
 
 class EnclosingMethodAttribute {
-    uint16_t classIndex;
-    uint16_t methodIndex;
+    // uint16_t classIndex;
+    // uint16_t methodIndex;
 };
 
 class SyntheticAttribute {
@@ -137,15 +137,14 @@ public:
 };
 
 class MethodParameters {
-    uint16_t attributeNameIndex;
-    uint32_t attributeLength;
-    uint8_t parameters_count;
-    Parameter * parameters;
+    // uint16_t attributeNameIndex;
+    // uint32_t attributeLength;
+    // uint8_t parameters_count;
+    // Parameter * parameters;
 };
 
 class AttributeInfo {
 public:
-    string attributeName;
     uint16_t attributeNameIndex;
     uint32_t attributeLength;
     uint16_t tag;

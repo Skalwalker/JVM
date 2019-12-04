@@ -105,8 +105,7 @@ AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
     attributeLength = fourBytes.readBytes(fp);
     // o index da cp na jvm vai de 1 a n não de 0 a n-1
     CPInfo utf8 = cp[attributeNameIndex-1];
-    string str((char *)utf8.utf8Info.bytes);
-    attributeName = str;
+    string attributeName = utf8.getInfo(cp);
 
     if (attributeName == "Code") {
         code.create(cp, fp);
@@ -140,6 +139,6 @@ AttributeInfo::AttributeInfo(vector<CPInfo> cp, FILE * fp) {
 
     } else {
         ClassFileReader<uint8_t>::advanceBytes(attributeLength, fp);
-        attributeName += " (Atributo não implementado)";
+        attributeName += " (Atributo nao implementado)";
     }
 }

@@ -34,3 +34,18 @@ void ExceptionThrower::instructionNotImplemented(uint32_t type) {
     }
     exit(0);
 }
+
+void ExceptionThrower::negativeArraySizeException() {
+    cout << "Exception in thread 'main' java.lang.NegativeArraySizeException" << endl;
+    exit(0);
+}
+
+void ExceptionThrower::noSuchFieldError(string name) {
+    cout << "Exception in thread 'main' java.lang.NoSuchFieldError '" << name << "'" << endl;
+    exit(0);
+}
+
+void ExceptionThrower::noSuchMethodError(string name) {
+    cout << "Exception in thread 'main' java.lang.NoSuchMethodError '" << name << "'" << endl;
+    exit(0);
+}

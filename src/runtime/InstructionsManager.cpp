@@ -160,6 +160,7 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("fcmpg")->second.exec = Instruction::fcmpg;
     this->instructionByName("dcmpl")->second.exec = Instruction::dcmpl;
     this->instructionByName("dcmpg")->second.exec = Instruction::dcmpg;
+    this->instructionByName("ldc_w")->second.exec = Instruction::dcmpg;
 
     this->instructionByName("iconst_m1")->second.exec = Instruction::iconst_m1;
     this->instructionByName("iconst_0")->second.exec = Instruction::iconst_0;
@@ -242,6 +243,12 @@ void InstructionsManager::setInstructions(){
     this->instructionByName("saload")->second.exec = Instruction::saload;
     this->instructionByName("monitorenter")->second.exec = Instruction::monitorenter;
     this->instructionByName("monitorexit")->second.exec = Instruction::monitorexit;
+
+    this->instructionByName("athrow")->second.exec = Instruction::athrow;
+    this->instructionByName("instanceof")->second.exec = Instruction::instanceof;
+    this->instructionByName("checkcast")->second.exec = Instruction::checkcast;
+    this->instructionByName("invokedynamic")->second.exec = Instruction::invokedynamic;
+    this->instructionByName("invokeinterface")->second.exec = Instruction::invokeinterface;
 
 }
 

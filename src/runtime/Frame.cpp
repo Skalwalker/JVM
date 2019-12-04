@@ -25,11 +25,24 @@ Frame::Frame(vector<CPInfo> constantPool, MethodInfo method, stack<Frame>* jvmSt
     if (codeFounded) {
         uint16_t maxLocals = attributes[i].code.maxLocals;
         this->codeAttribute = attributes[i].code;
-        this->localVariables = vector<Type>(maxLocals);
+        this->localVariables = intializeLocalVariable(maxLocals);
         this->local_pc = 0;
     }
     else {
         printf("Atributo Code nao encontrado no metodo\n");
         exit(0);
     }
+}
+
+vector<Type> Frame::intializeLocalVariable(uint16_t maxLocals) {
+    vector<Type> arr;
+    vector<Type>* empty = new vector<Type>(0);
+    for (int i = 0; i  < maxLocals; i++) {
+        Type variable;
+        variable.tag = TAG_REFERENCE;
+        variable.type_reference = (uint64_t)empty;
+        arr.push_back(variable);
+    }
+
+    return arr;
 }

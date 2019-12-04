@@ -417,7 +417,7 @@ void Printer::printAttributes(bool inside_type, std::vector<AttributeInfo> vec, 
 
     for (int i=0;i < attr_cont;i++) {
         cout << starter << "[" << i << "] Attribute ";
-        cout << attr_vec[i].attributeName << endl;
+        cout << this->cp_vec[attr_vec[i].attributeNameIndex-1].getInfo(this->cp_vec) << endl;
 
         cout << starter << "| " << endl << starter << "| Generic Info -----------" << endl;
         cout << starter << "| " << endl;
@@ -616,8 +616,8 @@ void Printer::getValue(Instruction instr, AttributeInfo atr, int i, int *jump, s
 
 void Printer::printAttributesBody(AttributeInfo atr, string starter) {
     uint16_t index;
-
-    if (atr.attributeName == "Code"){
+    string attributeName = this->cp_vec[atr.attributeNameIndex-1].getInfo(this->cp_vec);
+    if (attributeName == "Code"){
 
         cout << starter << "| ----- Bytecode -----" << endl;
 
@@ -672,7 +672,7 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
         cout << starter << "| ----- Attributes -----" << endl;
         printAttributes(true, atr_aux, "\t");
 
-    } else if (atr.attributeName == "LineNumberTable"){
+    } else if (attributeName == "LineNumberTable"){
         uint16_t line_numbe_table_length = atr.lineNumberTable.lineNumberTableLength;
         cout << starter << "| Line Number Table Count: "<< line_numbe_table_length << endl;
         for(int i = 0; i < line_numbe_table_length; i++) {
@@ -680,7 +680,7 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
             cout << " Start PC:  " << atr.lineNumberTable.lineNumberTable[i].start_pc << " ";
             cout << " Line Number: "<< atr.lineNumberTable.lineNumberTable[i].line_number << endl;
         }
-    } else if (atr.attributeName == "LocalVariableTable"){
+    } else if (attributeName == "LocalVariableTable"){
         uint16_t local_variable_table_length = atr.localVariableTable.localVariableTableLength;
         cout << starter << "| Local Variable Table Count: "<< local_variable_table_length << endl;
         for(int i = 0; i < local_variable_table_length; i++) {
@@ -691,7 +691,7 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
             cout << " Descriptor Index:  " << atr.localVariableTable.localVariableTable[i].descriptor_index << " ";
             cout << " Index:  " << atr.localVariableTable.localVariableTable[i].index << " ";
         }
-    } else if (atr.attributeName == "LocalVariableTypeTable"){
+    } else if (attributeName == "LocalVariableTypeTable"){
         uint16_t local_variable_type_table_length = atr.localVariableTypeTable.localVariableTypeTableLength;
         cout << starter << "| Local Variable Type Table Count: "<< local_variable_type_table_length << endl;
         for(int i = 0; i < local_variable_type_table_length; i++) {
@@ -702,7 +702,7 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
             cout << " Signature Index:  " << atr.localVariableTypeTable.localVariableTypeTable[i].signature_index << " ";
             cout << " Index:  " << atr.localVariableTypeTable.localVariableTypeTable[i].index << " ";
         }
-    } else if (atr.attributeName == "Exceptions"){
+    } else if (attributeName == "Exceptions"){
         uint16_t excp_length = atr.exceptions.numberOfExceptions;
         cout << starter << "| Exceptions Count: "<< excp_length << endl;
         for(int i = 0; i < excp_length; i++) {
@@ -712,14 +712,14 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
             cout << " <" << this->printCPString(cp_ref) << ">" << endl;
         }
 
-    } else if (atr.attributeName == "SourceFile"){
+    } else if (attributeName == "SourceFile"){
         index = atr.sourceFile.sourceFileIndex;
         CPInfo cp_ref = this->cp_vec[index-1];
         cout << "| Source File Name Index: cp_info #" << index;
         cout << " <" << this->printCPString(cp_ref) << ">" << endl;
-    } else if (atr.attributeName == "Deprecated"){
+    } else if (attributeName == "Deprecated"){
         cout << starter << "| Attribute dont have information" << endl;
-    } else if (atr.attributeName == "InnerClasses"){
+    } else if (attributeName == "InnerClasses"){
         uint16_t class_length = atr.innerClasses.numberOfClasses;
         cout << starter << "| Classes Count: "<< class_length << endl << "| " << endl;
         for(int i = 0; i < class_length; i++) {
@@ -746,9 +746,9 @@ void Printer::printAttributesBody(AttributeInfo atr, string starter) {
             cout << " ( " << this->setAccessFlagsNames(atr.innerClasses.classes[i].inner_class_access_flags) << ")" << endl;
             cout << "| " << endl;
         }
-    } else if (atr.attributeName == "Synthetic"){
+    } else if (attributeName == "Synthetic"){
         cout << starter << "| Attribute dont have information" << endl;
-    } else if (atr.attributeName == "ConstantValue"){
+    } else if (attributeName == "ConstantValue"){
         index = atr.constantValue.valueIndex;
         CPInfo cp_ref = this->cp_vec[index-1];
         cout << starter << "| Constant Value Index: cp_info #" << index;

@@ -9,9 +9,9 @@ using namespace std;
 
 class MethodArea {
 public:
-    map<string, ClassFile> classes;
-    ClassFile getClassFile(string);
-    void insertClass(ClassFile);
+    map<string, ClassFile*> classes;
+    ClassFile * getClassFile(string);
+    void insertClass(ClassFile*);
 };
 
 #endif

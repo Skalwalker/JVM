@@ -13,7 +13,7 @@ string get_mainfile(string arg){
     while (i >= 0 && arg[i] != '/') {
         i--;
     }
-    return arg.substr(i, (arg.size()-i));
+    return arg.substr(i+1, (arg.size()-i));
 }
 
 void helpScreen(){
@@ -28,10 +28,10 @@ void helpScreen(){
 int main(int argc, char* argv[]) {
     string file_name;
 
-    bool print = false;
+    // bool print = false;
     string mainfile;
     string path;
-    FILE * fp;
+    // FILE * fp;
     bool printFlag = false;
 
     // Check the number of parameters
@@ -75,11 +75,13 @@ int main(int argc, char* argv[]) {
     classLoader.methodArea = &methodArea;
     classLoader.loadClassFile(mainfile);
     InstructionsManager instructionsManager(&classLoader);
-    ExecutionEngine executionEngine(classLoader.loadClassFile(mainfile), &methodArea, &instructionsManager);
+    ExecutionEngine executionEngine(methodArea.getClassFile(mainfile), &methodArea, &instructionsManager);
     if (printFlag == true){
-        Printer printer(classLoader.loadClassFile(mainfile), &instructionsManager);
+        Printer printer(*methodArea.getClassFile(mainfile), &instructionsManager);
+    } else {
+        executionEngine.run();
     }
-    executionEngine.run();
+
 
     return 0;
 }
