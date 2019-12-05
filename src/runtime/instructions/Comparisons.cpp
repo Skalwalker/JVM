@@ -1,3 +1,13 @@
+/** \file Comparisons.cpp
+ * \brief Definições das instruções de comparisons declaradas em Instruction.
+ *
+ * Referente às instruções definidas em Instruction.hpp do tipo Comparisons da Java SE 8 Edition.
+ * Instruções do tipo Comparisons realizam operações de comparação entre dois valores, se iguais, se diferentes,
+ * se maior ou menor, entre outros, considerando o tipo dos valores comparados.
+ *
+ * \date Date: 29/11/2019
+ */
+
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
 uint32_t Instruction::lcmp(Frame * frame) {

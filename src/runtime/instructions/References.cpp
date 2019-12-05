@@ -1,3 +1,14 @@
+/** \file References.cpp
+ * \brief Definições das instruções de Reference declaradas em Instruction.
+ *
+ * Referente às instruções definidas em Instruction.hpp do tipo Reference da Java SE 8 Edition.
+ * Instruções do tipo Reference referenciam classes, interfaces, métodos ou arrays e criam ou invocam 
+ * esses elementos em runtime.
+ * 
+ *
+ * \date Date: 29/11/2019
+ */
+
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
 uint32_t Instruction::newarray(Frame *frame){

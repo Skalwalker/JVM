@@ -1,3 +1,13 @@
+/** \file Control.cpp
+ * \brief Definições das instruções de control declaradas em Instruction.
+ *
+ * Referente às instruções definidas em Instruction.hpp do tipo Control da Java SE 8 Edition.
+ * Instruções do tipo Control redirecionam a execução para uma instrução que não é a seguinte à instrução
+ * de controle.
+ *
+ * \date Date: 29/11/2019
+ */
+
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
 uint32_t Instruction::returnfunc(Frame * frame) {
