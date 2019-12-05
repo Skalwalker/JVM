@@ -1,3 +1,12 @@
+/** \file Stack.cpp
+ * \brief Definições das instruções de Stack declaradas em Instruction.
+ *
+ * Referente às instruções definidas em Instruction.hpp do tipo Stack da Java SE 8 Edition.
+ * Instruções do tipo Stack realizam operações de pilha, como pop e push.
+ *
+ * \date Date: 29/11/2019
+ */
+
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
 uint32_t Instruction::pop2(Frame* frame) {

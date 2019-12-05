@@ -1,3 +1,10 @@
+/** \file Extended.cpp
+ * \brief Definições das instruções de Extended declaradas em Instruction.
+ *
+ *
+ * \date Date: 29/11/2019
+ */
+
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
 uint32_t Instruction::wide(Frame* frame){

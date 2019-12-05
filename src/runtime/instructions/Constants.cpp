@@ -1,3 +1,13 @@
+/** \file Constants.cpp
+ * \brief Definições das instruções de constants declaradas em Instruction.
+ *
+ * Referente às instruções definidas em Instruction.hpp do tipo Constants da Java SE 8 Edition.
+ * Instruções do tipo Constants empilham na pilha de operandos um valor constante recuperado do atributo 
+ * code de codeAttribute ou um valor constante definido pela própria instrução.
+ *
+ * \date Date: 29/11/2019
+ */
+
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
 uint32_t Instruction::nop(Frame * frame){

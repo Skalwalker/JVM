@@ -1,3 +1,13 @@
+/** \file Stores.cpp
+ * \brief Definições das instruções de stores declaradas em Instruction.
+ *
+ * Referente às instruções definidas em Instruction.hpp do tipo Stores da Java SE 8 Edition.
+ * Instruções do tipo Store recuperam valores da pilha de operandos e os guardam no vetor de variáveis 
+ * locais.
+ *
+ * \date Date: 29/11/2019
+ */
+
 #include "../../../include/runtime/instructions/Instruction.hpp"
 
 uint32_t Instruction::fstore(Frame * frame){
